@@ -1,0 +1,13 @@
+﻿using QLKyTucXa.models;
+
+namespace QLKyTucXa.Controller.Interfaces
+{
+    public interface ITaiKhoanServices
+    {
+        Task AddtaikhoanAsync(Taikhoan phong);
+        Task DeletetaikhoanAsync(string id);
+        Task<List<Taikhoan>> GettaikhoanAsync();
+        Task<Taikhoan?> GettaikhoanByIdAsync(string id);
+        Task UpdatetaikhoanAsync(Taikhoan phong);
+    }
+}

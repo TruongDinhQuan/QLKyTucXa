@@ -1,0 +1,96 @@
+﻿@page "/phong"
+@inject IPhongServices Phong
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+<PageTitle>Phong</PageTitle>
+
+<h1>DANH SÁCH PHÒNG</h1>
+
+<br />
+<button class="btn btn-primary" @onclick="themmoi">thêm mới</button>
+<br />
+@if (phong is null)
+{
+    <div class="sv-item">
+        Loading danh sách. chờ xí...
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên Phòng</th>
+                <th>Khu</th>
+                <th>Tầng</th>
+                <th>Số Giường</th>
+                <th>Số Người Ở</th>
+                <th>Đơn Giá</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in phong)
+            {
+                <tr>
+                    <td>@forecast.TenPhong</td>
+                    <td>@forecast.Khu</td>
+                    <td>@forecast.Tang</td>
+                    <td>@forecast.SoGiuong</td>
+                    <td>@forecast.SoNguoiO</td>
+                    <td>@forecast.DonGia</td>
+                    <td>
+                        <button class="btn btn-secondary" @onclick="@(() => Update(forecast.MaPhong))">Sửa</button>
+                        <button class="btn btn-danger" @onclick="@(() => Delete(forecast.MaPhong))">Xóa</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<Delete @rendermode="InteractiveServer" xacnhan="xacnhanxoa" OnCancel="CancelDelete" OnOK="okDelete"></Delete>
+
+@code {
+    private List<Phong> phong = new List<Phong>();
+    private string? idToDelete; 
+    private bool xacnhanxoa = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        phong = await Phong.GetPhongAsync();
+    }
+
+    private void themmoi()
+    {
+        navigationManager.NavigateTo("/Addphong");
+    }
+
+    private void Update(string id)
+    {
+        navigationManager.NavigateTo($"/Addphong/{id}");
+    }
+
+    private void Delete(string id)
+    {
+        idToDelete = id;
+        xacnhanxoa = true;
+    }
+
+    private void CancelDelete()
+    {
+        xacnhanxoa = false;
+    }
+
+    private async Task okDelete()
+    {
+        if (!string.IsNullOrEmpty(idToDelete))
+        {
+            await Phong.DeletePhongAsync(idToDelete);
+            xacnhanxoa = false;
+            phong = await Phong.GetPhongAsync();
+        }
+    }
+}
+
+
