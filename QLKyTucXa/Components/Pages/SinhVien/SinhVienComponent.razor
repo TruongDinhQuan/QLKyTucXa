@@ -1,0 +1,181 @@
+﻿@page "/sinhvien"
+@inject ISinhVienServices sv
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@attribute [Authorize(Roles ="Admin")]
+<PageTitle>Sinh viên</PageTitle>
+
+<h1>DANH SÁCH SINH VIÊN</h1>
+
+<br />
+<button class="btn btn-primary" @onclick="themmoi">Thêm mới</button>
+<br />
+
+@if (sinhvien is null)
+{
+    <div class="sv-item">
+        Loading danh sách. Chờ xí...
+    </div>
+}
+else
+{
+    <MudTable Items="@sinhvien" Hover="true" Breakpoint="Breakpoint.Sm" Style="background-color: #EDE7F6;">
+        <ColGroup>
+            <col style="width:200px;" />
+            <col style="width:150px;" />
+            <col style="width:100px;" />
+            <col style="width:150px;" />
+            <col style="width:200px;" />
+        </ColGroup>
+        <HeaderContent>
+            <MudTh>Mã Số Sinh Viên</MudTh>
+            <MudTh>Tên sinh viên</MudTh>
+            <MudTh>Giới Tính</MudTh>
+            <MudTh>Xem Chi Tiết</MudTh>
+            <MudTh>Thông Tin Phụ Huynh</MudTh>
+            <MudTh>Thao tác</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.Mssv</MudTd>
+            <MudTd>@context.TenSinhVien</MudTd>
+            <MudTd>@context.GioiTinh</MudTd>
+            <MudTd>
+                <MudButton Variant="Variant.Outlined" Size="Size.Small" @onclick="() => ToggleDetails(context.Mssv)">
+                    @((expandedSinhVienId == context.Mssv) ? "Ẩn" : "Xem") Chi Tiết
+                </MudButton>
+            </MudTd>
+            <MudTd>
+                <MudButton Variant="Variant.Outlined" Size="Size.Small" @onclick="() => TogglePhuHuynhDetails(context.Mssv)">
+                    @((expandedPhuHuynhId == context.Mssv) ? "Ẩn" : "Xem") Thông Tin
+                </MudButton>
+            </MudTd>
+            <MudTd>
+                <button class="btn btn-secondary" @onclick="@(() => Update(context.Mssv))">Sửa</button>
+                <button class="btn btn-danger" @onclick="@(() => Delete(context.Mssv))">Xóa</button>
+            </MudTd>
+        </RowTemplate>
+        <ChildRowContent>
+            @if (expandedSinhVienId == context.Mssv)
+            {
+                <MudTr>
+                    <MudTd colspan="7">
+                        <MudCard Elevation="1" Class="mt-2" Style="background-color: #FCE4EC;">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText Typo="Typo.h6">Chi Tiết Sinh Viên</MudText>
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                <MudText><strong>Ngày Sinh:</strong> @context.NgaySinh</MudText>
+                                <MudText><strong>Lớp:</strong> @context.Lop</MudText>
+                                <MudText><strong>Khoa:</strong> @context.Khoa</MudText>
+                                <MudText><strong>Số Căn Cước Công Dân:</strong> @context.SoCccd</MudText>
+                                <MudText><strong>Địa chỉ:</strong> @context.DiaChi</MudText>
+                                <MudText><strong>Số Điện thoại:</strong> @context.Sdt</MudText>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudTd>
+                </MudTr>
+            }
+            @if (expandedPhuHuynhId == context.Mssv)
+            {
+                <MudTr>
+                    <MudTd colspan="7">
+                        <MudCard Elevation="1" Class="mt-2" Style="background-color: #FFCDD2;">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText Typo="Typo.h6">Thông Tin Phụ Huynh</MudText>
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                <PhuHuynhComponent StudentId="@expandedPhuHuynhId"></PhuHuynhComponent>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudTd>
+                </MudTr>
+            }
+        </ChildRowContent>
+    </MudTable>
+}
+<Delete @rendermode="InteractiveServer" xacnhan="xacnhanxoa" OnCancel="CancelDelete" OnOK="okDelete"></Delete>
+
+@code {
+    private List<Sinhvien> sinhvien = new List<Sinhvien>();
+    private string? expandedSinhVienId; // Biến lưu trữ ID của sinh viên đang mở rộng chi tiết
+    private string? expandedPhuHuynhId; // Biến lưu trữ ID của sinh viên đang mở rộng chi tiết phụ huynh
+    private string? idToDelete;
+    private bool xacnhanxoa = false;
+
+    private int currentPage = 1;
+    private int pageSize = 10;
+    private int totalPages = 1;
+    private List<Sinhvien> pagedSinhvien = new List<Sinhvien>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        sinhvien = await sv.laydssinhvien();
+    }
+
+    private void themmoi()
+    {
+        navigationManager.NavigateTo("/Addsinhvien");
+    }
+
+    private async Task Update(string id)
+    {
+        var sinhVienDetail = await sv.GetByIdAsync(id);
+        if (sinhVienDetail != null)
+        {
+            navigationManager.NavigateTo($"/Addsinhvien/{id}");
+        }
+    }
+
+    private void ToggleDetails(string id)
+    {
+        if (expandedSinhVienId == id)
+        {
+            expandedSinhVienId = null; // Nếu đã mở rộng, ẩn chi tiết
+        }
+        else
+        {
+            expandedSinhVienId = id; // Mở rộng chi tiết cho sinh viên được chọn
+        }
+        StateHasChanged(); // Cập nhật UI để hiển thị hoặc ẩn chi tiết
+    }
+
+    private void TogglePhuHuynhDetails(string id)
+    {
+        if (expandedPhuHuynhId == id)
+        {
+            expandedPhuHuynhId = null; // Nếu đã mở rộng, ẩn chi tiết phụ huynh
+        }
+        else
+        {
+            expandedPhuHuynhId = id; // Mở rộng chi tiết phụ huynh cho sinh viên được chọn
+        }
+        StateHasChanged(); // Cập nhật UI để hiển thị hoặc ẩn chi tiết phụ huynh
+    }
+
+    private void Delete(string id)
+    {
+        idToDelete = id;
+        xacnhanxoa = true;
+    }
+
+    private void CancelDelete()
+    {
+        xacnhanxoa = false;
+    }
+
+    private async Task okDelete()
+    {
+        if (!string.IsNullOrEmpty(idToDelete))
+        {
+            await sv.DeleteByIdAsync(idToDelete);
+            xacnhanxoa = false;
+            sinhvien = await sv.laydssinhvien();
+            expandedSinhVienId = null; // Đóng tất cả các chi tiết khi xóa
+        }
+    }
+}

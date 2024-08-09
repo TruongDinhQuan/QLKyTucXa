@@ -1,0 +1,26 @@
+﻿@if (xacnhan)
+{
+    <div class="confirm-dialog-container">
+        <div class="confirm-dialog">
+            <h3>
+                Xác nhận xóa?
+            </h3>
+            <div class="d-flex-row justify-content-end mt-3">
+                <button @onclick="OnCancel" class="btn btn-danger shadow-none">Thoát</button>
+                <button @onclick="OnOK" class="btn btn-danger shadow-none ms-3">Xóa</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool xacnhan { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public EventCallback OnOK { get; set; }
+}
+

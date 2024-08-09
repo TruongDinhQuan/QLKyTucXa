@@ -1,0 +1,66 @@
+﻿@inject NavigationManager navigationManager
+
+<div class="avatar-container" @onclick="ToggleDropdown">
+    <img src="path-to-avatar-image.jpg" class="avatar-img" alt="TaiKhoan">
+    @if (isDropdownOpen)
+    {
+        <div class="dropdown-menu show">
+            <a class="dropdown-item" href="/profile">Thông tin tài khoản</a>
+            <a class="dropdown-item" href="/login" @onclick="Logout">Đăng xuất</a>
+        </div>
+    }
+</div>
+
+@code {
+    [CascadingParameter]
+    public HttpContext httpContext { get; set; }
+
+    private bool isDropdownOpen = false;
+
+    private void ToggleDropdown()
+    {
+        isDropdownOpen = !isDropdownOpen;
+    }
+
+    private void Logout()
+    {
+        navigationManager.NavigateTo("/logout", true);
+    }
+}
+<style>
+    .avatar-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .avatar-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: white;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+    .dropdown-item {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+
+</style>

@@ -1,0 +1,124 @@
+﻿@page "/register"
+@using QLKyTucXa.Controller.Services
+@inject EmailService EmailService
+@inject ITaiKhoanServices tk
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@attribute [AllowAnonymous]
+
+@if (!isVerificationStep)
+{
+    <div class="row">
+    <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
+    <EditForm Model="registerModel" OnValidSubmit="HandleRegistration" FormName="Dk">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+                <div class="mb-3 text-center flex-column">
+                    <h3>Đăng Ký</h3>
+                </div>
+        <div class="mb-3">
+            <label>Họ và Tên:</label>
+            <InputText @bind-Value="registerModel.TenDangNhap" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Email:</label>
+            <InputText @bind-Value="registerModel.Email" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Mật khẩu:</label>
+            <InputText type="password" @bind-Value="registerModel.MatKhau" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Xác nhận mật khẩu:</label>
+            <InputText type="password" @bind-Value="registerModel.ConfirmPassword" class="form-control" />
+        </div>
+        <div>
+                    <button type="submit" class="btn btn-primary">Đăng ký</button>
+                    <button type="button" class="btn btn-dark" @onclick="quaylaidiem">Quay lại</button>
+        </div>
+    </EditForm>
+    </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(verificationMessage))
+    {
+        <p class="message">@verificationMessage</p>
+    }
+}
+else
+{
+    <div class="form-group">
+        <label>Nhập mã xác thực:</label>
+        <InputText @bind-Value="enteredCode" class="form-control" />
+        <button @onclick="VerifyCode" class="btn btn-primary">Xác thực</button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(verificationMessage))
+    {
+        <p class="message">@verificationMessage</p>
+    }
+}
+
+@code {
+    private Taikhoan registerModel = new Taikhoan();
+    private bool isVerificationStep = false;
+    private string generatedCode;
+    private string enteredCode;
+    private string verificationMessage;
+
+    private async Task HandleRegistration()
+    {
+        if (string.IsNullOrEmpty(registerModel.Email))
+        {
+            verificationMessage = "Vui lòng nhập địa chỉ email.";
+            return;
+        }
+
+        if (registerModel.MatKhau != registerModel.ConfirmPassword)
+        {
+            verificationMessage = "Mật khẩu không khớp.";
+            return;
+        }
+
+        generatedCode = new Random().Next(1000, 9999).ToString();
+        string subject = "Mã xác thực email";
+        string body = $"Mã xác thực của bạn là: {generatedCode}";
+
+        try
+        {
+            await EmailService.SendEmailAsync(registerModel.Email, subject, body);
+            verificationMessage = "Mã xác thực đã được gửi đến email của bạn.";
+            isVerificationStep = true;
+        }
+        catch (Exception ex)
+        {
+            verificationMessage = $"Lỗi khi gửi email: {ex.Message}";
+        }
+    }
+
+    private void VerifyCode()
+    {
+        if (enteredCode == generatedCode)
+        {
+            verificationMessage = "Xác thực email thành công! Bạn đã đăng ký thành công.";
+            // Lưu thông tin người dùng vào cơ sở dữ liệu hoặc thực hiện bước tiếp theo
+            registerModel.Iduser = GenerateCode();
+            registerModel.EmailDaXacMinh = true;
+            registerModel.VaiTro = "User";
+            tk.AddtaikhoanAsync(registerModel);
+            Navigation.NavigateTo("/login");
+        }
+        else
+            verificationMessage = "Mã xác thực không chính xác.";
+    }
+
+    private string GenerateCode()
+    {
+        return Guid.NewGuid().ToString();
+    }
+
+    private void quaylaidiem()
+    {
+        Navigation.NavigateTo("/login");
+    }
+}
