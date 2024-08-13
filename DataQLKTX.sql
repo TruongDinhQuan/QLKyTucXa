@@ -1,6 +1,6 @@
 USE [DataQLKTX]
 GO
-/****** Object:  Table [dbo].[CHITIETHOADON]    Script Date: 8/13/2024 9:23:04 AM ******/
+/****** Object:  Table [dbo].[CHITIETHOADON]    Script Date: 8/13/2024 9:36:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -17,7 +17,7 @@ CREATE TABLE [dbo].[CHITIETHOADON](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[DICHVU]    Script Date: 8/13/2024 9:23:04 AM ******/
+/****** Object:  Table [dbo].[DICHVU]    Script Date: 8/13/2024 9:36:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -34,7 +34,7 @@ CREATE TABLE [dbo].[DICHVU](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[HOADON]    Script Date: 8/13/2024 9:23:04 AM ******/
+/****** Object:  Table [dbo].[HOADON]    Script Date: 8/13/2024 9:36:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -52,7 +52,7 @@ CREATE TABLE [dbo].[HOADON](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[HOPDONG]    Script Date: 8/13/2024 9:23:04 AM ******/
+/****** Object:  Table [dbo].[HOPDONG]    Script Date: 8/13/2024 9:36:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -65,13 +65,14 @@ CREATE TABLE [dbo].[HOPDONG](
 	[PhuongThucThanhToan] [nvarchar](50) NULL,
 	[IDNhanVien] [nvarchar](100) NULL,
 	[MSSV] [nvarchar](10) NULL,
+	[MaPhong] [nvarchar](100) NULL,
  CONSTRAINT [PK_HOPDONG] PRIMARY KEY CLUSTERED 
 (
 	[SoHopDong] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[NHANVIEN]    Script Date: 8/13/2024 9:23:04 AM ******/
+/****** Object:  Table [dbo].[NHANVIEN]    Script Date: 8/13/2024 9:36:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -89,7 +90,7 @@ CREATE TABLE [dbo].[NHANVIEN](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PHONG]    Script Date: 8/13/2024 9:23:04 AM ******/
+/****** Object:  Table [dbo].[PHONG]    Script Date: 8/13/2024 9:36:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -102,14 +103,13 @@ CREATE TABLE [dbo].[PHONG](
 	[SoGiuong] [int] NULL,
 	[SoNguoiO] [int] NULL,
 	[DonGia] [int] NULL,
-	[SoHopDong] [nvarchar](100) NULL,
  CONSTRAINT [PK_PHONG] PRIMARY KEY CLUSTERED 
 (
 	[MaPhong] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PHUHUYNH]    Script Date: 8/13/2024 9:23:04 AM ******/
+/****** Object:  Table [dbo].[PHUHUYNH]    Script Date: 8/13/2024 9:36:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -128,7 +128,7 @@ CREATE TABLE [dbo].[PHUHUYNH](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[SINHVIEN]    Script Date: 8/13/2024 9:23:04 AM ******/
+/****** Object:  Table [dbo].[SINHVIEN]    Script Date: 8/13/2024 9:36:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -150,7 +150,7 @@ CREATE TABLE [dbo].[SINHVIEN](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TAIKHOAN]    Script Date: 8/13/2024 9:23:04 AM ******/
+/****** Object:  Table [dbo].[TAIKHOAN]    Script Date: 8/13/2024 9:36:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -173,12 +173,12 @@ INSERT [dbo].[NHANVIEN] ([IDNhanVien], [HoTen], [SDT], [DiaChi], [ChucVu], [IDUs
 INSERT [dbo].[NHANVIEN] ([IDNhanVien], [HoTen], [SDT], [DiaChi], [ChucVu], [IDUser]) VALUES (N'bb76a518-2776-4217-ba3d-10e590c167dd', N'Nguyễn Duy Hưng', N'0949201930', N'Huế', N'Quản Lý', N'd6096885-7976-43bb-ad25-d93d9420af7d')
 INSERT [dbo].[NHANVIEN] ([IDNhanVien], [HoTen], [SDT], [DiaChi], [ChucVu], [IDUser]) VALUES (N'bfc6afb2-2dbe-4653-a7c8-1c16493f9d45', N'Trần Bình An', N'0359201059', N'Quảng Ngãi', N'Bảo Vệ', NULL)
 GO
-INSERT [dbo].[PHONG] ([MaPhong], [TenPhong], [Khu], [Tang], [SoGiuong], [SoNguoiO], [DonGia], [SoHopDong]) VALUES (N'1d3c2e4f-0278-4705-aed5-7415cfd04dee', N'A102', N'A', N'1', 4, 4, 80000, NULL)
-INSERT [dbo].[PHONG] ([MaPhong], [TenPhong], [Khu], [Tang], [SoGiuong], [SoNguoiO], [DonGia], [SoHopDong]) VALUES (N'28b9bd80-aab5-4c54-b42b-5d1d693741ed', N'A103', N'A', N'1', 8, 6, 120000, NULL)
-INSERT [dbo].[PHONG] ([MaPhong], [TenPhong], [Khu], [Tang], [SoGiuong], [SoNguoiO], [DonGia], [SoHopDong]) VALUES (N'31fa9dc6-904c-4589-8215-7f7adc3b17b0', N'A105', N'A', N'1', 4, 4, 80000, NULL)
-INSERT [dbo].[PHONG] ([MaPhong], [TenPhong], [Khu], [Tang], [SoGiuong], [SoNguoiO], [DonGia], [SoHopDong]) VALUES (N'5cc4091d-1f4d-497d-8318-1534184cfda3', N'A106', N'A', N'1', 4, 1, 80000, NULL)
-INSERT [dbo].[PHONG] ([MaPhong], [TenPhong], [Khu], [Tang], [SoGiuong], [SoNguoiO], [DonGia], [SoHopDong]) VALUES (N'603f78bc-11a0-4339-b47c-8d91e8020936', N'A101', N'A', N'1', 4, 4, 80000, NULL)
-INSERT [dbo].[PHONG] ([MaPhong], [TenPhong], [Khu], [Tang], [SoGiuong], [SoNguoiO], [DonGia], [SoHopDong]) VALUES (N'f18351be-63e7-4a4f-9f1b-0d701fdb077f', N'A104', N'A', N'1', 8, 7, 50000, NULL)
+INSERT [dbo].[PHONG] ([MaPhong], [TenPhong], [Khu], [Tang], [SoGiuong], [SoNguoiO], [DonGia]) VALUES (N'1d3c2e4f-0278-4705-aed5-7415cfd04dee', N'A102', N'A', N'1', 4, 4, 80000)
+INSERT [dbo].[PHONG] ([MaPhong], [TenPhong], [Khu], [Tang], [SoGiuong], [SoNguoiO], [DonGia]) VALUES (N'28b9bd80-aab5-4c54-b42b-5d1d693741ed', N'A103', N'A', N'1', 8, 6, 120000)
+INSERT [dbo].[PHONG] ([MaPhong], [TenPhong], [Khu], [Tang], [SoGiuong], [SoNguoiO], [DonGia]) VALUES (N'31fa9dc6-904c-4589-8215-7f7adc3b17b0', N'A105', N'A', N'1', 4, 4, 80000)
+INSERT [dbo].[PHONG] ([MaPhong], [TenPhong], [Khu], [Tang], [SoGiuong], [SoNguoiO], [DonGia]) VALUES (N'5cc4091d-1f4d-497d-8318-1534184cfda3', N'A106', N'A', N'1', 4, 1, 80000)
+INSERT [dbo].[PHONG] ([MaPhong], [TenPhong], [Khu], [Tang], [SoGiuong], [SoNguoiO], [DonGia]) VALUES (N'603f78bc-11a0-4339-b47c-8d91e8020936', N'A101', N'A', N'1', 4, 4, 80000)
+INSERT [dbo].[PHONG] ([MaPhong], [TenPhong], [Khu], [Tang], [SoGiuong], [SoNguoiO], [DonGia]) VALUES (N'f18351be-63e7-4a4f-9f1b-0d701fdb077f', N'A104', N'A', N'1', 8, 7, 50000)
 GO
 INSERT [dbo].[PHUHUYNH] ([IDPhuHuynh], [HoTen], [NgaySinh], [NgheNghiep], [SDT], [QuanHe], [MSSV]) VALUES (N'2294ac38-b30d-4da9-ac45-44f395960b1d', N'Mai Thị Thắm', CAST(N'2024-08-24' AS Date), N'thợ May', N'0993291039', N'Ba', N'21K4090001')
 INSERT [dbo].[PHUHUYNH] ([IDPhuHuynh], [HoTen], [NgaySinh], [NgheNghiep], [SDT], [QuanHe], [MSSV]) VALUES (N'5c1ae0c4-7a5b-49dc-90db-e0d8542fb878', N'Trần Văn Tực', CAST(N'1987-08-21' AS Date), N'Phụ Hồ', N'0993291039', N'Ba', N'21K4090001')
@@ -221,6 +221,11 @@ REFERENCES [dbo].[NHANVIEN] ([IDNhanVien])
 GO
 ALTER TABLE [dbo].[HOPDONG] CHECK CONSTRAINT [FK_HOPDONG_NHANVIEN]
 GO
+ALTER TABLE [dbo].[HOPDONG]  WITH CHECK ADD  CONSTRAINT [FK_HOPDONG_PHONG] FOREIGN KEY([MaPhong])
+REFERENCES [dbo].[PHONG] ([MaPhong])
+GO
+ALTER TABLE [dbo].[HOPDONG] CHECK CONSTRAINT [FK_HOPDONG_PHONG]
+GO
 ALTER TABLE [dbo].[HOPDONG]  WITH CHECK ADD  CONSTRAINT [FK_HOPDONG_SINHVIEN] FOREIGN KEY([MSSV])
 REFERENCES [dbo].[SINHVIEN] ([MSSV])
 GO
@@ -230,11 +235,6 @@ ALTER TABLE [dbo].[NHANVIEN]  WITH CHECK ADD  CONSTRAINT [FK_NHANVIEN_TAIKHOAN] 
 REFERENCES [dbo].[TAIKHOAN] ([IDUser])
 GO
 ALTER TABLE [dbo].[NHANVIEN] CHECK CONSTRAINT [FK_NHANVIEN_TAIKHOAN]
-GO
-ALTER TABLE [dbo].[PHONG]  WITH CHECK ADD  CONSTRAINT [FK_PHONG_HOPDONG] FOREIGN KEY([SoHopDong])
-REFERENCES [dbo].[HOPDONG] ([SoHopDong])
-GO
-ALTER TABLE [dbo].[PHONG] CHECK CONSTRAINT [FK_PHONG_HOPDONG]
 GO
 ALTER TABLE [dbo].[PHUHUYNH]  WITH CHECK ADD  CONSTRAINT [FK_PHUHUYNH_SINHVIEN] FOREIGN KEY([MSSV])
 REFERENCES [dbo].[SINHVIEN] ([MSSV])
