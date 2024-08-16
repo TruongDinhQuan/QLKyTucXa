@@ -7,6 +7,7 @@ namespace QLKyTucXa.Controller.Interfaces
         Task Addsinhviensync(Sinhvien sv);
         Task DeleteByIdAsync(string id);
         Task<Sinhvien?> GetByIdAsync(string id);
+        Task<Sinhvien?> GetByIdUserAsync(string id);
         Task<List<Sinhvien>> laydssinhvien();
         Task UpdateAsync(Sinhvien sv);
     }

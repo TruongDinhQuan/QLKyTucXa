@@ -9,5 +9,6 @@ namespace QLKyTucXa.Controller.Interfaces
         Task<List<Phong>> GetPhongAsync();
         Task<Phong?> GetPhongByIdAsync(string id);
         Task UpdatePhongAsync(Phong phong);
+        Task<bool> IsSoGiuongEqualSoNguoiOAsync(string id);
     }
 }

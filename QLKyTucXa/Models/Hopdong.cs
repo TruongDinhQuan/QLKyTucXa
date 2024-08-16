@@ -9,7 +9,7 @@ public partial class Hopdong
 
     public DateOnly? NgayLap { get; set; }
 
-    public string? ThoiGianThue { get; set; }
+    public DateOnly? ThoiGianThue { get; set; }
 
     public int? TienKyQuy { get; set; }
 
@@ -18,6 +18,8 @@ public partial class Hopdong
     public string? IdnhanVien { get; set; }
 
     public string? Mssv { get; set; }
+
+    public string? MaPhong { get; set; }
 
     public virtual ICollection<Phong> MaPhongs { get; set; } = new List<Phong>();
 }

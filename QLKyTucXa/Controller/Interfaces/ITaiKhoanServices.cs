@@ -9,5 +9,7 @@ namespace QLKyTucXa.Controller.Interfaces
         Task<List<Taikhoan>> GettaikhoanAsync();
         Task<Taikhoan?> GettaikhoanByIdAsync(string id);
         Task UpdatetaikhoanAsync(Taikhoan phong);
+        Task<bool> EmailExistsAsync(string email);
+        Task<Taikhoan?> GettaikhoanByEmailAsync(string id);
     }
 }

@@ -45,5 +45,16 @@ namespace QLKyTucXa.Controller.Services
             _qlktxContext.Entry(phong).State = EntityState.Modified;
             await _qlktxContext.SaveChangesAsync();
         }
+
+        // Kiểm tra số giường có bằng số người ở không
+        public async Task<bool> IsSoGiuongEqualSoNguoiOAsync(string id)
+        {
+            var phong = await GetPhongByIdAsync(id);
+            if (phong != null)
+            {
+                return phong.SoGiuong == phong.SoNguoiO;
+            }
+            return false; // Phòng không tồn tại
+        }
     }
 }

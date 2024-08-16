@@ -45,5 +45,17 @@ namespace QLKyTucXa.Controller.Services
             _qlktxContext.Entry(phong).State = EntityState.Modified;
             await _qlktxContext.SaveChangesAsync();
         }
+
+        //kiểm tra mail
+        public async Task<bool> EmailExistsAsync(string email)
+        {
+            return await _qlktxContext.Taikhoans.AnyAsync(tk => tk.Email == email);
+        }
+        //lay tài khoản bằng Email
+        public async Task<Taikhoan?> GettaikhoanByEmailAsync(string id)
+        {
+            var pho = await _qlktxContext.Taikhoans.FirstOrDefaultAsync(e => e.Email == id);
+            return pho;
+        }
     }
 }

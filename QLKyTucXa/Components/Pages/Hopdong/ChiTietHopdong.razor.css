@@ -30,3 +30,14 @@ body {
     .signatures div {
         text-align: center;
     }
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa checkbox và label */
+    margin-bottom: 10px; /* Khoảng cách giữa checkbox và button */
+}
+
+.btn-primary {
+    margin-left: 10px; /* Khoảng cách giữa checkbox-container và button */
+}

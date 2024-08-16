@@ -29,6 +29,7 @@
             <div>
                 <label>Chưa có tài khoản?</label>
                 <a href="/register" style="color: blue; text-decoration: none;">Đăng ký</a>
+                <a href="/quenmatkhau" style="color: brown; margin-left: 112px;">Quên mật khẩu</a>
             </div>
         </EditForm>
     </div>
@@ -55,7 +56,9 @@
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, Model.Username),
-            new Claim(ClaimTypes.Role, userAccount.VaiTro)
+            new Claim(ClaimTypes.Role, userAccount.VaiTro),
+             new Claim(ClaimTypes.NameIdentifier, userAccount.Iduser.ToString()),
+             new Claim(ClaimTypes.Email, userAccount.Email.ToString())
         };
 
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

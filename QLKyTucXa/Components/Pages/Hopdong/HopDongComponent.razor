@@ -1,1 +1,76 @@
-﻿
+﻿@page "/hopdong"
+@attribute [Authorize(Roles = "Admin, Employee")]
+@inject IHopDongServices HopDongServices
+@inject IPhongServices PhongServices
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+<PageTitle>DanhSachHopdong</PageTitle>
+@if (cachopdong == null || !cachopdong.Any())
+{
+    <h3>Không có yêu cầu xét duyệt đặt phòng!</h3>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mã Số Sinh Viên</th>
+                <th>Ngày Lập</th>
+                <th>Trạng Thái</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in cachopdong)
+            {
+                <tr>
+                    <td>@forecast.Mssv</td>
+                    <td>@forecast.NgayLap</td>
+                    <td>@forecast.PhuongThucThanhToan</td>
+                    <td>
+                        <button class="btn btn-secondary" @onclick="@(() => chitiet(forecast.SoHopDong))">Chitiet</button>
+                        <button class="btn btn-danger" @onclick="@(() => Duyet(forecast.SoHopDong))">Duyệt</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Hopdong> cachopdong = new List<Hopdong>();
+    private Hopdong hopdong = new Hopdong();
+    private Phong phong = new Phong();
+
+    protected override async Task OnInitializedAsync()
+    {
+        cachopdong = await HopDongServices.GetHopDongByTrangThaiAsync();
+    }
+
+    private void chitiet(string id)
+    {
+        navigationManager.NavigateTo($"/hopdong/{id}");
+    }
+
+    private async Task Duyet(string? id)
+    {
+        hopdong = await HopDongServices.GetPhongByIdAsync(id);
+
+        if (hopdong != null)
+        {
+            hopdong.PhuongThucThanhToan = "Thành Công";
+            await HopDongServices.UpdatePhongAsync(hopdong);
+
+            phong = await PhongServices.GetPhongByIdAsync(hopdong.MaPhong);
+
+            if (phong != null)
+            {
+                phong.SoNguoiO = phong.SoNguoiO + 1;
+                await PhongServices.UpdatePhongAsync(phong);
+            }
+        }
+        navigationManager.NavigateTo("/hopdong", true);
+    }
+}
+

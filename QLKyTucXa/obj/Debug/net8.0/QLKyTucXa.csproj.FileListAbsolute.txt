@@ -152,3 +152,4 @@ G:\C#\QLKyTucXa\QLKyTucXa\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
 G:\C#\QLKyTucXa\QLKyTucXa\bin\Debug\net8.0\MailKit.dll
 G:\C#\QLKyTucXa\QLKyTucXa\bin\Debug\net8.0\MimeKit.dll
 G:\C#\QLKyTucXa\QLKyTucXa\bin\Debug\net8.0\System.Formats.Asn1.dll
+G:\C#\QLKyTucXa\QLKyTucXa\obj\Debug\net8.0\QLKyTucXa.sourcelink.json

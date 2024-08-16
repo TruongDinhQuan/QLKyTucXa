@@ -114,6 +114,7 @@ public partial class DataQlktxContext : DbContext
                 .HasColumnName("MSSV");
             entity.Property(e => e.PhuongThucThanhToan).HasMaxLength(50);
             entity.Property(e => e.ThoiGianThue).HasMaxLength(50);
+            entity.Property(e => e.MaPhong).HasMaxLength(100);
 
             entity.HasMany(d => d.MaPhongs).WithMany(p => p.SohopDongs)
                 .UsingEntity<Dictionary<string, object>>(

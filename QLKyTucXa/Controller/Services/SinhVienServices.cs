@@ -37,6 +37,12 @@ namespace QLKyTucXa.Controller.Services
             return sv;
         }
 
+        public async Task<Sinhvien?> GetByIdUserAsync(string id)
+        {
+            var sv = await _context.Sinhviens.FirstOrDefaultAsync(e => e.Iduser == id);
+            return sv;
+        }
+
         //lay danh sach sinh vien
         public async Task<List<Sinhvien>> laydssinhvien()
         {

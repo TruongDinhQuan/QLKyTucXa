@@ -1,8 +1,162 @@
 ﻿@page "/"
-@attribute [Authorize(Roles ="Admin, Employee, User")]
+@inject IPhongServices PhongServices
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IHopDongServices HopDongServices
+@inject ISinhVienServices SinhVienServices
+@inject LuuBien luubien
+@rendermode InteractiveServer
+@attribute [Authorize(Roles = "Admin, Employee, User")]
 
 <PageTitle>Home</PageTitle>
+<style>
+    .room-box {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 10px;
+        text-align: center;
+    }
 
-<h1>Hello, world!</h1>
+        .room-box.booked {
+            background-color: #d3d3d3;
+            cursor: default;
+        }
+</style>
+<AuthorizeView Roles="User">
+    <Authorized>
+        @if (userExists)
+        {
+            @if (luubien.IdPhong is null)
+            {
+                <div class="col-md-2">
+                    <div class="card mb-2" style="background-color: #BDBDBD;">
+                        <div class="card-body" style="color: #333;">
+                            <h5 class="card-title">Chưa có Phòng</h5>
+                            <a class="card-title" href="/phong">Đăng ký ngay</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (bien == "Đang chờ phê duyệt")
+            {
+                <div class="col-md-2">
+                    <div class="card mb-2" style="background-color: #EFEBE9;">
+                        <div class="card-body" style="color: #333;">
+                            <h5 class="card-title">Chờ xét duyệt</h5>
+                            <div>
+                                <button @onclick="sua">Sửa phòng</button>
+                                <button @onclick="xoa">Xóa</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <Delete @rendermode="InteractiveServer" xacnhan="xacnhanxoa" OnCancel="CancelDelete" OnOK="okDelete"></Delete>
+            }
+            else
+            {
+                <div class="col-md-2">
+                    <div class="card mb-2" style="background-color: #EF9A9A;">
+                        <div class="card-body" style="color: #333;">
+                            <h5 class="card-title">@phong.TenPhong</h5>
+                            <p class="card-text"><strong>Khu:</strong> @phong.Khu</p>
+                            <p class="card-text"><strong>Tầng:</strong> @phong.Tang</p>
+                            <p class="card-text"><strong>Đơn Giá:</strong> @phong.DonGia</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-md-2">
+                <div class="card mb-2" style="background-color: #FFE0B2;">
+                    <div class="card-body" style="color: #333;">
+                        <a href="/Addsinhvien">Cập nhật thông tin</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </Authorized>
+</AuthorizeView>
 
-Welcome to your new app.
+<AuthorizeView>
+    <Authorized>
+
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private ClaimsPrincipal? user;
+    private Phong? phong = new Phong();
+    private List<Hopdong> cachopdong = new List<Hopdong>();
+    private List<Sinhvien?> cacsinhvien = new List<Sinhvien?>();
+    private Sinhvien? sinhvien = new Sinhvien();
+    private Hopdong? hopdong = new Hopdong();
+    private string bien;
+    bool userExists;
+    private bool xacnhanxoa = false;
+    private string? idToDelete;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Lấy thông tin người dùng hiện tại từ AuthenticationStateProvider
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;
+        if (!user.IsInRole("Admin"))
+        {
+            //kiểm tra sinh viên đã có thông tin hay chưa
+            cacsinhvien = await SinhVienServices.laydssinhvien();
+            userExists = cacsinhvien.Any(i => i.Iduser == user.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToString());
+            //kiểm tra xem sinh vien đã đăng ký phòng hay chưa
+            sinhvien = await SinhVienServices.GetByIdUserAsync(user.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToString());
+            if (sinhvien != null)
+            {
+                cachopdong = await HopDongServices.GetPhongAsync();
+                foreach (var t in cachopdong)
+                {
+                    if (t.Mssv == sinhvien.Mssv && !string.IsNullOrEmpty(sinhvien.Mssv))
+                    {
+                        luubien.IdPhong = t.MaPhong;
+                        bien = t.PhuongThucThanhToan;
+                        idToDelete = t.SoHopDong;
+                        break;
+                    }
+                    else
+                        luubien.IdPhong = null;
+                }
+            }
+                phong = await PhongServices.GetPhongByIdAsync(luubien.IdPhong);
+                hopdong = await HopDongServices.GetPhongByIdAsync(idToDelete);
+        }
+    }
+    void sua()
+    {
+        Navigation.NavigateTo($"/phong?SoHopdong={hopdong?.SoHopDong}");
+    }
+
+    private void xoa()
+    {
+        xacnhanxoa = true;
+    }
+
+    private void CancelDelete()
+    {
+        xacnhanxoa = false;
+    }
+
+    private async Task okDelete()
+    {
+        if (!string.IsNullOrEmpty(idToDelete))
+        {
+            await HopDongServices.DeletehopdongAsync(idToDelete);
+            xacnhanxoa = false;
+            Navigation.NavigateTo("/", true);
+        }
+    }
+}

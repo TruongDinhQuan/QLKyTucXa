@@ -2,8 +2,10 @@
 
 @inject NavigationManager navigationManager
 @inject ISinhVienServices Service
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
+@attribute [Authorize(Roles = "Admin, Employee, User")]
 @if (!string.IsNullOrEmpty(id))
 {
     <PageTitle>CapNhatThongTin</PageTitle>
@@ -100,10 +102,13 @@ else
     [Parameter]
     public string? id { get; set; }
 
+    private ClaimsPrincipal? user;
     public Sinhvien sinhvien { get; set; } = new Sinhvien();
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;
         if (!string.IsNullOrEmpty(id))
         {
             sinhvien = await Service.GetByIdAsync(id);
@@ -114,18 +119,23 @@ else
     {
         if (!string.IsNullOrEmpty(sinhvien.Mssv))
         {
+            sinhvien.Iduser = user.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToString();
             await Service.Addsinhviensync(sinhvien);
         }
         else
-        {
             await Service.UpdateAsync(sinhvien);
-        }
-        navigationManager.NavigateTo("/sinhvien");
+        if (user.IsInRole("Admin"))
+            navigationManager.NavigateTo("/sinhvien");
+        else
+            navigationManager.NavigateTo("/", true);
     }
 
     private void quaylai()
     {
+        if (user.IsInRole("Admin"))
         navigationManager.NavigateTo("/sinhvien");
+        else
+        navigationManager.NavigateTo("/", true);
     }
 }
 

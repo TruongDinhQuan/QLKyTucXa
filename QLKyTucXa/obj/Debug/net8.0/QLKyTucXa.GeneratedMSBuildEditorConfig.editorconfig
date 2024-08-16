@@ -53,8 +53,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lXEhvbWUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/Hopdong/DatphongThanhcong.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb3Bkb25nXERhdHBob25nVGhhbmhjb25nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/Hopdong/HopDongComponent.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb3Bkb25nXEhvcERvbmdDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/Hopdong/ThaoTacHD.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb3Bkb25nXFRoYW9UYWNIRC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/NhanVien/NhanVienComponent.razor]
@@ -65,12 +73,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xOaGFuVmllblxUaGFvVGFjTlYucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/Phong/ChucNangLoc.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQaG9uZ1xDaHVjTmFuZ0xvYy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/Phong/PhongComponent.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQaG9uZ1xQaG9uZ0NvbXBvbmVudC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/Phong/ThaoTacPhong.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQaG9uZ1xUaGFvVGFjUGhvbmcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/Phong/Xacnhandatphong.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQaG9uZ1xYYWNuaGFuZGF0cGhvbmcucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/PhuHuynh/PhuHuynhComponent.razor]

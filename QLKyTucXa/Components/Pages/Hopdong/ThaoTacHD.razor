@@ -1,0 +1,105 @@
+﻿@page "/hopdong/{id?}"
+@inject IHopDongServices HopDongServices
+@inject ISinhVienServices SinhVienServices
+@inject IPhongServices PhongServices
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+<br />
+<h1>Thông tin sinh viên</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã Số Sinh Viên</th>
+            <th>Tên Sinh Viên</th>
+            <th>Ngày Sinh</th>
+            <th>Lớp</th>
+            <th>Khoa</th>
+            <th>Giới Tính</th>
+            <th>Số Cccd</th>
+            <th>Địa Chỉ</th>
+        </tr>
+    </thead>
+    <tbody>
+            <td>@sinhvien.Mssv</td>
+            <td>@sinhvien.TenSinhVien</td>
+            <td>@sinhvien.NgaySinh?.ToString("dd/MM/yyyy")</td>
+            <td>@sinhvien.Lop</td>
+            <td>@sinhvien.Khoa</td>
+            <td>@sinhvien.GioiTinh</td>
+            <td>@sinhvien.SoCccd</td>
+            <td>@sinhvien.DiaChi</td>
+    </tbody>
+</table>
+<br/>
+<h1>Thông tin hợp đồng</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Số Hợp Đồng</th>
+            <th>Ngày lập</th>
+            <th>Trạng Thái</th>
+            <th>Phòng</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@hopdong.SoHopDong</td>
+            <td>@hopdong.NgayLap</td>
+            <td>@hopdong.PhuongThucThanhToan</td>
+            <td>@hopdong.MaPhong</td>
+        </tr>
+    </tbody>
+</table>
+<div>
+    <td>
+        <button class="btn btn-secondary" @onclick="@(() => pheduyet(@hopdong.SoHopDong))">Phê duyệt</button>
+        <button class="btn btn-danger" @onclick="HuyBo">Hủy Bỏ</button>
+        <button class="btn btn-primary" @onclick="quaylai">Quay lại</button>
+    </td>
+</div>
+
+@code {
+    [Parameter]
+    public string? id { get; set; }
+    public Hopdong hopdong  = new Hopdong();
+    public Sinhvien? sinhvien = new Sinhvien();
+    private Phong? phong = new Phong();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(id))
+        {
+            hopdong = await HopDongServices.GetPhongByIdAsync(id);
+        }
+        if (!string.IsNullOrEmpty(hopdong.Mssv))
+            sinhvien = await SinhVienServices.GetByIdAsync(hopdong.Mssv);
+    }
+    async Task pheduyet(string id)
+    {
+        hopdong = await HopDongServices.GetPhongByIdAsync(id);
+
+        if (hopdong != null)
+        {
+            hopdong.PhuongThucThanhToan = "Thành Công";
+            await HopDongServices.UpdatePhongAsync(hopdong);
+
+            phong = await PhongServices.GetPhongByIdAsync(hopdong.MaPhong);
+
+            if (phong != null)
+            {
+                phong.SoNguoiO = phong.SoNguoiO + 1;
+                await PhongServices.UpdatePhongAsync(phong);
+            }
+        }
+        navigationManager.NavigateTo("/hopdong", true);
+    }
+    void HuyBo()
+    {
+        HopDongServices.DeletehopdongAsync(hopdong.SoHopDong);
+        navigationManager.NavigateTo("/hopdong", true);
+    }
+    void quaylai()
+    {
+        navigationManager.NavigateTo("/hopdong", true);
+    }
+}

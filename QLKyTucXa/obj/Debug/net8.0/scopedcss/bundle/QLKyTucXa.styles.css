@@ -260,3 +260,14 @@ body[b-qsl7aefjmf] {
     .signatures div[b-qsl7aefjmf] {
         text-align: center;
     }
+
+.checkbox-container[b-qsl7aefjmf] {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa checkbox và label */
+    margin-bottom: 10px; /* Khoảng cách giữa checkbox và button */
+}
+
+.btn-primary[b-qsl7aefjmf] {
+    margin-left: 10px; /* Khoảng cách giữa checkbox-container và button */
+}

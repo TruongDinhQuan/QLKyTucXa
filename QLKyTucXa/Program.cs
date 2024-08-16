@@ -37,6 +37,8 @@ builder.Services.AddScoped<IPhuHuynhServices, PhuHuynhServices>();
 builder.Services.AddScoped<ISinhVienServices, SinhVienServices>();
 builder.Services.AddScoped<INhanVienServices, NhanVienServices>();
 builder.Services.AddScoped<ITaiKhoanServices, TaiKhoanServices>();
+builder.Services.AddScoped<IHopDongServices, HopDongServices>();
+builder.Services.AddSingleton<LuuBien>();
 
 //gmail
 builder.Services.AddSingleton(new EmailService(
