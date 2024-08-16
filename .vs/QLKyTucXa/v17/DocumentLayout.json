@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "G:\\C#\\QLKyTucXa\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\home\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\home\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\dangky\\register.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\dangky\\register.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -51,10 +55,6 @@
       "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\dangnhap\\accessdenied.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\home\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\home\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\controller\\services\\hopdongservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\controller\\services\\hopdongservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -66,7 +66,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 365,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 13,
           "Children": [
             {
               "$type": "Bookmark",
@@ -74,7 +74,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Login.razor",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DangNhap\\Login.razor",
               "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\DangNhap\\Login.razor",
@@ -82,12 +82,11 @@
               "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\DangNhap\\Login.razor",
               "ViewState": "AQIAAAYAAAAAAAAAAAAAABEAAAAeAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-15T09:11:56.844Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-15T09:11:56.844Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "ITaiKhoanServices.cs",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Controller\\Interfaces\\ITaiKhoanServices.cs",
               "RelativeDocumentMoniker": "QLKyTucXa\\Controller\\Interfaces\\ITaiKhoanServices.cs",
@@ -99,7 +98,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Taikhoan.cs",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Models\\Taikhoan.cs",
               "RelativeDocumentMoniker": "QLKyTucXa\\Models\\Taikhoan.cs",
@@ -107,25 +106,24 @@
               "RelativeToolTip": "QLKyTucXa\\Models\\Taikhoan.cs",
               "ViewState": "AQIAAAoAAAAAAAAAAAAiwBUAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-15T08:39:57.637Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-15T08:39:57.637Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Register.razor",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DangKy\\Register.razor",
               "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\DangKy\\Register.razor",
               "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DangKy\\Register.razor",
               "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\DangKy\\Register.razor",
-              "ViewState": "AQIAACcAAAAAAAAAAAAAADYAAAAFAAAA",
+              "ViewState": "AQIAAFcAAAAAAAAAAAAAADYAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-08-15T05:00:31.359Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "QuenMatKhau.razor",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DangKy\\QuenMatKhau.razor",
               "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\DangKy\\QuenMatKhau.razor",
@@ -133,12 +131,11 @@
               "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\DangKy\\QuenMatKhau.razor",
               "ViewState": "AQIAAHYAAAAAAAAAAAAYwJgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-15T04:12:41.406Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-15T04:12:41.406Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "ThaoTacPhong.razor",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\Phong\\ThaoTacPhong.razor",
               "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\Phong\\ThaoTacPhong.razor",
@@ -150,7 +147,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "ThaoTacHD.razor",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\Hopdong\\ThaoTacHD.razor",
               "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\Hopdong\\ThaoTacHD.razor",
@@ -162,7 +159,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "SinhVienComponent.razor",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\SinhVien\\SinhVienComponent.razor",
               "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\SinhVien\\SinhVienComponent.razor",
@@ -170,12 +167,11 @@
               "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\SinhVien\\SinhVienComponent.razor",
               "ViewState": "AQIAADYAAAAAAAAAAAAAAKoAAAAhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-14T08:59:14.736Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-14T08:59:14.736Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "Delete.razor",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\Delete.razor",
               "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\Delete.razor",
@@ -187,7 +183,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Program.cs",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Program.cs",
               "RelativeDocumentMoniker": "QLKyTucXa\\Program.cs",
@@ -195,12 +191,11 @@
               "RelativeToolTip": "QLKyTucXa\\Program.cs",
               "ViewState": "AQIAADsAAAAAAAAAAAAIwEYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-15T02:48:12.159Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-15T02:48:12.159Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "AccessDenied.razor",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DangNhap\\AccessDenied.razor",
               "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\DangNhap\\AccessDenied.razor",
@@ -212,7 +207,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "PhongComponent.razor",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\Phong\\PhongComponent.razor",
               "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\Phong\\PhongComponent.razor",
@@ -220,20 +215,20 @@
               "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\Phong\\PhongComponent.razor",
               "ViewState": "AQIAACoAAAAAAAAAAAAAAH8AAAAeAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-15T01:21:01.535Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-15T01:21:01.535Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 0,
               "Title": "Home.razor",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\Home\\Home.razor",
               "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\Home\\Home.razor",
               "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\Home\\Home.razor",
               "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\Home\\Home.razor",
-              "ViewState": "AQIAAJMAAAAAAAAAAAAAACwAAAANAAAA",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAACwAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-15T02:18:18.872Z"
+              "WhenOpened": "2024-08-15T02:18:18.872Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
