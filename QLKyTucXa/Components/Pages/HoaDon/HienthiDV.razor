@@ -1,0 +1,187 @@
+﻿<div class="confirm-dialog-container" @onclick="CloseDialogIfClickedOutside">
+    <div class="confirm-dialog" @onclick:stopPropagation>
+        <div class="table-container">
+                <table class="table mb-1 mt-1">
+                    <thead>
+                        <tr>
+                            <th>Tên Dịch Vụ</th>
+                            <th>Đơn Giá</th>
+                            <th>Số Lượng</th>
+                            <th>Chỉ S.Đầu</th>
+                            <th>Chỉ S.Cuối</th>
+                            <th>Đơn Vị Tính</th>
+                            <th>Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var forecast in dichvu)
+                        {
+                            foreach (var dv in DvtheoMaHd)
+                            {
+                                if (forecast.MaDv == dv.MaDv)
+                                {
+                                    <tr>
+                                        <td>@forecast.TenDichVuBatBuoc</td>
+                                        <td>@forecast.DonGia</td>
+                                        <td>
+                                            @if (editMode && editingMaDv == forecast.MaDv)
+                                            {
+                                            <input type="text" @bind="dv.SoLuong" class="form-control" style="width: 50px;" />
+                                            }
+                                            else
+                                            {
+                                                @(dv.SoLuong.HasValue ? dv.SoLuong.Value.ToString() : "-")
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (editMode && editingMaDv == forecast.MaDv)
+                                            {
+                                            <input type="text" @bind="dv.ChiSoDau" class="form-control" style="width: 80px;" />
+                                            }
+                                            else
+                                            {
+                                                @(dv.ChiSoDau.HasValue ? dv.ChiSoDau.Value.ToString() : "-")
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (editMode && editingMaDv == forecast.MaDv)
+                                            {
+                                            <input type="text" @bind="dv.ChiSoCuoi" class="form-control" style="width: 80px;" />
+                                            }
+                                            else
+                                            {
+                                                @(dv.ChiSoDau.HasValue ? dv.ChiSoCuoi.Value.ToString() : "-")
+                                            }
+                                        </td>
+                                        <td>@forecast.Dvt</td>
+                                    <td>
+                                        @if (editMode && editingMaDv == forecast.MaDv)
+                                        {
+                                            <button class="btn btn-success" @onclick="SaveEdit">Lưu</button>
+                                            <button class="btn btn-secondary" @onclick="CancelEdit">Hủy</button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-secondary" @onclick="@(() => EditDV(forecast.MaDv))">Sửa</button>
+                                            <button class="btn btn-danger" @onclick="@(() => XoaDV(dv))">Xóa</button>
+                                        }
+                                    </td>
+                                    </tr>
+                                    if (forecast.TenDichVuBatBuoc == "Phí thuê phòng")
+                                        tongTien += forecast.DonGia * (caulenhLINQ() ?? 1); 
+                                    else
+                                    {
+                                        if (dv.SoLuong != null)
+                                            tongTien += forecast.DonGia * dv.SoLuong;
+                                        else if (dv.ChiSoCuoi != null && dv.ChiSoDau != null)
+                                            tongTien += forecast.DonGia * (dv.ChiSoCuoi - dv.ChiSoDau);
+                                        else
+                                            Console.WriteLine($"Lỗi: Thiếu chỉ số đầu hoặc chỉ số cuối cho dịch vụ {forecast.TenDichVuBatBuoc}");
+                                    }
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+        </div>
+        <div>
+            <label>Tổng Tiền:</label> @(tongTien.HasValue ? tongTien.Value.ToString("N0") : "")
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter] public bool Chophepchinh { get; set; }
+    [Parameter] public List<Hoadon> haodon { get; set; }
+    [Parameter] public List<Phong> cacphong { get; set; }
+    [Parameter] public List<Dichvu> dichvu { get; set; }
+    [Parameter] public List<Chitiethoadon> DvtheoMaHd { get; set; }
+    [Parameter] public EventCallback<Chitiethoadon> xoaDV { get; set; }
+    [Parameter] public EventCallback<Chitiethoadon> SaveEditCallback { get; set; }
+    private Chitiethoadon currentChiTietHoaDon;
+    private double? tongTien = 0;
+    private int? caulenhLINQ()
+    {
+        var soNguoiOTheoMaHd = (from hd in haodon
+                                join p in cacphong on hd.MaPhong equals p.MaPhong
+                                join cthd in DvtheoMaHd on hd.MaHd equals cthd.MaHd
+                                where hd.MaHd == cthd.MaHd
+                                select p.SoNguoiO).FirstOrDefault();
+        return soNguoiOTheoMaHd;
+    }
+
+    private bool editMode = false;
+    private string? editingMaDv;
+
+    private void EditDV(string maDv)
+    {
+        editMode = true;
+        editingMaDv = maDv;
+        currentChiTietHoaDon = DvtheoMaHd.FirstOrDefault(dv => dv.MaDv == maDv);
+    }
+
+    private void CancelEdit()
+    {
+        editMode = false;
+        editingMaDv = null;
+        currentChiTietHoaDon = null;
+    }
+
+    private void SaveEdit()
+    {
+        if (currentChiTietHoaDon != null && SaveEditCallback.HasDelegate)
+        {
+            SaveEditCallback.InvokeAsync(currentChiTietHoaDon);
+        }
+        editMode = false;
+        editingMaDv = null;
+    }
+    private void XoaDV(Chitiethoadon chiTiet)
+    {
+        if (xoaDV.HasDelegate)
+        {
+            xoaDV.InvokeAsync(chiTiet);
+        }
+    }
+
+    private void CloseDialogIfClickedOutside() => Chophepchinh = false;
+}
+
+<style>
+    .table-container {
+        max-height: 300px; /* Hoặc bất kỳ chiều cao nào bạn muốn */
+        overflow-y: auto; /* Kích hoạt thanh cuộn dọc nếu nội dung vượt quá chiều cao */
+    }
+    .confirm-dialog-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Màn hình đen mờ phía sau */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* Đảm bảo modal nằm trên các thành phần khác */
+    }
+
+    .confirm-dialog {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        width: 900px;
+        max-width: 90%;
+        text-align: center;
+    }
+
+        .confirm-dialog h3 {
+            margin-bottom: 20px;
+        }
+
+    .d-flex-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+</style>

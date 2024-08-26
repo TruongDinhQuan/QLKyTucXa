@@ -5,10 +5,11 @@ using MudBlazor.Services;
 using QLKyTucXa.Components;
 using QLKyTucXa.Controller.Interfaces;
 using QLKyTucXa.Controller.Services;
-using QLKyTucXa.models;
 using System.Net.Mail;
 using System.Net;
 using QLKyTucXa.Controller.ViewContro;
+using QLKyTucXa.Data;
+using MudBlazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,9 +29,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddDbContext<DataQlktxContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("QLyKTX"));
-});
+    options.UseSqlServer(builder.Configuration.GetConnectionString("QLyKTX")),
+    ServiceLifetime.Scoped);
+
 builder.Services.AddMudServices();
 builder.Services.AddScoped<IPhongServices, PhongServices>();
 builder.Services.AddScoped<IPhuHuynhServices, PhuHuynhServices>();
@@ -38,7 +39,11 @@ builder.Services.AddScoped<ISinhVienServices, SinhVienServices>();
 builder.Services.AddScoped<INhanVienServices, NhanVienServices>();
 builder.Services.AddScoped<ITaiKhoanServices, TaiKhoanServices>();
 builder.Services.AddScoped<IHopDongServices, HopDongServices>();
+builder.Services.AddScoped<IThongBaoServices, ThongBaoServices>();
+builder.Services.AddScoped<IHoaDonServices, HoaDonServices>();
+builder.Services.AddScoped<IDichVuServices, DichVuServices>();
 builder.Services.AddSingleton<LuuBien>();
+
 
 //gmail
 builder.Services.AddSingleton(new EmailService(

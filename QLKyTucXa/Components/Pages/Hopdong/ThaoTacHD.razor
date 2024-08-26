@@ -1,7 +1,8 @@
 ﻿@page "/hopdong/{id?}"
-@inject IHopDongServices HopDongServices
-@inject ISinhVienServices SinhVienServices
-@inject IPhongServices PhongServices
+@inject IHopDongServices opDongServices
+@inject ISinhVienServices inhVienServices
+@inject IPhongServices hongServices
+@inject IThongBaoServices hongBaoServices
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 <br />
@@ -58,45 +59,91 @@
     </td>
 </div>
 
+@if (hienThiLyDoHuyBo)
+{
+    <LyDoHuyBo OnHuyBoXacNhan="XuLyHuyBoXacNhan" OnDongModal="DongModalLyDoHuyBo" />
+}
+
 @code {
     [Parameter]
     public string? id { get; set; }
     public Hopdong hopdong  = new Hopdong();
     public Sinhvien? sinhvien = new Sinhvien();
     private Phong? phong = new Phong();
+    private bool hienThiLyDoHuyBo = false;
 
     protected override async Task OnInitializedAsync()
     {
         if (!string.IsNullOrEmpty(id))
         {
-            hopdong = await HopDongServices.GetPhongByIdAsync(id);
+            hopdong = await opDongServices.GetPhongByIdAsync(id);
         }
         if (!string.IsNullOrEmpty(hopdong.Mssv))
-            sinhvien = await SinhVienServices.GetByIdAsync(hopdong.Mssv);
+            sinhvien = await inhVienServices.GetByIdAsync(hopdong.Mssv);
     }
     async Task pheduyet(string id)
     {
-        hopdong = await HopDongServices.GetPhongByIdAsync(id);
+        if (id != null)
+        {
+            // Tạo thông báo mới
+            var thongBao = new ThongBao
+                {
+                    MaThongBao = Guid.NewGuid().ToString(), 
+                    NoiDung = "Hợp đồng thuê chỗ ở nội trú đã được gửi đi phê duyệt.",
+                    ThoiGianThongBao = DateTime.Now,
+                    TrangThaiThongBao = false, 
+                    Iduser = sinhvien.Iduser
+            };
+            // Lưu thông báo vào cơ sở dữ liệu
+            await hongBaoServices.AddThongBaoAsync(thongBao);
+        }
+
+        hopdong = await opDongServices.GetPhongByIdAsync(id);
 
         if (hopdong != null)
         {
             hopdong.PhuongThucThanhToan = "Thành Công";
-            await HopDongServices.UpdatePhongAsync(hopdong);
+            await opDongServices.UpdatePhongAsync(hopdong);
 
-            phong = await PhongServices.GetPhongByIdAsync(hopdong.MaPhong);
+            phong = await hongServices.GetPhongByIdAsync(hopdong.MaPhong);
 
             if (phong != null)
             {
                 phong.SoNguoiO = phong.SoNguoiO + 1;
-                await PhongServices.UpdatePhongAsync(phong);
+                await hongServices.UpdatePhongAsync(phong);
             }
         }
         navigationManager.NavigateTo("/hopdong", true);
     }
     void HuyBo()
     {
-        HopDongServices.DeletehopdongAsync(hopdong.SoHopDong);
+        hienThiLyDoHuyBo = true;
+    }
+    private async Task XuLyHuyBoXacNhan(string lyDo)
+    {
+        if (!string.IsNullOrEmpty(lyDo))
+        {
+                var thongBao = new ThongBao
+                {
+                    MaThongBao = Guid.NewGuid().ToString(),
+                    NoiDung = $"Hợp đồng của bạn đã bị hủy với lý do: {lyDo}",
+                    ThoiGianThongBao = DateTime.Now,
+                    TrangThaiThongBao = false,
+                    Iduser = sinhvien.Iduser
+                };
+
+            // Lưu thông báo vào cơ sở dữ liệu
+            await hongBaoServices.AddThongBaoAsync(thongBao);
+        }
+
+        opDongServices.DeletehopdongAsync(hopdong.SoHopDong);
         navigationManager.NavigateTo("/hopdong", true);
+
+        hienThiLyDoHuyBo = false;
+    }
+    private void DongModalLyDoHuyBo()
+    {
+        hienThiLyDoHuyBo = false;
     }
     void quaylai()
     {

@@ -1,0 +1,90 @@
+﻿@page "/dichvu"
+@inject IDichVuServices DichVuServices
+@inject NavigationManager navigationManager
+@inject ISnackbar Snackbar
+@rendermode InteractiveServer
+<PageTitle>DichVu</PageTitle>
+<h3>Danh Sách Dịch Vụ</h3>
+
+<br />
+<button class="btn btn-primary" @onclick="themmoi">thêm mới</button>
+<br />
+@if (dichvu is null)
+{
+    <div class="sv-item">
+        Loading danh sách. chờ xí...
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên Dịch Vụ</th>
+                <th>Đơn Giá</th>
+                <th>Đơn Vị Tính</th>
+                <th>Loại Dịch Vụ</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in dichvu)
+            {
+                <tr>
+                    <td>@forecast.TenDichVuBatBuoc</td>
+                    <td>@forecast.DonGia</td>
+                    <td>@forecast.Dvt</td>
+                    <td>@forecast.LoaiDichVu</td>
+                    <td>
+                        <button class="btn btn-secondary" @onclick="@(() => Update(forecast.MaDv))">Sửa</button>
+                        <button class="btn btn-danger" @onclick="@(() => Delete(forecast.MaDv))">Xóa</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<Delete @rendermode="InteractiveServer" xacnhan="xacnhanxoa" OnCancel="CancelDelete" OnOK="okDelete"></Delete>
+
+@code {
+    private List<Dichvu> dichvu = new List<Dichvu>();
+    private string? idToDelete;
+    private bool xacnhanxoa = false;
+    protected override async Task OnInitializedAsync()
+    {
+        dichvu = await DichVuServices.GetDichvuAsync();
+    }
+
+    private void themmoi()
+    {
+        navigationManager.NavigateTo("/Adddichvu/");
+    }
+
+    private void Update(string id)
+    {
+        navigationManager.NavigateTo($"/Adddichvu/{id}");
+    }
+
+    private void Delete(string id)
+    {
+        idToDelete = id;
+        xacnhanxoa = true;
+    }
+
+    private void CancelDelete()
+    {
+        xacnhanxoa = false;
+    }
+
+    private async Task okDelete()
+    {
+        Snackbar.Add("xóa thành công!", Severity.Success);
+        await Task.Delay(1000);
+        if (!string.IsNullOrEmpty(idToDelete))
+        {
+            await DichVuServices.DeleteDichvuAsync(idToDelete);
+            xacnhanxoa = false;
+            dichvu = await DichVuServices.GetDichvuAsync();
+        }
+    }
+}

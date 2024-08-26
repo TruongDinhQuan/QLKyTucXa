@@ -3,6 +3,7 @@
     public class LuuBien
     {
         public string? IdPhong { get; set; }
-        public bool? thongbao { get; set; }= false;
+        public string? IDUser { get; set; }
+        public string? EmailDN { get; set; }
     }
 }

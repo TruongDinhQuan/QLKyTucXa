@@ -2,7 +2,10 @@
 @attribute [Authorize(Roles = "Admin, Employee")]
 @inject IHopDongServices HopDongServices
 @inject IPhongServices PhongServices
+@inject IThongBaoServices ThongBaoServices
+@inject ISinhVienServices SinhVienServices
 @inject NavigationManager navigationManager
+@inject ISnackbar Snackbar
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 <PageTitle>DanhSachHopdong</PageTitle>
@@ -27,10 +30,11 @@ else
                 <tr>
                     <td>@forecast.Mssv</td>
                     <td>@forecast.NgayLap</td>
-                    <td>@forecast.PhuongThucThanhToan</td>
+                    <td>@forecast.TrangThai</td>
                     <td>
                         <button class="btn btn-secondary" @onclick="@(() => chitiet(forecast.SoHopDong))">Chitiet</button>
-                        <button class="btn btn-danger" @onclick="@(() => Duyet(forecast.SoHopDong))">Duyệt</button>
+                        <MudButton Variant="Variant.Filled" @onclick="@(() => Duyet(forecast.SoHopDong))" Color="Color.Primary">Duyệt</MudButton>
+                        <MudSnackbarProvider />
                     </td>
                 </tr>
             }
@@ -40,12 +44,15 @@ else
 
 @code {
     private List<Hopdong> cachopdong = new List<Hopdong>();
+    private List<Sinhvien> cacsinhvien = new List<Sinhvien>();
     private Hopdong hopdong = new Hopdong();
     private Phong phong = new Phong();
+    //private Sinhvien sinhvien;
 
     protected override async Task OnInitializedAsync()
     {
         cachopdong = await HopDongServices.GetHopDongByTrangThaiAsync();
+        cacsinhvien = await SinhVienServices.laydssinhvien();
     }
 
     private void chitiet(string id)
@@ -55,11 +62,31 @@ else
 
     private async Task Duyet(string? id)
     {
-        hopdong = await HopDongServices.GetPhongByIdAsync(id);
+        // Hiển thị Snackbar
+        Snackbar.Add("Hợp đồng đã được duyệt!", Severity.Success);
+
+        // Đợi một thời gian để Snackbar hiển thị
+        await Task.Delay(1000);
+        if(id != null)
+        {
+            // Tạo thông báo mới
+            var thongBao = new ThongBao
+                {
+                    MaThongBao = Guid.NewGuid().ToString(),
+                    NoiDung = "Thật tuyệt, hợp đồng của bạn đã được phê duyệt",
+                    ThoiGianThongBao = DateTime.Now,
+                    TrangThaiThongBao = false,
+                    Iduser = GetIduser(id)
+                };
+            // Lưu thông báo vào cơ sở dữ liệu
+            await ThongBaoServices.AddThongBaoAsync(thongBao);
+
+            hopdong = await HopDongServices.GetPhongByIdAsync(id);
+        }
 
         if (hopdong != null)
         {
-            hopdong.PhuongThucThanhToan = "Thành Công";
+            hopdong.TrangThai = "Thành Công";
             await HopDongServices.UpdatePhongAsync(hopdong);
 
             phong = await PhongServices.GetPhongByIdAsync(hopdong.MaPhong);
@@ -71,6 +98,13 @@ else
             }
         }
         navigationManager.NavigateTo("/hopdong", true);
+    }
+
+    private string? GetIduser(string? sohopdong)
+    {
+        return cachopdong.Where(h => h.SoHopDong == sohopdong)
+                              .Join(cacsinhvien, s => s.Mssv, d => d.Mssv, (s, d) => { return d.Iduser;})
+                              .FirstOrDefault();
     }
 }
 

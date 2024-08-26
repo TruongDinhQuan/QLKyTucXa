@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace QLKyTucXa.models;
+namespace QLKyTucXa.Data;
 
 public partial class Dichvu
 {
@@ -9,11 +9,11 @@ public partial class Dichvu
 
     public string? TenDichVuBatBuoc { get; set; }
 
-    public int? DinhMuc { get; set; }
-
-    public int? DonGia { get; set; }
+    public double? DonGia { get; set; }
 
     public string? Dvt { get; set; }
+
+    public string? LoaiDichVu { get; set; }
 
     public virtual ICollection<Chitiethoadon> Chitiethoadons { get; set; } = new List<Chitiethoadon>();
 }

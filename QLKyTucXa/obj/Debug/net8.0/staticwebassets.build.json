@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pBeqq3zhn0hKqyceFLLRMCN1KIb/HI6JxH+/8oyV19U=",
+  "Hash": "QoLOrqzrSJJIIjBpwR5GgXU6YZVyqw7IcCC5CDCzlMQ=",
   "Source": "QLKyTucXa",
   "BasePath": "_content/QLKyTucXa",
   "Mode": "Default",
@@ -205,6 +205,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\image\\Screenshot 2024-08-05 162350.png"
+    },
+    {
+      "Identity": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\StyleSheetGood.css",
+      "SourceId": "QLKyTucXa",
+      "SourceType": "Discovered",
+      "ContentRoot": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\",
+      "BasePath": "_content/QLKyTucXa",
+      "RelativePath": "StyleSheetGood.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\StyleSheetGood.css"
     }
   ]
 }

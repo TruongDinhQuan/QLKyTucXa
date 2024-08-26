@@ -1,6 +1,7 @@
 ﻿@page "/login"
 @inject DataQlktxContext dbcontext
 @inject NavigationManager navigationManager
+@inject LuuBien luu
 @attribute [AllowAnonymous]
 <div class="row">
     <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
@@ -52,6 +53,9 @@
             errorMessage = "Sai tài khoản hoặc mật khẩu";
             return;
         }
+
+        luu.IDUser = userAccount.Iduser;
+        luu.EmailDN = userAccount.Email;
 
         var claims = new List<Claim>
         {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace QLKyTucXa.models;
+namespace QLKyTucXa.Data;
 
 public partial class Hopdong
 {
@@ -9,9 +9,11 @@ public partial class Hopdong
 
     public DateOnly? NgayLap { get; set; }
 
-    public DateOnly? ThoiGianThue { get; set; }
+    public DateOnly? ThoiGianBatDau { get; set; }
 
-    public int? TienKyQuy { get; set; }
+    public DateOnly? ThoiGianKetThuc { get; set; }
+
+    public string? TrangThai { get; set; }
 
     public string? PhuongThucThanhToan { get; set; }
 
@@ -21,5 +23,9 @@ public partial class Hopdong
 
     public string? MaPhong { get; set; }
 
-    public virtual ICollection<Phong> MaPhongs { get; set; } = new List<Phong>();
+    public virtual Nhanvien? IdnhanVienNavigation { get; set; }
+
+    public virtual Phong? MaPhongNavigation { get; set; }
+
+    public virtual Sinhvien? MssvNavigation { get; set; }
 }

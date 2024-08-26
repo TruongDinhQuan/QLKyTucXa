@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QLKyTucXa.Controller.Interfaces;
-using QLKyTucXa.models;
+using QLKyTucXa.Data;
 
 namespace QLKyTucXa.Controller.Services
 {
@@ -55,7 +55,7 @@ namespace QLKyTucXa.Controller.Services
         public async Task<List<Hopdong>> GetHopDongByTrangThaiAsync()
         {
             var result = await _qlktxContext.Hopdongs
-                                    .Where(e => e.PhuongThucThanhToan == "Đang chờ phê duyệt")
+                                    .Where(e => e.TrangThai == "Đang chờ phê duyệt")
                                     .ToListAsync();
             return result;
         }

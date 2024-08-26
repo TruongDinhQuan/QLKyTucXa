@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\QLKyTucXa.bundle.scp.css"
     },
     {
+      "Id": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\StyleSheetGood.css",
+      "PackagePath": "staticwebassets\\StyleSheetGood.css"
+    },
+    {
       "Id": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },

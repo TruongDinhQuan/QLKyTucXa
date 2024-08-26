@@ -1,9 +1,8 @@
-﻿using QLKyTucXa.Controller.ViewContro;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace QLKyTucXa.models;
+namespace QLKyTucXa.Data;
 
 public partial class Taikhoan
 {
@@ -17,14 +16,16 @@ public partial class Taikhoan
     [Required(ErrorMessage = "Email không được để trống.")]
     public string? Email { get; set; }
     [Required(ErrorMessage = "không được để trống.")]
-    [Compare(@"MatKhau", ErrorMessage= "Phải trùng với mật khẩu trên.")]
+    [Compare(@"MatKhau", ErrorMessage = "Phải trùng với mật khẩu trên.")]
     public string? ConfirmPassword { get; set; }
 
-    public bool ? EmailDaXacMinh { get; set; }
+    public bool? EmailDaXacMinh { get; set; }
 
     public string? VaiTro { get; set; }
 
     public virtual ICollection<Nhanvien> Nhanviens { get; set; } = new List<Nhanvien>();
 
     public virtual ICollection<Sinhvien> Sinhviens { get; set; } = new List<Sinhvien>();
+
+    public virtual ICollection<ThongBao> ThongBaos { get; set; } = new List<ThongBao>();
 }

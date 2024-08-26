@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace QLKyTucXa.models;
+namespace QLKyTucXa.Data;
 
 public partial class Phuhuynh
 {

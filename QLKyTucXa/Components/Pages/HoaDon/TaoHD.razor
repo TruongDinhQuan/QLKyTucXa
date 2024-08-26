@@ -1,0 +1,108 @@
+﻿@page "/Addhoadon/{id?}"
+@inject NavigationManager navigationManager
+@inject IHoaDonServices HoaDonServices
+@rendermode InteractiveServer
+
+@if (!string.IsNullOrEmpty(id))
+{
+    <PageTitle>CapNhatThongTin</PageTitle>
+}
+else
+{
+    <PageTitle>ThemMoi</PageTitle>
+}
+
+<div class="addbook_form">
+    <div class="addbook_form_body">
+        <EditForm Model="hoadon" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <h3>
+                @(!string.IsNullOrEmpty(id) ? "Cập Nhật Hóa Đơn" : "Thêm Hóa Đơn")
+            </h3>
+            <br />
+            <div class="form-group row">
+                <label for="NgayLapHd" class="col-form-label col-sm-2">Ngày Lập HD:</label>
+                <div class="col-sm-10">
+                    <InputDate id="NgayLapHd" class="form-control" @bind-Value="hoadon.NgayLapHd" />
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label for="PhuongThucThanhToan" class="col-form-label col-sm-2">PT thanh Toán:</label>
+                <div class="col-sm-10">
+                    <InputText id="PhuongThucThanhToan" class="form-control" @bind-Value="hoadon.PhuongThucThanhToan" />
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label for="TrangThai" class="col-form-label col-sm-2">Trạng Thái:</label>
+                <div class="col-sm-10">
+                    <InputText id="TrangThai" class="form-control" @bind-Value="hoadon.TrangThai" />
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label for="MaPhong" class="col-form-label col-sm-2">Số Mã Phòng:</label>
+                <div class="col-sm-10">
+                    <InputText id="MaPhong" class="form-control" @bind-Value="hoadon.MaPhong" />
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="form-group row">
+                <label for="Mssv" class="col-form-label col-sm-2">Mã Số Sinh Viên:</label>
+                <div class="col-sm-10">
+                    <InputText id="Mssv" class="form-control" @bind-Value="hoadon.Mssv" />
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="form-group row">
+                <label for="IdnhanVien" class="col-form-label col-sm-2">ID Nhân Viên:</label>
+                <div class="col-sm-10">
+                    <InputText id="IdnhanVien" class="form-control" @bind-Value="hoadon.IdnhanVien" />
+                </div>
+            </div>
+            <br />
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <button type="button" class="btn btn-warning" @onclick="quaylai">Quay lại</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? id { get; set; }
+
+    public Hoadon hoadon { get; set; } = new Hoadon();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(id))
+        {
+            hoadon = await HoaDonServices.GetHoaDonnByIdAsync(id);
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (string.IsNullOrEmpty(hoadon.MaPhong))
+        {
+            hoadon.MaPhong = Guid.NewGuid().ToString();
+            await HoaDonServices.AddHoaDonAsync(hoadon);
+        }
+        else
+        {
+            await HoaDonServices.UpdateHoaDonAsync(hoadon);
+        }
+        navigationManager.NavigateTo("/hoadon");
+    }
+
+    private void quaylai()
+    {
+        navigationManager.NavigateTo("/hoadon");
+    }
+}

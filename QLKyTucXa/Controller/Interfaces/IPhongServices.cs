@@ -1,4 +1,4 @@
-﻿using QLKyTucXa.models;
+﻿using QLKyTucXa.Data;
 
 namespace QLKyTucXa.Controller.Interfaces
 {

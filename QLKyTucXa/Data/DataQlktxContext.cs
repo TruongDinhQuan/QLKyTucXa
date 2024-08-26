@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace QLKyTucXa.models;
+namespace QLKyTucXa.Data;
 
 public partial class DataQlktxContext : DbContext
 {
@@ -33,8 +33,10 @@ public partial class DataQlktxContext : DbContext
 
     public virtual DbSet<Taikhoan> Taikhoans { get; set; }
 
+    public virtual DbSet<ThongBao> ThongBaos { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-US5EJJRM\\SQLEXPRESS;Initial Catalog=DataQLKTX;Integrated Security=True;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-US5EJJRM\\SQLEXPRESS;Initial Catalog=DataQLKTX;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -74,6 +76,7 @@ public partial class DataQlktxContext : DbContext
             entity.Property(e => e.Dvt)
                 .HasMaxLength(50)
                 .HasColumnName("DVT");
+            entity.Property(e => e.LoaiDichVu).HasMaxLength(50);
             entity.Property(e => e.TenDichVuBatBuoc).HasMaxLength(50);
         });
 
@@ -90,13 +93,24 @@ public partial class DataQlktxContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("IDNhanVien");
             entity.Property(e => e.MaPhong).HasMaxLength(100);
+            entity.Property(e => e.Mssv)
+                .HasMaxLength(10)
+                .HasColumnName("MSSV");
             entity.Property(e => e.NgayLapHd).HasColumnName("NgayLapHD");
             entity.Property(e => e.PhuongThucThanhToan).HasMaxLength(50);
             entity.Property(e => e.TrangThai).HasMaxLength(50);
 
+            entity.HasOne(d => d.IdnhanVienNavigation).WithMany(p => p.Hoadons)
+                .HasForeignKey(d => d.IdnhanVien)
+                .HasConstraintName("FK_HOADON_NHANVIEN");
+
             entity.HasOne(d => d.MaPhongNavigation).WithMany(p => p.Hoadons)
                 .HasForeignKey(d => d.MaPhong)
                 .HasConstraintName("FK_HOADON_PHONG");
+
+            entity.HasOne(d => d.MssvNavigation).WithMany(p => p.Hoadons)
+                .HasForeignKey(d => d.Mssv)
+                .HasConstraintName("FK_HOADON_SINHVIEN");
         });
 
         modelBuilder.Entity<Hopdong>(entity =>
@@ -109,33 +123,24 @@ public partial class DataQlktxContext : DbContext
             entity.Property(e => e.IdnhanVien)
                 .HasMaxLength(100)
                 .HasColumnName("IDNhanVien");
+            entity.Property(e => e.MaPhong).HasMaxLength(100);
             entity.Property(e => e.Mssv)
                 .HasMaxLength(10)
                 .HasColumnName("MSSV");
             entity.Property(e => e.PhuongThucThanhToan).HasMaxLength(50);
-            entity.Property(e => e.ThoiGianThue).HasMaxLength(50);
-            entity.Property(e => e.MaPhong).HasMaxLength(100);
+            entity.Property(e => e.TrangThai).HasMaxLength(50);
 
-            entity.HasMany(d => d.MaPhongs).WithMany(p => p.SohopDongs)
-                .UsingEntity<Dictionary<string, object>>(
-                    "Chitiethopdong",
-                    r => r.HasOne<Phong>().WithMany()
-                        .HasForeignKey("MaPhong")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_CHITIETHOPDONG_PHONG"),
-                    l => l.HasOne<Hopdong>().WithMany()
-                        .HasForeignKey("SohopDong")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_CHITIETHOPDONG_HOPDONG"),
-                    j =>
-                    {
-                        j.HasKey("SohopDong", "MaPhong");
-                        j.ToTable("CHITIETHOPDONG");
-                        j.IndexerProperty<string>("SohopDong")
-                            .HasMaxLength(100)
-                            .HasColumnName("SOHopDong");
-                        j.IndexerProperty<string>("MaPhong").HasMaxLength(100);
-                    });
+            entity.HasOne(d => d.IdnhanVienNavigation).WithMany(p => p.Hopdongs)
+                .HasForeignKey(d => d.IdnhanVien)
+                .HasConstraintName("FK_HOPDONG_NHANVIEN");
+
+            entity.HasOne(d => d.MaPhongNavigation).WithMany(p => p.Hopdongs)
+                .HasForeignKey(d => d.MaPhong)
+                .HasConstraintName("FK_HOPDONG_PHONG");
+
+            entity.HasOne(d => d.MssvNavigation).WithMany(p => p.Hopdongs)
+                .HasForeignKey(d => d.Mssv)
+                .HasConstraintName("FK_HOPDONG_SINHVIEN");
         });
 
         modelBuilder.Entity<Nhanvien>(entity =>
@@ -236,12 +241,30 @@ public partial class DataQlktxContext : DbContext
             entity.Property(e => e.Iduser)
                 .HasMaxLength(100)
                 .HasColumnName("IDUser");
+            entity.Property(e => e.ConfirmPassword).HasMaxLength(20);
+            entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.MatKhau).HasMaxLength(20);
             entity.Property(e => e.TenDangNhap).HasMaxLength(50);
-            entity.Property(e => e.Email).HasMaxLength(50);
-            entity.Property(e => e.ConfirmPassword).HasMaxLength(20);
-            entity.Property(e => e.EmailDaXacMinh).HasMaxLength(20);
             entity.Property(e => e.VaiTro).HasMaxLength(10);
+        });
+
+        modelBuilder.Entity<ThongBao>(entity =>
+        {
+            entity.HasKey(e => e.MaThongBao);
+
+            entity.ToTable("ThongBao");
+
+            entity.Property(e => e.MaThongBao).HasMaxLength(100);
+            entity.Property(e => e.Iduser)
+                .HasMaxLength(100)
+                .HasColumnName("IDUser");
+            entity.Property(e => e.LoaiThongBao).HasMaxLength(50);
+            entity.Property(e => e.NoiDung).HasMaxLength(100);
+            entity.Property(e => e.ThoiGianThongBao).HasColumnType("datetime");
+
+            entity.HasOne(d => d.IduserNavigation).WithMany(p => p.ThongBaos)
+                .HasForeignKey(d => d.Iduser)
+                .HasConstraintName("FK_ThongBao_TAIKHOAN");
         });
 
         OnModelCreatingPartial(modelBuilder);

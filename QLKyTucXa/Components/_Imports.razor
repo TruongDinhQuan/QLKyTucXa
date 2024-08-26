@@ -10,7 +10,7 @@
 @using QLKyTucXa.Components
 @using MudBlazor
 @using QLKyTucXa.Controller.Interfaces
-@using QLKyTucXa.models 
+@using QLKyTucXa.Data
 @using QLKyTucXa.Components.Pages.PhuHuynh
 @using Microsoft.AspNetCore.WebUtilities
 @using Microsoft.AspNetCore.Authentication
@@ -20,5 +20,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Authorization
 @using QLKyTucXa.Controller.Services
+@using QLKyTucXa.Components.Pages.Home
+@using System.Linq;
 @attribute [Authorize] 
 @* tất cả các trang và component sẽ yêu cầu người dùng phải được xác thực (logged in) để truy cập.*@

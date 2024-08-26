@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace QLKyTucXa.models;
+namespace QLKyTucXa.Data;
 
 public partial class Phong
 {
@@ -17,9 +17,7 @@ public partial class Phong
 
     public int? SoNguoiO { get; set; }
 
-    public int? DonGia { get; set; }
-
     public virtual ICollection<Hoadon> Hoadons { get; set; } = new List<Hoadon>();
 
-    public virtual ICollection<Hopdong> SohopDongs { get; set; } = new List<Hopdong>();
+    public virtual ICollection<Hopdong> Hopdongs { get; set; } = new List<Hopdong>();
 }

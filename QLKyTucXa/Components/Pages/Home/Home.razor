@@ -4,6 +4,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IHopDongServices HopDongServices
 @inject ISinhVienServices SinhVienServices
+@inject ISnackbar Snackbar
 @inject LuuBien luubien
 @rendermode InteractiveServer
 @attribute [Authorize(Roles = "Admin, Employee, User")]
@@ -45,13 +46,13 @@
             }
             else if (bien == "Đang chờ phê duyệt")
             {
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="card mb-2" style="background-color: #EFEBE9;">
                         <div class="card-body" style="color: #333;">
                             <h5 class="card-title">Chờ xét duyệt</h5>
                             <div>
-                                <button @onclick="sua">Sửa phòng</button>
-                                <button @onclick="xoa">Xóa</button>
+                                <button class="btn btn-secondary" @onclick="sua">Sửa phòng</button>
+                                <button class="btn btn-danger" @onclick="xoa">Hủy</button>
                             </div>
                         </div>
                     </div>
@@ -60,13 +61,14 @@
             }
             else
             {
+                <h2>Phòng của bạn là:</h2>
                 <div class="col-md-2">
                     <div class="card mb-2" style="background-color: #EF9A9A;">
                         <div class="card-body" style="color: #333;">
                             <h5 class="card-title">@phong.TenPhong</h5>
                             <p class="card-text"><strong>Khu:</strong> @phong.Khu</p>
                             <p class="card-text"><strong>Tầng:</strong> @phong.Tang</p>
-                            <p class="card-text"><strong>Đơn Giá:</strong> @phong.DonGia</p>
+                            <p class="card-text"><strong>Số giường:</strong> @phong.SoGiuong</p>
                         </div>
                     </div>
                 </div>
@@ -123,7 +125,7 @@
                     if (t.Mssv == sinhvien.Mssv && !string.IsNullOrEmpty(sinhvien.Mssv))
                     {
                         luubien.IdPhong = t.MaPhong;
-                        bien = t.PhuongThucThanhToan;
+                        bien = t.TrangThai;
                         idToDelete = t.SoHopDong;
                         break;
                     }
@@ -152,6 +154,8 @@
 
     private async Task okDelete()
     {
+        Snackbar.Add("xóa thành công!", Severity.Success);
+        await Task.Delay(1300);
         if (!string.IsNullOrEmpty(idToDelete))
         {
             await HopDongServices.DeletehopdongAsync(idToDelete);

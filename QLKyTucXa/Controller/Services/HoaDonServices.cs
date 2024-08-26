@@ -1,0 +1,103 @@
+﻿using Microsoft.EntityFrameworkCore;
+using QLKyTucXa.Controller.Interfaces;
+using QLKyTucXa.Data;
+
+namespace QLKyTucXa.Controller.Services
+{
+    public class HoaDonServices : IHoaDonServices
+    {
+        private readonly DataQlktxContext _dataQlktxContext;
+        public HoaDonServices(DataQlktxContext dataQlktxContext)
+        {
+            _dataQlktxContext = dataQlktxContext;
+        }
+
+        public async Task<List<Hoadon>> GetHoaDonByMaPhongAsync(string id)
+        {
+            var pho = await _dataQlktxContext.Hoadons
+                .Where(t => t.MaPhong == id)
+                .ToListAsync();
+            return pho;
+        }
+
+        public async Task AddHoaDonAsync(Hoadon hoadon)
+        {
+            _dataQlktxContext.Hoadons.Add(hoadon);
+            await _dataQlktxContext.SaveChangesAsync();
+        }
+
+        public async Task<Hoadon?> GetHoaDonnByIdAsync(string id)
+        {
+            var hoadon = await _dataQlktxContext.Hoadons.FirstOrDefaultAsync(e => e.MaHd == id);
+            return hoadon;
+        }
+
+        public async Task<List<Hoadon>> GetHoaDonAsync()
+        {
+            var hoadon = await _dataQlktxContext.Hoadons.ToListAsync();
+            return hoadon;
+        }
+
+        public async Task DeleteHoaDonAsync(string id)
+        {
+            var pho = await GetHoaDonnByIdAsync(id);
+            if (pho != null)
+            {
+                _dataQlktxContext.Remove(pho);
+                await _dataQlktxContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateHoaDonAsync(Hoadon hoadon)
+        {
+            _dataQlktxContext.Entry(hoadon).State = EntityState.Modified;
+            await _dataQlktxContext.SaveChangesAsync();
+        }
+
+        //CTHD
+        public async Task<Chitiethoadon?> GetChiTietHoaDonByIdAsync(string maHD, string maDV)
+        {
+            return await _dataQlktxContext.Chitiethoadons
+             .FirstOrDefaultAsync(ct => ct.MaHd == maHD && ct.MaDv == maDV);
+        }
+
+        public async Task DeleteChiTietHoaDonAsync(string maHD, string maDV)
+        {
+            var chiTietHoaDon = await GetChiTietHoaDonByIdAsync(maHD, maDV);
+            if (chiTietHoaDon != null)
+            {
+                _dataQlktxContext.Chitiethoadons.Remove(chiTietHoaDon);
+                await _dataQlktxContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteToanBoCTHDAsync(string maHD)
+        {
+            var chiTietHoaDon = await GetChiTietHoaDonByMaHDAsync(maHD);
+            if (chiTietHoaDon != null)
+            {
+                _dataQlktxContext.Chitiethoadons.RemoveRange(chiTietHoaDon);
+                await _dataQlktxContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateChiTietHoaDonAsync(Chitiethoadon chiTietHoaDon)
+        {
+            _dataQlktxContext.Entry(chiTietHoaDon).State = EntityState.Modified;
+            await _dataQlktxContext.SaveChangesAsync();
+        }
+
+        public async Task<List<Chitiethoadon>> GetChiTietHoaDonByMaHDAsync(string maHD)
+        {
+            return await _dataQlktxContext.Chitiethoadons
+            .Where(ct => ct.MaHd == maHD)
+            .ToListAsync();
+        }
+
+        public async Task AddChiTietHoaDonAsync(Chitiethoadon chiTietHoaDon)
+        {
+            _dataQlktxContext.Chitiethoadons.Add(chiTietHoaDon);
+            await _dataQlktxContext.SaveChangesAsync();
+        }
+    }
+}

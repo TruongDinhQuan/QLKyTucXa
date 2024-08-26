@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace QLKyTucXa.models;
+namespace QLKyTucXa.Data;
 
 public partial class Chitiethoadon
 {
     public string MaHd { get; set; } = null!;
 
     public string MaDv { get; set; } = null!;
+
+    public int? SoLuong { get; set; }
 
     public int? ChiSoDau { get; set; }
 

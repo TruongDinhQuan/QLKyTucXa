@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QLKyTucXa.Controller.Interfaces;
-using QLKyTucXa.models;
+using QLKyTucXa.Data;
 
 namespace QLKyTucXa.Controller.Services
 {
@@ -44,6 +44,12 @@ namespace QLKyTucXa.Controller.Services
         {
             _qlktxContext.Entry(phong).State = EntityState.Modified;
             await _qlktxContext.SaveChangesAsync();
+        }
+        //laybangidUser
+        public async Task<Nhanvien?> GetnhavienByIduserAsync(string id)
+        {
+            var pho = await _qlktxContext.Nhanviens.FirstOrDefaultAsync(e => e.Iduser == id);
+            return pho;
         }
     }
 }

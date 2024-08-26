@@ -4,6 +4,7 @@
 @inject IHopDongServices HopDongServices
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager navigationManager
+@inject ISnackbar Snackbar
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 <PageTitle>Phong</PageTitle>
@@ -35,8 +36,9 @@ else
                 <div class="card mb-2" style="background-color: @cardColor;" @onclick="() => hienthibangxacnhan(forecast)">
                     <div class="card-body" style="color: #333;">
                         <h5 class="card-title">@forecast.TenPhong</h5>
+                        <p class="card-text"><strong>Tầng:</strong> @forecast.Tang</p>
+                        <p class="card-text"><strong>Khu:</strong> @forecast.Khu</p>
                         <p class="card-text"><strong>Số Người Ở:</strong> @forecast.SoNguoiO</p>
-                        <p class="card-text"><strong>Đơn Giá:</strong> @forecast.DonGia</p>
                         <AuthorizeView Roles="Admin, Employee">
                             <Authorized>
                                 <div class="d-flex justify-content-between">
@@ -53,7 +55,12 @@ else
 }
 
 <Delete @rendermode="InteractiveServer" xacnhan="xacnhanxoa" OnCancel="CancelDelete" OnOK="okDelete"></Delete>
-<Xacnhandatphong @rendermode="InteractiveServer" capnhatmaphong="capnhatmaphong" id="id" user="user" hopdong="hopdong" sinhvien="sinhvien" phongValidationDictionary="phongValidationDictionary" selectedPhong="selectedPhong" showBookingModal="bienhienthixacnhandatphong" ConfirmBooking="ConfirmBooking" CloseModal="CloseModal"></Xacnhandatphong>
+<AuthorizeView Roles="User">
+    <Authorized>
+        <Xacnhandatphong @rendermode="InteractiveServer" capnhatmaphong="capnhatmaphong" id="@id" user="user" hopdong="hopdong" sinhvien="sinhvien" phongValidationDictionary="phongValidationDictionary" selectedPhong="selectedPhong" showBookingModal="bienhienthixacnhandatphong" ConfirmBooking="ConfirmBooking" CloseModal="CloseModal"></Xacnhandatphong>
+
+    </Authorized>
+</AuthorizeView>
 
 @code {
     private List<Phong> phong = new List<Phong>();
@@ -66,7 +73,7 @@ else
     private ClaimsPrincipal? user;
     private Hopdong hopdong = new Hopdong();
     private Sinhvien? sinhvien = new Sinhvien();
-    string id;
+    string? id;
     Dictionary<string, bool> phongValidationDictionary = new Dictionary<string, bool>();
 
     protected override async Task OnInitializedAsync() 
@@ -78,13 +85,13 @@ else
         {
             sinhvien = await SinhVienServices.GetByIdUserAsync(user.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToString());
             if(sinhvien != null)
-                 hopdong = await HopDongServices.GetHopDongByMssvAsync(sinhvien.Mssv);
+                hopdong = await HopDongServices.GetHopDongByMssvAsync(sinhvien.Mssv);
             //lấy SoHopDong cần nhập nhật thông qua URL
             var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("SoHopdong", out var phongIdValue))
-            {
                 id = phongIdValue;
-            };
+            else
+                id = null; // Đặt lại id nếu không có query parameter
         }
         phong = await Phong.GetPhongAsync();
 
@@ -126,7 +133,7 @@ else
     private void hienthibangxacnhan(Phong phong)
     {
         selectedPhong = phong;
-            bienhienthixacnhandatphong = true;
+        bienhienthixacnhandatphong = true;
     }
 
     private void CloseModal()
@@ -137,8 +144,11 @@ else
 
     private async Task capnhatmaphong()
     {
+        Snackbar.Add("Cập nhật mã phòng thành công!", Severity.Success);
+        await Task.Delay(1500);
         hopdong.MaPhong =  selectedPhong?.MaPhong;
         await HopDongServices.UpdatePhongAsync(hopdong);
+        id = null;
         navigationManager.NavigateTo($"/");
         bienhienthixacnhandatphong = false;
     }

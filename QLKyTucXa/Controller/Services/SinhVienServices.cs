@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QLKyTucXa.Controller.Interfaces;
-using QLKyTucXa.models;
+using QLKyTucXa.Data;
 
 namespace QLKyTucXa.Controller.Services
 {

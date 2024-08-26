@@ -1,0 +1,97 @@
+﻿@page "/Adddichvu/{id?}"
+@inject NavigationManager navigationManager
+@inject IDichVuServices DichVuServices
+@inject IPhongServices PhongServices
+@rendermode InteractiveServer
+
+@if (!string.IsNullOrEmpty(id))
+{
+    <PageTitle>CapNhatThongTin</PageTitle>
+}
+else
+{
+    <PageTitle>ThemMoi</PageTitle>
+}
+
+<div class="addbook_form">
+    <div class="addbook_form_body">
+        <EditForm Model="dichvu" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <h3>
+                @(!string.IsNullOrEmpty(id) ? "Cập Nhật Dịch Vụ" : "Thêm Dịch Vụ")
+            </h3>
+            <br />
+            <div class="form-group row">
+                <label for="TenDichVuBatBuoc" class="col-form-label col-sm-2">Tên Dịch Vụ:</label>
+                <div class="col-sm-10">
+                    <InputText id="TenDichVuBatBuoc" class="form-control" @bind-Value="dichvu.TenDichVuBatBuoc" />
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label for="DonGia" class="col-form-label col-sm-2">Đơn Giá:</label>
+                <div class="col-sm-10">
+                   <InputNumber id="DonGia" class="form-control" @bind-Value="dichvu.DonGia" /> 
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label for="Dvt" class="col-form-label col-sm-2">Đơn Vị Tính:</label>
+                <div class="col-sm-10">
+                    <InputText id="Dvt" class="form-control" @bind-Value="dichvu.Dvt" />
+                </div>
+            </div>
+            <br/>
+            <div class="form-group row">
+                <label for="LoaiDichVu" class="col-form-label col-sm-2">Loại Dịch Vụ:</label>
+                <div class="col-sm-10">
+                    <InputSelect id="LoaiDichVu" class="form-control" @bind-Value="dichvu.LoaiDichVu">
+                        <option value="">Chọn Loại dịch vụ</option>
+                        <option value="DV Bắt Buộc">Dịch vụ bắt buộc</option>
+                        <option value="DV thông thường">Dịch vụ thông thường</option>
+                    </InputSelect>
+                </div>
+            </div>
+            <br />
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <button type="button" class="btn btn-warning" @onclick="quaylai">Quay lại</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? id { get; set; }
+
+    public Dichvu dichvu { get; set; } = new Dichvu();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(id))
+        {
+            dichvu = await DichVuServices.GetDichvuByIdAsync(id);
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (string.IsNullOrEmpty(dichvu.MaDv))
+        {
+            dichvu.MaDv = Guid.NewGuid().ToString();
+            await DichVuServices.AddDichvuAsync(dichvu);
+        }
+        else
+        {
+            await DichVuServices.UpdateDichvuAsync(dichvu);
+        }
+        navigationManager.NavigateTo("/dichvu");
+    }
+
+    private void quaylai()
+    {
+        navigationManager.NavigateTo("/dichvu");
+    }
+}

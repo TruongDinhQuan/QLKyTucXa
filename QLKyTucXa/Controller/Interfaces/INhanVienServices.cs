@@ -1,4 +1,4 @@
-﻿using QLKyTucXa.models;
+﻿using QLKyTucXa.Data;
 
 namespace QLKyTucXa.Controller.Interfaces
 {
@@ -9,5 +9,6 @@ namespace QLKyTucXa.Controller.Interfaces
         Task<List<Nhanvien>> GetPhongAsync();
         Task<Nhanvien?> GetPhongByIdAsync(string id);
         Task UpdatePhongAsync(Nhanvien phong);
+        Task<Nhanvien?> GetnhavienByIduserAsync(string id);
     }
 }
