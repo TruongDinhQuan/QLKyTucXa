@@ -17,5 +17,9 @@ namespace QLKyTucXa.Controller.Interfaces
         Task<List<Chitiethoadon>> GetChiTietHoaDonByMaHDAsync(string maHD);
         Task AddChiTietHoaDonAsync(Chitiethoadon chiTietHoaDon);
         Task DeleteToanBoCTHDAsync(string maHD);
+        Task<List<Hoadon>> GetHoaDonByTrangThaiAsync();
+        Task<List<Hoadon>> GetHoaDonThongThuongAsync();
+        Task<List<Hoadon>> GetHoaDonByDaThanhToanAsync();
+        Task<List<Chitiethoadon>> GetCTHDAsync();
     }
 }

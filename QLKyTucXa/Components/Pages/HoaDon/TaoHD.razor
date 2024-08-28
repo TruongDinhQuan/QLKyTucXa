@@ -1,108 +1,113 @@
-﻿@page "/Addhoadon/{id?}"
-@inject NavigationManager navigationManager
-@inject IHoaDonServices HoaDonServices
-@rendermode InteractiveServer
-
-@if (!string.IsNullOrEmpty(id))
+﻿@if (bienkiemtra)
 {
-    <PageTitle>CapNhatThongTin</PageTitle>
-}
-else
-{
-    <PageTitle>ThemMoi</PageTitle>
-}
-
-<div class="addbook_form">
-    <div class="addbook_form_body">
-        <EditForm Model="hoadon" OnValidSubmit="HandleValidSubmit">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <h3>
-                @(!string.IsNullOrEmpty(id) ? "Cập Nhật Hóa Đơn" : "Thêm Hóa Đơn")
-            </h3>
-            <br />
-            <div class="form-group row">
-                <label for="NgayLapHd" class="col-form-label col-sm-2">Ngày Lập HD:</label>
-                <div class="col-sm-10">
-                    <InputDate id="NgayLapHd" class="form-control" @bind-Value="hoadon.NgayLapHd" />
-                </div>
-            </div>
-            <br />
-            <div class="form-group row">
-                <label for="PhuongThucThanhToan" class="col-form-label col-sm-2">PT thanh Toán:</label>
-                <div class="col-sm-10">
-                    <InputText id="PhuongThucThanhToan" class="form-control" @bind-Value="hoadon.PhuongThucThanhToan" />
-                </div>
-            </div>
-            <br />
-            <div class="form-group row">
-                <label for="TrangThai" class="col-form-label col-sm-2">Trạng Thái:</label>
-                <div class="col-sm-10">
-                    <InputText id="TrangThai" class="form-control" @bind-Value="hoadon.TrangThai" />
-                </div>
-            </div>
-            <br />
-            <div class="form-group row">
-                <label for="MaPhong" class="col-form-label col-sm-2">Số Mã Phòng:</label>
-                <div class="col-sm-10">
-                    <InputText id="MaPhong" class="form-control" @bind-Value="hoadon.MaPhong" />
-                </div>
-            </div>
-            <br />
-            <br />
-            <div class="form-group row">
-                <label for="Mssv" class="col-form-label col-sm-2">Mã Số Sinh Viên:</label>
-                <div class="col-sm-10">
-                    <InputText id="Mssv" class="form-control" @bind-Value="hoadon.Mssv" />
-                </div>
-            </div>
-            <br />
-            <br />
-            <div class="form-group row">
-                <label for="IdnhanVien" class="col-form-label col-sm-2">ID Nhân Viên:</label>
-                <div class="col-sm-10">
-                    <InputText id="IdnhanVien" class="form-control" @bind-Value="hoadon.IdnhanVien" />
-                </div>
-            </div>
-            <br />
-            <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="button" class="btn btn-warning" @onclick="quaylai">Quay lại</button>
-            </div>
-        </EditForm>
+    <div class="confirm-dialog-container">
+        <div class="confirm-dialog">
+            <EditForm Model="hoadon" OnValidSubmit="HandleValidSubmitHD">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <h4>Thông Tin Hóa Đơn</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td><label for="PhuongThucThanhToan" class="form-label">PT thanh Toán</label></td>
+                            <td>
+                                <InputSelect id="PhuongThucThanhToan" class="form-control" @bind-Value="hoadon.PhuongThucThanhToan">
+                                    <option>Chọn PT</option>
+                                    <option value="Tiền Mặt">Tiền Mặt</option>
+                                </InputSelect>
+                            </td>
+                        </tr>
+                        @if (!kiemtraloaihoadon)
+                        {
+                            <tr>
+                                <td><label for="MaPhong" class="form-label">Phòng:</label></td>
+                                <td>
+                                    <InputSelect id="MaPhong" class="form-control" @bind-Value="hoadon.MaPhong">
+                                        <option>Chọn Phòng</option>
+                                        @if (availableRooms != null)
+                                        {
+                                            @foreach (var room in availableRooms)
+                                            {
+                                                <option value="@room?.MaPhong">@room?.TenPhong</option>
+                                            }
+                                        }
+                                    </InputSelect>
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td> <button type="button" @onclick="ThoatVaSave" class="btn btn-danger">Thoát</button> </td>
+                            <td colspan="2" class="text-end">
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </EditForm>
+        </div>
     </div>
-</div>
+}
 
 @code {
-    [Parameter]
-    public string? id { get; set; }
-
+    [Parameter] public bool kiemtraloaihoadon { get; set; }
+    [Parameter] public bool bienkiemtra { get; set; }
+    [Parameter] public List<Phong> phong { get; set; }
+    [Parameter] public List<Hoadon?> cachoadon { get; set; }
     public Hoadon hoadon { get; set; } = new Hoadon();
+    [Parameter] public EventCallback<Hoadon> OnSave { get; set; }
+    [Parameter] public EventCallback ThoatVaSave { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    private async Task HandleValidSubmitHD() => await OnSave.InvokeAsync(hoadon);
+
+    // Lọc danh sách phòng
+    private List<Phong> GetAvailableRoomsForMonth()
     {
-        if (!string.IsNullOrEmpty(id))
-        {
-            hoadon = await HoaDonServices.GetHoaDonnByIdAsync(id);
-        }
+        var currentMonth = DateTime.Now.Month;
+        var currentYear = DateTime.Now.Year;
+
+        // Lấy danh sách phòng đã có trong hóa đơn của tháng hiện tại
+        var roomsInHoadonThisMonth = cachoadon
+            .Where(hd => hd?.NgayLapHd?.Month == currentMonth && hd?.NgayLapHd?.Year == currentYear)
+            .Select(hd => hd?.MaPhong).ToList();
+        return phong.Where(p => p != null && !roomsInHoadonThisMonth.Contains(p.MaPhong)).ToList();
     }
 
-    private async Task HandleValidSubmit()
-    {
-        if (string.IsNullOrEmpty(hoadon.MaPhong))
-        {
-            hoadon.MaPhong = Guid.NewGuid().ToString();
-            await HoaDonServices.AddHoaDonAsync(hoadon);
-        }
-        else
-        {
-            await HoaDonServices.UpdateHoaDonAsync(hoadon);
-        }
-        navigationManager.NavigateTo("/hoadon");
-    }
-
-    private void quaylai()
-    {
-        navigationManager.NavigateTo("/hoadon");
-    }
+    // Danh sách phòng trống sau khi lọc
+    private List<Phong> availableRooms => GetAvailableRoomsForMonth();
 }
+
+<style>
+    .confirm-dialog-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Màn hình đen mờ phía sau */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* Đảm bảo modal nằm trên các thành phần khác */
+    }
+
+    .confirm-dialog {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        width: 400px;
+        max-width: 90%;
+        text-align: center;
+    }
+
+        .confirm-dialog h3 {
+            margin-bottom: 20px;
+        }
+
+    .d-flex-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+</style>

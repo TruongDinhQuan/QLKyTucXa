@@ -1,102 +1,91 @@
-﻿    @if (bienkiemtra)
-    {
-        <div class="confirm-dialog-container">
-            <div class="confirm-dialog">
-                <EditForm Model="hoadon" OnValidSubmit="HandleValidSubmitHD">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
-                    <h4>Thông Tin Hóa Đơn</h4>
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td><label for="PhuongThucThanhToan" class="form-label">PT thanh Toán</label></td>
-                                <td>
-                                    <InputSelect id="PhuongThucThanhToan" class="form-control" @bind-Value="hoadon.PhuongThucThanhToan">
-                                        <option>Chọn PT</option>
-                                        <option value="Tiền Mặt">Tiền Mặt</option>
-                                    </InputSelect>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><label for="MaPhong" class="form-label">Phòng:</label></td>
-                                <td>
-                                    <InputSelect id="MaPhong" class="form-control" @bind-Value="hoadon.MaPhong">
-                                        <option>Chọn Phòng</option>
-                                        @foreach (var lap in phong)
-                                        {
-                                            <option value="@lap.MaPhong">@lap.TenPhong</option>
-                                        }
-                                    </InputSelect>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><label for="Mssv" class="form-label">Tên Sinh Viên</label></td>
-                                <td>
-                                    <InputSelect id="Mssv" class="form-control" @bind-Value="hoadon.Mssv">
-                                        <option>Chọn sinh viên</option>
-                                        @foreach (var lap in sinhvien)
-                                        {
-                                            <option value="@lap.Mssv">@lap.TenSinhVien</option>
-                                        }
-                                    </InputSelect>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> <button type="button" @onclick="ThoatVaSave" class="btn btn-danger">Thoát</button> </td>
-                                <td colspan="2" class="text-end">
-                                <button type="submit" class="btn btn-primary">Lưu</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </EditForm>
+﻿@page "/Addhoadon/{id?}"
+@inject NavigationManager navigationManager
+@inject IHoaDonServices HoaDonServices
+@inject IPhongServices PhongServices
+@rendermode InteractiveServer
+
+@if (!string.IsNullOrEmpty(id))
+{
+    <PageTitle>CapNhatThongTin</PageTitle>
+}
+
+<div class="addbook_form">
+    <div class="addbook_form_body">
+        <EditForm Model="hoadon" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <h3>
+                @(!string.IsNullOrEmpty(id) ? "Cập Nhật Hóa Đơn" : "Thêm Hóa Đơn")
+            </h3>
+            <br />
+            <div class="form-group row">
+                <label for="PhuongThucThanhToan" class="col-form-label col-sm-2">PT thanh Toán:</label>
+                <div class="col-sm-10">
+                    <InputText id="PhuongThucThanhToan" class="form-control" @bind-Value="hoadon.PhuongThucThanhToan" />
+                </div>
             </div>
-        </div>
+            <br />
+            <div class="form-group row">
+                <label for="MaPhong" class="col-form-label col-sm-2">Phòng:</label>
+                <div class="col-sm-10">
+                    <InputSelect id="MaPhong" class="form-control" @bind-Value="hoadon.MaPhong">
+                        @* <option>Chọn Phòng</option> *@
+                        @foreach (var lap in availableRooms)
+                        {
+                            <option value="@lap.MaPhong">@lap.TenPhong</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+            <br />
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <button type="button" class="btn btn-warning" @onclick="quaylai">Quay lại</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? id { get; set; }
+
+    public Hoadon hoadon { get; set; } = new Hoadon();
+    private List<Hoadon> cachoadon = new List<Hoadon>();
+    private List<Phong> cacphong = new List<Phong>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        cachoadon = await HoaDonServices.GetHoaDonAsync();
+        cacphong = await PhongServices.GetPhongAsync();
+        if (!string.IsNullOrEmpty(id))
+        {
+            hoadon = await HoaDonServices.GetHoaDonnByIdAsync(id);
+        }
     }
 
-    @code {
-        [Parameter] public bool bienkiemtra { get; set; }
-        [Parameter] public List<Sinhvien> sinhvien { get; set; }
-        [Parameter] public List<Phong> phong { get; set; }
-        public Hoadon hoadon { get; set; } = new Hoadon();
-        [Parameter] public EventCallback<Hoadon> OnSave { get; set; }
-    [Parameter] public EventCallback ThoatVaSave { get; set; }
+    // Lọc danh sách phòng
+    private List<Phong> GetAvailableRoomsForMonth()
+    {
+        var currentMonth = DateTime.Now.Month;
+        var currentYear = DateTime.Now.Year;
 
-    private async Task HandleValidSubmitHD() => await OnSave.InvokeAsync(hoadon);
+        // Lấy danh sách phòng đã có trong hóa đơn của tháng hiện tại
+        var roomsInHoadonThisMonth = cachoadon
+            .Where(hd => hd?.NgayLapHd?.Month == currentMonth && hd?.NgayLapHd?.Year == currentYear)
+            .Select(hd => hd?.MaPhong).ToList();
+        return cacphong.Where(p => p != null && !roomsInHoadonThisMonth.Contains(p.MaPhong)).ToList();
+    }
+    private List<Phong> availableRooms => GetAvailableRoomsForMonth();
+
+    private async Task HandleValidSubmit()
+    {
+        await HoaDonServices.UpdateHoaDonAsync(hoadon);
+        navigationManager.NavigateTo("/hoadonbatbuoc");
     }
 
-    <style>
-        .confirm-dialog-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Màn hình đen mờ phía sau */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999; /* Đảm bảo modal nằm trên các thành phần khác */
-        }
-
-        .confirm-dialog {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            width: 400px;
-            max-width: 90%;
-            text-align: center;
-        }
-
-            .confirm-dialog h3 {
-                margin-bottom: 20px;
-            }
-
-        .d-flex-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-    </style>
+    private void quaylai()
+    {
+        navigationManager.NavigateTo("/hoadonbatbuoc");
+    }
+}

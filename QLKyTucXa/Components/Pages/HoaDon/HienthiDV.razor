@@ -6,9 +6,16 @@
                         <tr>
                             <th>Tên Dịch Vụ</th>
                             <th>Đơn Giá</th>
-                            <th>Số Lượng</th>
-                            <th>Chỉ S.Đầu</th>
-                            <th>Chỉ S.Cuối</th>
+                            @if (kiemtraloaihoadon)
+                            {
+                                <th>Số Lượng</th>
+                            }
+                            else
+                            {
+                                <th>Chỉ S.Đầu</th>
+                                <th>Chỉ S.Cuối</th>
+                            }
+                            <th>Thành Tiền</th>
                             <th>Đơn Vị Tính</th>
                             <th>Thao Tác</th>
                         </tr>
@@ -23,34 +30,53 @@
                                     <tr>
                                         <td>@forecast.TenDichVuBatBuoc</td>
                                         <td>@forecast.DonGia</td>
+                                        @if (kiemtraloaihoadon)
+                                        {
+                                            <td>
+                                                @if (editMode && editingMaDv == forecast.MaDv)
+                                                {
+                                                    <input type="text" @bind="dv.SoLuong" class="form-control" style="width: 50px;" />
+                                                }
+                                                else
+                                                {
+                                                    @(dv.SoLuong.HasValue ? dv.SoLuong.Value.ToString() : "-")
+                                                }   
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @if (editMode && editingMaDv == forecast.MaDv)
+                                                {
+                                                    <input type="text" @bind="dv.ChiSoDau" class="form-control" style="width: 80px;" />
+                                                }
+                                                else
+                                                {
+                                                    @(dv.ChiSoDau.HasValue ? dv.ChiSoDau.Value.ToString() : "-")
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (editMode && editingMaDv == forecast.MaDv)
+                                                {
+                                                    <input type="text" @bind="dv.ChiSoCuoi" class="form-control" style="width: 80px;" />
+                                                }
+                                                else
+                                                {
+                                                    @(dv.ChiSoDau.HasValue ? dv.ChiSoCuoi.Value.ToString() : "-")
+                                                }
+                                            </td>
+                                        }
                                         <td>
-                                            @if (editMode && editingMaDv == forecast.MaDv)
+                                            @if (forecast.MaDv == dv.MaDv)
                                             {
-                                            <input type="text" @bind="dv.SoLuong" class="form-control" style="width: 50px;" />
-                                            }
-                                            else
-                                            {
-                                                @(dv.SoLuong.HasValue ? dv.SoLuong.Value.ToString() : "-")
-                                            }
-                                        </td>
-                                        <td>
-                                            @if (editMode && editingMaDv == forecast.MaDv)
-                                            {
-                                            <input type="text" @bind="dv.ChiSoDau" class="form-control" style="width: 80px;" />
-                                            }
-                                            else
-                                            {
-                                                @(dv.ChiSoDau.HasValue ? dv.ChiSoDau.Value.ToString() : "-")
-                                            }
-                                        </td>
-                                        <td>
-                                            @if (editMode && editingMaDv == forecast.MaDv)
-                                            {
-                                            <input type="text" @bind="dv.ChiSoCuoi" class="form-control" style="width: 80px;" />
-                                            }
-                                            else
-                                            {
-                                                @(dv.ChiSoDau.HasValue ? dv.ChiSoCuoi.Value.ToString() : "-")
+                                                if (forecast.MaDv != "dd3791cb-3070-4b3a-b3f1-64c1fbb5916a")
+                                                {
+                                                    @(((dv.ChiSoCuoi - dv.ChiSoDau) * forecast.DonGia ?? 0).ToString("N0"))
+                                                }
+                                                else
+                                                {
+                                                @((forecast.DonGia * caulenhLINQ() ?? 0).ToString("N0"))
+                                                }
                                             }
                                         </td>
                                         <td>@forecast.Dvt</td>
@@ -90,6 +116,7 @@
     </div>
 </div>
 @code {
+    [Parameter] public bool kiemtraloaihoadon { get; set; }
     [Parameter] public bool Chophepchinh { get; set; }
     [Parameter] public List<Hoadon> haodon { get; set; }
     [Parameter] public List<Phong> cacphong { get; set; }
@@ -169,7 +196,7 @@
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        width: 900px;
+        width: 700px;
         max-width: 90%;
         text-align: center;
     }

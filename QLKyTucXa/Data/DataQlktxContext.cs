@@ -93,9 +93,6 @@ public partial class DataQlktxContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("IDNhanVien");
             entity.Property(e => e.MaPhong).HasMaxLength(100);
-            entity.Property(e => e.Mssv)
-                .HasMaxLength(10)
-                .HasColumnName("MSSV");
             entity.Property(e => e.NgayLapHd).HasColumnName("NgayLapHD");
             entity.Property(e => e.PhuongThucThanhToan).HasMaxLength(50);
             entity.Property(e => e.TrangThai).HasMaxLength(50);
@@ -107,10 +104,6 @@ public partial class DataQlktxContext : DbContext
             entity.HasOne(d => d.MaPhongNavigation).WithMany(p => p.Hoadons)
                 .HasForeignKey(d => d.MaPhong)
                 .HasConstraintName("FK_HOADON_PHONG");
-
-            entity.HasOne(d => d.MssvNavigation).WithMany(p => p.Hoadons)
-                .HasForeignKey(d => d.Mssv)
-                .HasConstraintName("FK_HOADON_SINHVIEN");
         });
 
         modelBuilder.Entity<Hopdong>(entity =>

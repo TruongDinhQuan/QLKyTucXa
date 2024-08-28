@@ -16,29 +16,48 @@
                                     <option>Chọn Sản phẩm</option>
                                     @foreach (var lap in dichvu)
                                     {
-                                        <option value="@lap.MaDv">@lap.TenDichVuBatBuoc</option>
+                                        if (!kiemtraloaihoadon)
+                                        {
+                                            if (lap.LoaiDichVu == "DV Bắt Buộc")
+                                            {
+                                                <option value="@lap.MaDv">@lap.TenDichVuBatBuoc</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (lap.LoaiDichVu == "DV thông thường")
+                                            {
+                                                <option value="@lap.MaDv">@lap.TenDichVuBatBuoc</option>
+                                            }
+                                        }
                                     }
                                 </InputSelect>
                             </td>
                         </tr>
-                        <tr>
-                            <td><label for="ChiSoDau" class="form-label">Chỉ Số Đầu:</label></td>
-                            <td>
-                                <InputNumber id="ChiSoDau" class="form-control" @bind-Value="CTHD.ChiSoDau" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="ChiSoCuoi" class="form-label">Chỉ Số Cuối:</label></td>
-                            <td>
-                                <InputNumber id="ChiSoCuoi" class="form-control" @bind-Value="CTHD.ChiSoCuoi" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="SoLuong" class="form-label">Số Lượng:</label></td>
-                            <td>
-                                <InputNumber id="SoLuong" class="form-control" @bind-Value="CTHD.SoLuong" />
-                            </td>
-                        </tr>
+                        @if (!kiemtraloaihoadon)
+                        {
+                            <tr>
+                                <td><label for="ChiSoDau" class="form-label">Chỉ Số Đầu:</label></td>
+                                <td>
+                                    <InputNumber id="ChiSoDau" class="form-control" @bind-Value="CTHD.ChiSoDau" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="ChiSoCuoi" class="form-label">Chỉ Số Cuối:</label></td>
+                                <td>
+                                    <InputNumber id="ChiSoCuoi" class="form-control" @bind-Value="CTHD.ChiSoCuoi" />
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td><label for="SoLuong" class="form-label">Số Lượng:</label></td>
+                                <td>
+                                    <InputNumber id="SoLuong" class="form-control" @bind-Value="CTHD.SoLuong" />
+                                </td>
+                            </tr>
+                        }
                         <tr>
                             <td> <button type="button" @onclick="ThoatVaSave" class="btn btn-danger">Thoát</button> </td>
                             <td colspan="2" class="text-end">
@@ -53,6 +72,7 @@
 }
 
 @code {
+    [Parameter] public bool kiemtraloaihoadon { get; set; }
     [Parameter] public bool bienmemaydi { get; set; }
     [Parameter] public List<Dichvu> dichvu { get; set; }
     public Chitiethoadon CTHD { get; set; } = new Chitiethoadon();

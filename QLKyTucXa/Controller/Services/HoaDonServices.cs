@@ -54,7 +54,37 @@ namespace QLKyTucXa.Controller.Services
             await _dataQlktxContext.SaveChangesAsync();
         }
 
+        public async Task<List<Hoadon>> GetHoaDonByTrangThaiAsync()
+        {
+            var result = await _dataQlktxContext.Hoadons
+                                    .Where(e => e.TrangThai == "Đang thanh toán" && e.MaPhong != null)
+                                    .ToListAsync();
+            return result;
+        }
+
+        public async Task<List<Hoadon>> GetHoaDonByDaThanhToanAsync()
+        {
+            var result = await _dataQlktxContext.Hoadons
+                                    .Where(e => e.TrangThai == "Đã thanh toán" && e.MaPhong != null)
+                                    .ToListAsync();
+            return result;
+        }
+
+        public async Task<List<Hoadon>> GetHoaDonThongThuongAsync()
+        {
+            var result = await _dataQlktxContext.Hoadons
+                                    .Where(e => e.TrangThai == "Đang thanh toán" && e.MaPhong == null)
+                                    .ToListAsync();
+            return result;
+        }
+
         //CTHD
+
+        public async Task<List<Chitiethoadon>> GetCTHDAsync()
+        {
+            var cthd = await _dataQlktxContext.Chitiethoadons.ToListAsync();
+            return cthd;
+        }
         public async Task<Chitiethoadon?> GetChiTietHoaDonByIdAsync(string maHD, string maDV)
         {
             return await _dataQlktxContext.Chitiethoadons

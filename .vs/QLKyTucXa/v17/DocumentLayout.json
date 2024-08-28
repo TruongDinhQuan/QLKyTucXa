@@ -3,28 +3,16 @@
   "WorkspaceRootPath": "G:\\C#\\QLKyTucXa\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\data\\taikhoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\data\\taikhoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\hoadon\\hoadoncomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\hoadon\\hoadoncomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\hoadon\\hienthidv.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\hoadon\\hienthidv.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\controller\\services\\hoadonservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\controller\\services\\hoadonservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\home\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\home\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\home\\chuongthongbao.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\home\\chuongthongbao.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 365,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,76 +30,42 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Taikhoan.cs",
-              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Data\\Taikhoan.cs",
-              "RelativeDocumentMoniker": "QLKyTucXa\\Data\\Taikhoan.cs",
-              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Data\\Taikhoan.cs",
-              "RelativeToolTip": "QLKyTucXa\\Data\\Taikhoan.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAABJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-26T16:08:56.335Z",
+              "DocumentIndex": 1,
+              "Title": "Home.razor",
+              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\Home\\Home.razor",
+              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\Home\\Home.razor",
+              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\Home\\Home.razor",
+              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\Home\\Home.razor",
+              "ViewState": "AQIAALEAAAAAAAAAAAAAAMQAAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-08-28T07:49:18.207Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ChuongThongBao.razor",
-              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\Home\\ChuongThongBao.razor",
-              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\Home\\ChuongThongBao.razor",
-              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\Home\\ChuongThongBao.razor",
-              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\Home\\ChuongThongBao.razor",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-26T14:31:01.993Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "HoaDonServices.cs",
-              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Controller\\Services\\HoaDonServices.cs",
-              "RelativeDocumentMoniker": "QLKyTucXa\\Controller\\Services\\HoaDonServices.cs",
-              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Controller\\Services\\HoaDonServices.cs",
-              "RelativeToolTip": "QLKyTucXa\\Controller\\Services\\HoaDonServices.cs",
-              "ViewState": "AQIAADcAAAAAAAAAAAAwwEkAAAA8AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-26T09:01:09.403Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "MainLayout.razor",
-              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Layout\\MainLayout.razor",
-              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Layout\\MainLayout.razor",
-              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Layout\\MainLayout.razor",
-              "RelativeToolTip": "QLKyTucXa\\Components\\Layout\\MainLayout.razor",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-26T08:50:03.506Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "HienthiDV.razor",
               "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\HoaDon\\HienthiDV.razor",
               "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\HoaDon\\HienthiDV.razor",
               "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\HoaDon\\HienthiDV.razor",
               "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\HoaDon\\HienthiDV.razor",
-              "ViewState": "AQIAAEIAAAAAAAAAAAAAAGEAAAA5AAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAE0AAABSAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-26T07:09:12.114Z"
+              "WhenOpened": "2024-08-28T07:47:48.579Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "HoaDonComponent.razor",
-              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\HoaDon\\HoaDonComponent.razor",
-              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\HoaDon\\HoaDonComponent.razor",
-              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\HoaDon\\HoaDonComponent.razor",
-              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\HoaDon\\HoaDonComponent.razor",
-              "ViewState": "AQIAAE4AAAAAAAAAAAAAAHsAAAAAAAAA",
+              "DocumentIndex": 2,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Layout\\NavMenu.razor",
+              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "QLKyTucXa\\Components\\Layout\\NavMenu.razor",
+              "ViewState": "AQIAAF0AAAAAAAAAAAAAAGkAAAA+AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-22T09:18:14.675Z"
+              "WhenOpened": "2024-08-27T08:55:34.424Z",
+              "EditorCaption": ""
             }
           ]
         }

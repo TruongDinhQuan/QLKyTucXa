@@ -4,6 +4,9 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IHopDongServices HopDongServices
 @inject ISinhVienServices SinhVienServices
+@inject INhanVienServices NhanVienServices
+@inject IHoaDonServices HoaDonServices
+@inject IDichVuServices DichVuServices
 @inject ISnackbar Snackbar
 @inject LuuBien luubien
 @rendermode InteractiveServer
@@ -11,6 +14,16 @@
 
 <PageTitle>Home</PageTitle>
 <style>
+    .container {
+        display: flex;
+        justify-content: space-between; /* Căn giữa khoảng cách giữa các phần tử */
+        gap: 100px; /* Khoảng cách giữa các phần tử */
+    }
+
+    .centered-td {
+        text-align: center;
+    }
+
     .room-box {
         width: 100px;
         height: 100px;
@@ -20,7 +33,6 @@
         justify-content: center;
         font-size: 16px;
         cursor: pointer;
-        margin: 10px;
         text-align: center;
     }
 
@@ -28,64 +40,180 @@
             background-color: #d3d3d3;
             cursor: default;
         }
+
+    .invoice-card {
+        background-color: #F1F8E9;
+        padding: 1rem;
+        border-radius: 0.25rem;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
 </style>
+
 <AuthorizeView Roles="User">
-    <Authorized>
-        @if (userExists)
-        {
-            @if (luubien.IdPhong is null)
+    <Authorized Context="authorizedContext">
+        <div class="container">
+            @if (userExists)
             {
-                <div class="col-md-2">
-                    <div class="card mb-2" style="background-color: #BDBDBD;">
-                        <div class="card-body" style="color: #333;">
-                            <h5 class="card-title">Chưa có Phòng</h5>
-                            <a class="card-title" href="/phong">Đăng ký ngay</a>
-                        </div>
-                    </div>
-                </div>
-            }
-            else if (bien == "Đang chờ phê duyệt")
-            {
-                <div class="col-md-3">
-                    <div class="card mb-2" style="background-color: #EFEBE9;">
-                        <div class="card-body" style="color: #333;">
-                            <h5 class="card-title">Chờ xét duyệt</h5>
-                            <div>
-                                <button class="btn btn-secondary" @onclick="sua">Sửa phòng</button>
-                                <button class="btn btn-danger" @onclick="xoa">Hủy</button>
+                @if (luubien.IdPhong is null)
+                {
+                    <div class="col-md-4">
+                        <h6>Phòng của bạn là:</h6>
+                        <div class="card mb-2" style="background-color: #BDBDBD;">
+                            <div class="card-body" style="color: #333;">
+                                <h5 class="card-title">Chưa có Phòng</h5>
+                                <a class="card-title" href="/phong">Đăng ký ngay</a>
                             </div>
                         </div>
                     </div>
-                </div>
-                <Delete @rendermode="InteractiveServer" xacnhan="xacnhanxoa" OnCancel="CancelDelete" OnOK="okDelete"></Delete>
+                }
+                else if (bien == "Đang chờ phê duyệt")
+                {
+                    <div class="col-md-4">
+                        <h6>Phòng của bạn là:</h6>
+                        <div class="card mb-3" style="background-color: #EFEBE9;">
+                            <div class="card-body" style="color: #333;">
+                                <h5 class="card-title">Chờ xét duyệt</h5>
+                                <div>
+                                    <button class="btn btn-secondary" @onclick="sua">Sửa phòng</button>
+                                    <button class="btn btn-danger" @onclick="xoa">Hủy</button>
+                                </div>
+                            </div>
+                        </div>
+                        <Delete @rendermode="InteractiveServer" xacnhan="xacnhanxoa" OnCancel="CancelDelete" OnOK="okDelete"></Delete>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-2">
+                        <h6>Phòng của bạn là:</h6>
+                        <div class="card mb-2" style="background-color: #EF9A9A;">
+                            <div class="card-body" style="color: #333;">
+                                <h5 class="card-title">@phong.TenPhong</h5>
+                                <p class="card-text"><strong>Khu:</strong> @phong.Khu</p>
+                                <p class="card-text"><strong>Tầng:</strong> @phong.Tang</p>
+                                <p class="card-text"><strong>Số giường:</strong> @phong.SoGiuong</p>
+                            </div>
+                        </div>
+                    </div>
+                }
             }
             else
             {
-                <h2>Phòng của bạn là:</h2>
-                <div class="col-md-2">
-                    <div class="card mb-2" style="background-color: #EF9A9A;">
+                <div class="col-md-4">
+                    <div class="card mb-2" style="background-color: #FFE0B2;">
                         <div class="card-body" style="color: #333;">
-                            <h5 class="card-title">@phong.TenPhong</h5>
-                            <p class="card-text"><strong>Khu:</strong> @phong.Khu</p>
-                            <p class="card-text"><strong>Tầng:</strong> @phong.Tang</p>
-                            <p class="card-text"><strong>Số giường:</strong> @phong.SoGiuong</p>
+                            <a href="/Addsinhvien">Cập nhật thông tin</a>
                         </div>
                     </div>
                 </div>
             }
-        }
-        else
-        {
-            <div class="col-md-2">
-                <div class="card mb-2" style="background-color: #FFE0B2;">
-                    <div class="card-body" style="color: #333;">
-                        <a href="/Addsinhvien">Cập nhật thông tin</a>
-                    </div>
-                </div>
+            <!-- Hóa đơn hiển thị bên phải -->
+            <div class="invoice-card">
+                <h4 style="text-align: center;">Thông tin Hóa Đơn</h4>
+                @if (dungdehienthiCHTD.Any())
+                {
+                    if(luubien.bienkiemtraguihoadon == true)
+                    {
+                        <ul>
+                            <li>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>
+                                        <strong>Mã HD: </strong> @hoadon?.MaHd <br />
+                                    </div>
+                                    <div style="margin-right: 106px;">
+                                        <strong>Phòng: </strong>
+                                            @foreach (var i in cacphong)
+                                            {
+                                                if (i.MaPhong == hoadon?.MaPhong)
+                                                {
+                                                    @i.TenPhong
+                                                }
+                                            }
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>
+                                        <strong>Ngày Lập: </strong> @hoadon?.NgayLapHd?.ToString("dd/MM/yyyy")
+                                    </div>
+                                    <div>
+                                        <strong>Nhân Viên: </strong>
+                                        @foreach (var i in cacnhanvien)
+                                        {
+                                            if (i.IdnhanVien == hoadon?.IdnhanVien)
+                                            {
+                                                @i.HoTen
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <br />
+                        <MudTable Items="@dungdehienthiCHTD" Hover="true" Breakpoint="Breakpoint.Sm" Style="background-color:#F1F8E9;">
+                            <HeaderContent>
+                                <MudTh>Tên Dịch vụ</MudTh>
+                                <MudTh>Chỉ Số Đầu </MudTh>
+                                <MudTh>Chỉ Số Cuối</MudTh>
+                                <MudTh>Chỉ Số Tiệu Thụ</MudTh>
+                                <MudTh>Đơn Giá</MudTh>
+                                <MudTh>Thành Tiền</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="MaDv">
+                                    @foreach (var i in cacdichvu)
+                                    {
+                                        if (i.MaDv == context.MaDv)
+                                        {
+                                            @i.TenDichVuBatBuoc
+                                        }
+                                    }
+                                </MudTd>
+                                <MudTd DataLabel="ChiSoDau" Class="centered-td">@context.ChiSoDau</MudTd>
+                                <MudTd DataLabel="ChiSoCuoi" Class="centered-td">@context.ChiSoCuoi</MudTd>
+                                <MudTd DataLabel="ChiSoTieuThu" Class="centered-td">@(context.ChiSoCuoi - context.ChiSoDau)</MudTd>
+                                <MudTh DataLabel="DonGia" Class="centered-td">
+                                    @foreach (var i in cacdichvu)
+                                    {
+                                        if (i.MaDv == context.MaDv)
+                                        {
+                                            @i.DonGia.Value.ToString("N0")
+                                        }
+                                    }
+                                </MudTh>
+                                <MudTh DataLabel="ThanhTien" Class="centered-td">
+                                    @foreach (var i in cacdichvu)
+                                    {
+                                        if (i.MaDv == context.MaDv)
+                                        {
+                                            if (i.MaDv != "dd3791cb-3070-4b3a-b3f1-64c1fbb5916a")
+                                            {
+                                                @(((context.ChiSoCuoi - context.ChiSoDau) * i.DonGia ?? 0).ToString("N0"))
+                                            }
+                                            else
+                                            {
+                                                @((i.DonGia * phong?.SoNguoiO ?? 0).ToString("N0"))
+                                            }
+                                        }
+                                    }
+                                </MudTh>
+                            </RowTemplate>
+                        </MudTable>
+                        <br />
+                        <div style="display: flex; justify-content: flex-end; align-items: center;">
+                            <label style="margin-right: 30px; font-weight: bold;">Tổng Tiền</label>
+                            <span style="margin-right: 20px; font-weight: bold;">@tongtien.ToString("N0")</span>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>Chưa có hóa đơn nào.</p>
+                }
             </div>
-        }
+        </div>
     </Authorized>
 </AuthorizeView>
+
 
 <AuthorizeView>
     <Authorized>
@@ -95,15 +223,22 @@
 
 @code {
     private ClaimsPrincipal? user;
-    private Phong? phong = new Phong();
     private List<Hopdong> cachopdong = new List<Hopdong>();
     private List<Sinhvien?> cacsinhvien = new List<Sinhvien?>();
+    private List<Nhanvien?> cacnhanvien = new List<Nhanvien?>();
+    private List<Phong> cacphong = new List<Phong>();
+    private List<Hoadon> cachoadon = new List<Hoadon>();
+    private List<Chitiethoadon> cacCTHD = new List<Chitiethoadon>();
+    private List<Chitiethoadon> dungdehienthiCHTD = new List<Chitiethoadon>();
+    private List<Dichvu> cacdichvu = new List<Dichvu>();
     private Sinhvien? sinhvien = new Sinhvien();
     private Hopdong? hopdong = new Hopdong();
-    private string bien;
+    private Hoadon hoadon = new Hoadon();
+    private Phong? phong = new Phong();
+    private string? bien, idToDelete, Mahd;
     bool userExists;
+    double tongtien = 0;
     private bool xacnhanxoa = false;
-    private string? idToDelete;
 
     protected override async Task OnInitializedAsync()
     {
@@ -133,29 +268,64 @@
                         luubien.IdPhong = null;
                 }
             }
-                phong = await PhongServices.GetPhongByIdAsync(luubien.IdPhong);
-                hopdong = await HopDongServices.GetPhongByIdAsync(idToDelete);
+            phong = await PhongServices.GetPhongByIdAsync(luubien.IdPhong);
+            hopdong = await HopDongServices.GetPhongByIdAsync(idToDelete);
+
+            cacCTHD = await HoaDonServices.GetCTHDAsync();
+            cacdichvu = await DichVuServices.GetDichvuAsync();
+            cachoadon = await HoaDonServices.GetHoaDonByTrangThaiAsync();
+            cacphong = await PhongServices.GetPhongAsync();
+            cacnhanvien = await NhanVienServices.GetPhongAsync();
+            if (user.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToString() != null)
+            {
+                dungdehienthiCHTD = GetChiTietHoaDon(user.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToString());
+
+                if (dungdehienthiCHTD.Any())
+                {
+                    Mahd = dungdehienthiCHTD.FirstOrDefault()?.MaHd;
+                }
+
+                hoadon = await HoaDonServices.GetHoaDonnByIdAsync(Mahd);
+
+                tongtien = dungdehienthiCHTD.Sum(item =>
+                {
+                                foreach (var dv in cacdichvu)
+                                {
+                                    if (dv.MaDv == item.MaDv)
+                                    {
+                                        if (dv.MaDv != "dd3791cb-3070-4b3a-b3f1-64c1fbb5916a")
+                                            return (item.ChiSoCuoi - item.ChiSoDau) * dv.DonGia ?? 0;
+                                        else
+                                            return dv.DonGia * phong?.SoNguoiO ?? 0;
+                                    }
+                                }
+                                return 0; 
+                });
+            }
         }
     }
-    void sua()
+
+    public List<Chitiethoadon> GetChiTietHoaDon(string userId)
     {
-        Navigation.NavigateTo($"/phong?SoHopdong={hopdong?.SoHopDong}");
+        var result = from cthd in cacCTHD    join dv in cacdichvu on cthd.MaDv equals dv.MaDv
+                     join hd in cachoadon on cthd.MaHd equals hd.MaHd
+                     join p in cacphong on hd.MaPhong equals p.MaPhong
+                     join hdg in cachopdong on p.MaPhong equals hdg.MaPhong
+                     join sv in cacsinhvien on hdg.Mssv equals sv.Mssv      where sv.Iduser == userId
+                     select cthd;
+        return result.ToList();
     }
 
-    private void xoa()
-    {
-        xacnhanxoa = true;
-    }
+    void sua() => Navigation.NavigateTo($"/phong?SoHopdong={hopdong?.SoHopDong}");
 
-    private void CancelDelete()
-    {
-        xacnhanxoa = false;
-    }
+    private void xoa() => xacnhanxoa = true;
+
+    private void CancelDelete() => xacnhanxoa = false;
 
     private async Task okDelete()
     {
         Snackbar.Add("xóa thành công!", Severity.Success);
-        await Task.Delay(1300);
+        await Task.Delay(900);
         if (!string.IsNullOrEmpty(idToDelete))
         {
             await HopDongServices.DeletehopdongAsync(idToDelete);

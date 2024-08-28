@@ -52,5 +52,24 @@ namespace QLKyTucXa.Controller.Services
                 await context.SaveChangesAsync();
             }
         }
+
+        //Gửi thông báo cho nhiều sinh viên
+        public async Task GuiThongBaoAsync(List<string> idUsers, string noiDung)
+        {
+            foreach (var idUser in idUsers)
+            {
+                var thongBaoMoi = new ThongBao
+                {
+                    MaThongBao = Guid.NewGuid().ToString(),
+                    Iduser = idUser,
+                    NoiDung = noiDung,
+                    ThoiGianThongBao = DateTime.Now,
+                    TrangThaiThongBao = false,
+                    LoaiThongBao = "Bình Thường"
+                };
+                await AddThongBaoAsync(thongBaoMoi);
+            }
+        }
+
     }
 }

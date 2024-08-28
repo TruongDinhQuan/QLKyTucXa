@@ -15,8 +15,6 @@ public partial class Hoadon
 
     public string? MaPhong { get; set; }
 
-    public string? Mssv { get; set; }
-
     public string? IdnhanVien { get; set; }
 
     public virtual ICollection<Chitiethoadon> Chitiethoadons { get; set; } = new List<Chitiethoadon>();
@@ -24,6 +22,4 @@ public partial class Hoadon
     public virtual Nhanvien? IdnhanVienNavigation { get; set; }
 
     public virtual Phong? MaPhongNavigation { get; set; }
-
-    public virtual Sinhvien? MssvNavigation { get; set; }
 }

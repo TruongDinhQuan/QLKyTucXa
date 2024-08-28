@@ -1,20 +1,23 @@
 ﻿    @page "/hoadonbatbuoc"
+@using Microsoft.Extensions.Options
     @inject IHoaDonServices HoaDonServices
     @inject IDichVuServices DichVuServices
     @inject IThongBaoServices ThongBaoServices
     @inject INhanVienServices NhanVienServices
+    @inject IHopDongServices HopDongServices
     @inject ISinhVienServices SinhVienServices
     @inject IPhongServices PhongServices
     @inject NavigationManager navigationManager
     @inject AuthenticationStateProvider AuthenticationStateProvider
     @inject ISnackbar Snackbar
+    @inject LuuBien luubien
     @rendermode InteractiveServer
-    <PageTitle>HoaDon</PageTitle>
+    <PageTitle>HoaDonBatBuoc</PageTitle>
      <button class="btn btn-primary" @onclick="themmoi">Thêm mới</button> 
 @if (isAddingNew)
 {
-    <ThaoTacHD bienkiemtra="isAddingNew" sinhvien="sinhvien" phong="cacphong" OnSave="LuuHD" ThoatVaSave="CancelDelete">
-    </ThaoTacHD>
+    <TaoHD bienkiemtra="isAddingNew" cachoadon="hoadondonkiemtra" phong="cacphong" OnSave="LuuHD" ThoatVaSave="CancelDelete">
+    </TaoHD>
 }
 
 @if (bienthemsp)
@@ -37,16 +40,16 @@
     {
     <MudTable Items="@haodon" Hover="true" Breakpoint="Breakpoint.Sm" Style="background-color:#D7CCC8;">
             <ColGroup>
-                <col style="width:100px;" />
+                <col style="width:90px;" />
                 <col style="width:120px;" />
                 <col style="width:130px;" />
                 <col style="width:90px;" />
                 <col style="width:60px;" />
-                <col style="width:400px;" />    
+                <col style="width:470px;" />    
             </ColGroup>
             <HeaderContent>
                 <MudTh>Ngày Lập</MudTh>
-                <MudTh>PT ThanhToán</MudTh>
+                <MudTh>Phương Thức ThanhToán</MudTh>
                 <MudTh>Trạng Thái</MudTh>
                 <MudTh>Sản Phẩm</MudTh>
                 <MudTh>Phòng</MudTh>
@@ -67,19 +70,21 @@
                     }
                 </MudTh>
                 <MudTd>
-                    <button class="btn btn-info" @onclick="@(() => themsp(context.MaHd))">Thêm D.Vụ</button>
-                    <button class="btn btn-secondary" @onclick="@(() => Update(context.MaHd))">Sửa</button>
-                    <button class="btn btn-danger" @onclick="@(() => Delete(context.MaHd))">Xóa</button>
-                    <button class="btn btn-dark" @onclick="@(() => gui(context.MaHd))">Gửi</button>
-                    <button class="btn btn-warning" @onclick="@(() => thanhtoan(context.MaHd))">ThanhToán</button>
+                        <button class="btn btn-info" @onclick="@(() => themsp(context.MaHd))">Thêm D.Vụ</button>
+                        <button class="btn btn-secondary" @onclick="@(() => Update(context.MaHd))">Sửa</button>
+                        <button class="btn btn-danger" @onclick="@(() => Delete(context.MaHd))">Xóa</button>
+                        <MudButton Variant="Variant.Filled" @onclick="@(() => gui(context.MaPhong))" Color="Color.Tertiary">Gửi</MudButton>
+                        <MudSnackbarProvider />
+                    <MudButton Variant="Variant.Filled" @onclick="@(() => thanhtoan(context))" Color="Color.Warning">ThanhToán</MudButton>
+                        <MudSnackbarProvider />
                 </MudTd>
             </RowTemplate>
         </MudTable>
     }
     <Delete @rendermode="InteractiveServer" xacnhan="xacnhanxoa" OnCancel="CancelDelete" OnOK="okDelete"></Delete>
-
 @code {
     private List<Hoadon> haodon = new List<Hoadon>();
+    private List<Hoadon> hoadondonkiemtra = new List<Hoadon>();
     private Hoadon hoadon1 = new Hoadon();
     private Nhanvien nhanvien = new Nhanvien();
     private List<Dichvu> dichvu = new List<Dichvu>();
@@ -87,6 +92,7 @@
     private Chitiethoadon bienluuCTHD = new Chitiethoadon();
     private List<Sinhvien> sinhvien = new List<Sinhvien>();
     private List<Phong> cacphong = new List<Phong>();
+    private List<Hopdong> cachopdong = new List<Hopdong>();
     private string? idToDelete;
     private bool xacnhanxoa = false;
     private bool isAddingNew = false;
@@ -98,7 +104,8 @@
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         user = authState.User;
-        haodon = await HoaDonServices.GetHoaDonAsync();
+        haodon = await HoaDonServices.GetHoaDonByTrangThaiAsync();
+        cachopdong = await HopDongServices.GetPhongAsync();
         dichvu = await DichVuServices.GetDichvuAsync();
         sinhvien = await SinhVienServices.laydssinhvien();
         cacphong = await PhongServices.GetPhongAsync();
@@ -114,14 +121,45 @@
         }
     }
 
-    private void thanhtoan(string id)
+    private async Task thanhtoan(Hoadon haodonn)
     {
-        
+        Snackbar.Add("Đã thanh toán thành công!", Severity.Success, options =>
+        {
+            options.VisibleStateDuration = 2000; // Or a similar property for duration
+        });
+        haodonn.TrangThai = "Đã thanh toán";
+        if (haodonn.MaPhong != null)
+        {
+            guithongbao(haodonn.MaPhong, cachopdong, "Phòng của bạn đã thanh toán!");
+        }
+        await HoaDonServices.UpdateHoaDonAsync(haodonn);
+        haodon = await HoaDonServices.GetHoaDonByTrangThaiAsync();
     }
 
-    private void gui(string id)
+    private async Task gui(string? hoadon)
     {
+        if(hoadon != null)
+        {
+            guithongbao(hoadon, cachopdong, "Đã có hóa đơn điện nước. Thanh toán nhanh!");
+            luubien.bienkiemtraguihoadon = true;
+        }
+    }
 
+    private void guithongbao(string? hoadon,List<Hopdong> cachopdong, string noidung)
+    {
+        var result = (from p in cacphong
+                      join hdg in cachopdong on p.MaPhong equals hdg.MaPhong
+                      join sv in sinhvien on hdg.Mssv equals sv.Mssv
+                      where p.MaPhong == hoadon
+                      select sv.Iduser).Distinct().ToList();
+
+        if (result.Count > 0)
+        {
+            ThongBaoServices.GuiThongBaoAsync(result, noidung);
+            Snackbar.Add("Đã gửi thông báo cho sinh viên!", Severity.Success);
+        }
+        else
+            Snackbar.Add("Không tìm thấy sinh viên trong phòng này.", Severity.Warning);
     }
 
     private async Task xoaDV(Chitiethoadon chiTietHoaDon)
@@ -139,12 +177,11 @@
         hoadon1.PhuongThucThanhToan = data.PhuongThucThanhToan;
         hoadon1.TrangThai = "Đang thanh toán";
         hoadon1.MaPhong = data.MaPhong;
-        hoadon1.Mssv = data.Mssv;
         hoadon1.IdnhanVien = nhanvien.IdnhanVien;
         await HoaDonServices.AddHoaDonAsync(hoadon1);
         Snackbar.Add("Hóa đơn đã được tạo thành công!", Severity.Success);
         isAddingNew = false;
-        haodon = await HoaDonServices.GetHoaDonAsync();
+        haodon = await HoaDonServices.GetHoaDonByTrangThaiAsync();
     }
 
     private async Task luuCTHD(Chitiethoadon dt)
@@ -157,7 +194,11 @@
         //Snackbar.Add("Sản phẩm đã được thêm thành công!", Severity.Success);
         bienthemsp = false;
     }
-    private void themmoi() => isAddingNew = true;
+    private async Task themmoi()
+    {
+        hoadondonkiemtra = await HoaDonServices.GetHoaDonAsync();
+        isAddingNew = true;
+    }
 
     private void Update(string id) => navigationManager.NavigateTo($"/Addhoadon/{id}");
 
@@ -181,7 +222,7 @@
         {
             await HoaDonServices.DeleteToanBoCTHDAsync(idToDelete);
             await HoaDonServices.DeleteHoaDonAsync(idToDelete);
-            haodon = await HoaDonServices.GetHoaDonAsync();
+            haodon = await HoaDonServices.GetHoaDonByTrangThaiAsync();
             xacnhanxoa = false;
         }
     }
