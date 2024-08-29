@@ -2,38 +2,128 @@
 @inject DataQlktxContext dbcontext
 @inject NavigationManager navigationManager
 @attribute [AllowAnonymous]
-<div class="row">
-    <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
+
+<div class="login-container">
+    <div class="login-form">
+        <img src="/image/q-h-logo.png" alt="StudyBuddy" class="logo">
+        <h4 class="text-center">Đăng nhập</h4>
         <EditForm Model="@Model" OnValidSubmit="Authenticate" FormName="LoginForm">
-            <DataAnnotationsValidator/>
-            <div class="mb-3 text-center flex-column">
-                <img src="/image/Screenshot 2024-08-05 162350.png" style="max-height:5rem;"/>
-                <h3>Đăng Nhập</h3>
-            </div>
+            <DataAnnotationsValidator />
+
             <div class="mb-3">
-                <label>Tên Đăng Nhập</label>
-                <InputText @bind-Value="Model.Username" class="form-control" placeholder="Username"></InputText>
-                <ValidationMessage For="() => Model.Username"/>
+                <label for="username" class="form-label">Email</label>
+                <InputText id="username" @bind-Value="Model.Username" class="form-control" placeholder="Email"></InputText>
+                <ValidationMessage For="() => Model.Username" />
             </div>
+
             <div class="mb-3">
-                <label>Mật Khẩu</label>
-                <InputText @bind-Value="Model.Password" class="form-control" placeholder="Password" type="password"></InputText>
+                <label for="password" class="form-label">Mật khẩu</label>
+                <InputText id="password" @bind-Value="Model.Password" class="form-control" placeholder="Password" type="password"></InputText>
                 <ValidationMessage For="() => Model.Password" />
             </div>
+
             <div class="mb-3 text-center">
                 <span class="text-danger">@errorMessage</span>
             </div>
-            <div class="mb-3 d-grid gap-2">
-                <button type="submit" class="btn btn-primary">Login</button>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
             </div>
-            <div>
-                <label>Chưa có tài khoản?</label>
-                <a href="/register" style="color: blue; text-decoration: none;">Đăng ký</a>
-                <a href="/quenmatkhau" style="color: brown; margin-left: 112px;">Quên mật khẩu</a>
+
+            <div class="text-center">
+                <span>Chưa có tài khoản? </span>
+                <a href="/register" class="link">Đăng ký</a> |
+                <a href="/quenmatkhau" class="link">Quên mật khẩu?</a>
+            </div>
+
+            <div class="or-separator">
+                <span>HOẶC</span>
+            </div>
+
+            <div class="social-login">
+                <button type="button" class="btn btn-outline-primary w-100 mb-2">
+                    <img src="/image/fb.png" class="icon" alt="Facebook"> Facebook
+                </button>
+                <button type="button" class="btn btn-outline-danger w-100">
+                    <img src="/image/gg.png" class="icon" alt="Google"> Google
+                </button>
             </div>
         </EditForm>
     </div>
 </div>
+
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .login-container {
+        background-image: url('/image/a01.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .login-form {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+        display: block;
+        margin: 0 auto 20px;
+        max-height: 80px;
+    }
+
+    .or-separator {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 14px;
+        color: #999;
+        position: relative;
+    }
+
+    .or-separator span {
+        background: #fff;
+        padding: 0 10px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .or-separator::before {
+        content: "";
+        height: 1px;
+        background: #ddd;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        z-index: 0;
+    }
+
+    .social-login .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .social-login .icon {
+        height: 24px;
+        margin-right: 8px;
+    }
+</style>
+
 
 
 @code {
