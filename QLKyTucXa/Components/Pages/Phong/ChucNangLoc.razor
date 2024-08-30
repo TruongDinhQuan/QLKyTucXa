@@ -35,7 +35,7 @@
                 <option value="">Tất cả</option>
                 @foreach (var khu in phongs.Select(p => p.Khu).Distinct())
                 {
-                    <option value="@khu" selected="@khu == SelectedKhu">@khu</option>
+                    <option value="@khu">@khu</option>
                 }
             </select>
         </div>
@@ -45,7 +45,7 @@
                 <option value="">Tất cả</option>
                 @foreach (var tang in phongs.Select(p => p.Tang).Distinct())
                 {
-                    <option value="@tang" selected="@tang == SelectedTang">@tang</option>
+                    <option value="@tang">@tang</option>
                 }
             </select>
         </div>
@@ -55,7 +55,7 @@
                 <option value="">Tất cả</option>
                 @foreach (var giuong in phongs.Select(p => p.SoGiuong).Distinct())
                 {
-                    <option value="@giuong" selected="@giuong == SelectedGiuong">@giuong</option>
+                    <option value="@giuong">@giuong</option>
                 }
             </select>
         </div>

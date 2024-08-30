@@ -8,51 +8,51 @@
 @rendermode InteractiveServer
 <PageTitle>Hopdong</PageTitle>
 
-@if(hopdong != null)
-{
-    <div class="header">
-        <p>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
-        <p>Độc lập - Tự do - Hạnh phúc</p>
-        <p><br></p>
-        <p>HỢP ĐỒNG THUÊ CHỖ Ở NỘI TRÚ</p>
-    </div>
-    <div class="content">
-        <div style="text-align: center;">
-            <p>Hôm nay, Ngày @hopdong?.NgayLap?.Day Tháng @hopdong?.NgayLap?.Month Năm @hopdong?.NgayLap?.Year, Tại Ký Túc Xá Trường Bia</p>
-            <p>Hai bên gồm:</p>
+    @if (hopdong != null)
+    {
+        <div class="header">
+            <p>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+            <p>Độc lập - Tự do - Hạnh phúc</p>
+            <p><br></p>
+            <p>HỢP ĐỒNG THUÊ CHỖ Ở NỘI TRÚ</p>
         </div>
+        <div class="content">
+            <div style="text-align: center;">
+                <p>Hôm nay, Ngày @hopdong?.NgayLap?.Day Tháng @hopdong?.NgayLap?.Month Năm @hopdong?.NgayLap?.Year, Tại Ký Túc Xá Trường Bia</p>
+                <p>Hai bên gồm:</p>
+            </div>
 
-        <div class="section">
-            <p><strong>BÊN CHO THUÊ (Bên A): TRƯỜNG: Bia</strong></p>
-            <p>Đại diện: @nhanvien?.HoTen. Đơn vị công tác: Trường Bia.</p>
-            <p>Chức vụ: @nhanvien?.ChucVu. Số điện thoại: @nhanvien?.Sdt</p>
+            <div class="section">
+                <p><strong>BÊN CHO THUÊ (Bên A): TRƯỜNG: Bia</strong></p>
+                <p>Đại diện: @nhanvien?.HoTen. Đơn vị công tác: Trường Bia.</p>
+                <p>Chức vụ: @nhanvien?.ChucVu. Số điện thoại: @nhanvien?.Sdt</p>
+            </div>
+            <div class="section">
+                <p><strong>BÊN THUÊ CHỖ Ở (Bên B):</strong></p>
+                <p>Họ tên sinh viên: @sinhvien?.TenSinhVien.    Nam (Nữ): @sinhvien?.GioiTinh.</p>
+                <p>Năm sinh: @sinhvien?.NgaySinh?.ToString("dd/MM/yyyy"). Mã SV: @sinhvien?.Mssv.</p>
+                <p>Lớp: @sinhvien?.Lop. Khoa: @sinhvien?.Khoa. </p>
+                <p>Số điện thoại: @sinhvien?.Sdt. Email: @user?.FindFirst(ClaimTypes.Email)?.Value.</p>
+                <p>Hộ khẩu thường trú: @sinhvien?.DiaChi.</p>
+            </div>
+            <p>Bên A được ủy quyền bởi hiệu trưởng Trường Bia.</p>
+            <p>Cùng bên B, thống nhất ký hợp đồng cho thuê chỗ ở nội trú tại Ký túc xá Trường Bia. Với các điều khoản sau:</p>
+            <div class="section">
+                <p><strong>Điều 1:</strong> Bên A đồng ý cho bên B thuê 01 chỗ ở tại phòng số: @phong?.TenPhong tầng: @phong?.Tang khu: @phong?.Khu. Ký túc xá Trường Bia</p>
+            </div>
+            <div class="section">
+                <p><strong>Điều 2:</strong> Giá cả thời gian và phương thức thanh toán:</p>
+                <p>2.1. Đơn giá cho thuê 200.000 đồng/tháng</p>
+                <p>2.3. Thời gian cho thuê: 01 năm học 10 tháng tính từ ngày @hopdong?.ThoiGianBatDau?.ToString("dd/MM/yyyy") đến ngày @hopdong?.ThoiGianKetThuc?.ToString("dd/MM/yyyy")</p>
+                <p>Chấm dứt hợp đồng khi hết hạn hiệu lực của hợp đồng</p>
+            </div>
         </div>
-        <div class="section">
-            <p><strong>BÊN THUÊ CHỖ Ở (Bên B):</strong></p>
-            <p>Họ tên sinh viên: @sinhvien?.TenSinhVien.    Nam (Nữ): @sinhvien?.GioiTinh.</p>
-            <p>Năm sinh: @sinhvien?.NgaySinh?.ToString("dd/MM/yyyy"). Mã SV: @sinhvien?.Mssv.</p>
-            <p>Lớp: @sinhvien?.Lop. Khoa: @sinhvien?.Khoa. </p>
-            <p>Số điện thoại: @sinhvien?.Sdt. Email: @user?.FindFirst(ClaimTypes.Email)?.Value.</p>
-            <p>Hộ khẩu thường trú: @sinhvien?.DiaChi.</p>
-        </div>
-        <p>Bên A được ủy quyền bởi hiệu trưởng Trường Bia.</p>
-        <p>Cùng bên B, thống nhất ký hợp đồng cho thuê chỗ ở nội trú tại Ký túc xá Trường Bia. Với các điều khoản sau:</p>
-        <div class="section">
-            <p><strong>Điều 1:</strong> Bên A đồng ý cho bên B thuê 01 chỗ ở tại phòng số: @phong?.TenPhong tầng: @phong?.Tang khu: @phong?.Khu. Ký túc xá Trường Bia</p>
-        </div>
-        <div class="section">
-            <p><strong>Điều 2:</strong> Giá cả thời gian và phương thức thanh toán:</p>
-            <p>2.1. Đơn giá cho thuê 200.000 đồng/tháng</p>
-            <p>2.3. Thời gian cho thuê: 01 năm học 10 tháng tính từ ngày @hopdong?.ThoiGianBatDau?.ToString("dd/MM/yyyy") đến ngày @hopdong?.ThoiGianKetThuc?.ToString("dd/MM/yyyy")</p>
-            <p>Chấm dứt hợp đồng khi hết hạn hiệu lực của hợp đồng</p>
-        </div>
-    </div>
-    <br />
-}
-else
-{
-    <h7>Bạn cần đăng ký đặt phòng mới có hợp đồng để xem</h7>
-}
+        <br />
+    }
+    else
+    {
+        <h7>Bạn cần đăng ký đặt phòng mới có hợp đồng để xem</h7>
+    }
 
 @code {
     private Sinhvien? sinhvien = new Sinhvien();
@@ -80,12 +80,6 @@ else
     }
 }
 <style>
-
-    body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-    }
-
     .header, .footer {
         text-align: center;
         font-weight: bold;

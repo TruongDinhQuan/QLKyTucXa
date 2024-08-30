@@ -69,13 +69,20 @@
                                         <td>
                                             @if (forecast.MaDv == dv.MaDv)
                                             {
-                                                if (forecast.MaDv != "dd3791cb-3070-4b3a-b3f1-64c1fbb5916a")
+                                                if (kiemtraloaihoadon)
                                                 {
-                                                    @(((dv.ChiSoCuoi - dv.ChiSoDau) * forecast.DonGia ?? 0).ToString("N0"))
+                                                    @((dv.SoLuong * forecast.DonGia ?? 0).ToString("N0"))
                                                 }
                                                 else
                                                 {
-                                                @((forecast.DonGia * caulenhLINQ() ?? 0).ToString("N0"))
+                                                    if (forecast.MaDv != "dd3791cb-3070-4b3a-b3f1-64c1fbb5916a")
+                                                    {
+                                                        @(((dv.ChiSoCuoi - dv.ChiSoDau) * forecast.DonGia ?? 0).ToString("N0"))
+                                                    }
+                                                    else
+                                                    {
+                                                        @((forecast.DonGia * caulenhLINQ() ?? 0).ToString("N0"))
+                                                    }   
                                                 }
                                             }
                                         </td>

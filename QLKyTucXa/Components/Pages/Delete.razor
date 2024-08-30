@@ -6,7 +6,7 @@
                 Xác nhận xóa?
             </h3>
             <div class="d-flex-row justify-content-end mt-3">
-                <button @onclick="OnCancel" class="btn btn-danger shadow-none">Thoát</button>
+                <MudButton Variant="Variant.Filled" OnClick="OnCancel" Color="Color.Error">Thoát</MudButton>
                 <MudButton Variant="Variant.Filled" @onclick="OnOK" Color="Color.Primary">Xác nhận</MudButton>
                 <MudSnackbarProvider />
             </div>

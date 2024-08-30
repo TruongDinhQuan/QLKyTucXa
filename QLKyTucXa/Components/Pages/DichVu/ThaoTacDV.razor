@@ -2,6 +2,7 @@
 @inject NavigationManager navigationManager
 @inject IDichVuServices DichVuServices
 @inject IPhongServices PhongServices
+@inject ISnackbar Snackbar
 @rendermode InteractiveServer
 
 @if (!string.IsNullOrEmpty(id))
@@ -17,7 +18,6 @@ else
     <div class="addbook_form_body">
         <EditForm Model="dichvu" OnValidSubmit="HandleValidSubmit">
             <DataAnnotationsValidator />
-            <ValidationSummary />
             <h3>
                 @(!string.IsNullOrEmpty(id) ? "Cập Nhật Dịch Vụ" : "Thêm Dịch Vụ")
             </h3>
@@ -55,7 +55,8 @@ else
             </div>
             <br />
             <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">Lưu</button>
+                <MudButton OnClick="HandleValidSubmit" Variant="Variant.Filled" Color="Color.Primary">Lưu</MudButton>
+                <MudSnackbarProvider />
                 <button type="button" class="btn btn-warning" @onclick="quaylai">Quay lại</button>
             </div>
         </EditForm>
@@ -80,15 +81,56 @@ else
     {
         if (string.IsNullOrEmpty(dichvu.MaDv))
         {
-            dichvu.MaDv = Guid.NewGuid().ToString();
-            await DichVuServices.AddDichvuAsync(dichvu);
+            if ((string.IsNullOrEmpty(dichvu.TenDichVuBatBuoc) || dichvu.DonGia == null || string.IsNullOrEmpty(dichvu.Dvt) || string.IsNullOrEmpty(dichvu.LoaiDichVu)))
+            {
+                Snackbar.Add("Bạn cần nhập đầy đủ thông tin!", Severity.Warning, config =>
+                {
+                    config.VisibleStateDuration = 400;
+                    config.HideTransitionDuration = 100;
+                    config.ShowTransitionDuration = 500;
+                });
+                return;
+            }
+            else 
+            {
+                Snackbar.Add("Thêm dịch vụ thành công!", Severity.Success, config =>
+                {
+                    config.VisibleStateDuration = 400;
+                    config.HideTransitionDuration = 100;
+                    config.ShowTransitionDuration = 500;
+                });
+                await Task.Delay(1000);
+                dichvu.MaDv = Guid.NewGuid().ToString();
+                await DichVuServices.AddDichvuAsync(dichvu);
+            }
         }
         else
         {
-            await DichVuServices.UpdateDichvuAsync(dichvu);
+            if ((string.IsNullOrEmpty(dichvu.TenDichVuBatBuoc) || dichvu.DonGia == null || string.IsNullOrEmpty(dichvu.Dvt) || string.IsNullOrEmpty(dichvu.LoaiDichVu)))
+            {
+                Snackbar.Add("Bạn cần nhập đầy đủ thông tin!", Severity.Warning, config =>
+                {
+                        config.VisibleStateDuration = 400;
+                        config.HideTransitionDuration = 100;
+                        config.ShowTransitionDuration = 500;
+                });
+                return;
+            }
+            else
+            {
+                Snackbar.Add("Cập nhật thành công!", Severity.Success, config =>
+                {
+                    config.VisibleStateDuration = 400;
+                    config.HideTransitionDuration = 100;
+                    config.ShowTransitionDuration = 500;
+                });
+                await Task.Delay(1000);
+                await DichVuServices.UpdateDichvuAsync(dichvu);
+            }
         }
         navigationManager.NavigateTo("/dichvu");
     }
+
 
     private void quaylai()
     {

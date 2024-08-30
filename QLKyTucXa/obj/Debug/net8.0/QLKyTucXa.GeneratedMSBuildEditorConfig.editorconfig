@@ -93,6 +93,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lXEhvbWUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/Home/NoiQuy.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lXE5vaVF1eS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/Home/ThongTinTaiKhoan.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lXFRob25nVGluVGFpS2hvYW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/Hopdong/DatphongThanhcong.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb3Bkb25nXERhdHBob25nVGhhbmhjb25nLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -159,6 +167,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/TaiKhoan/ThaoTacTK.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUYWlLaG9hblxUaGFvVGFjVEsucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[G:/C\#/QLKyTucXa/QLKyTucXa/Components/Pages/ThanhTimKiem.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUaGFuaFRpbUtpZW0ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [G:/C\#/QLKyTucXa/QLKyTucXa/Components/Routes.razor]

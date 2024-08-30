@@ -4,66 +4,81 @@
 @inject ISnackbar Snackbar
 @rendermode InteractiveServer
 <PageTitle>DichVu</PageTitle>
-<h3>Danh Sách Dịch Vụ</h3>
 
-<br />
-<button class="btn btn-primary" @onclick="themmoi">thêm mới</button>
-<br />
-@if (dichvu is null)
-{
-    <div class="sv-item">
-        Loading danh sách. chờ xí...
+<div>
+    <div class="d-flex justify-content-between">
+        <h3 style="margin: 0;">Danh Sách Dịch Vụ</h3>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="themmoi">Tạo Mới</MudButton>
     </div>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Tên Dịch Vụ</th>
-                <th>Đơn Giá</th>
-                <th>Đơn Vị Tính</th>
-                <th>Loại Dịch Vụ</th>
-                <th>Thao Tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in dichvu)
-            {
-                <tr>
-                    <td>@forecast.TenDichVuBatBuoc</td>
-                    <td>@forecast.DonGia</td>
-                    <td>@forecast.Dvt</td>
-                    <td>@forecast.LoaiDichVu</td>
-                    <td>
-                        <button class="btn btn-secondary" @onclick="@(() => Update(forecast.MaDv))">Sửa</button>
-                        <button class="btn btn-danger" @onclick="@(() => Delete(forecast.MaDv))">Xóa</button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-<Delete @rendermode="InteractiveServer" xacnhan="xacnhanxoa" OnCancel="CancelDelete" OnOK="okDelete"></Delete>
+    <ThanhTimKiem OnSearchChanged="FilterDichVu" />
+
+    @if (dichvu is null)
+    {
+        <div class="sv-item">
+            Loading danh sách. chờ xí...
+        </div>
+    }
+    else
+    {
+        <div class="form-wrapper">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tên Dịch Vụ</th>
+                        <th>Đơn Giá</th>
+                        <th>Đơn Vị Tính</th>
+                        <th>Loại Dịch Vụ</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var forecast in PaginatedDichVu)
+                    {
+                        <tr>
+                            <td>@forecast.TenDichVuBatBuoc</td>
+                            <td>@forecast.DonGia</td>
+                            <td>@forecast.Dvt</td>
+                            <td>@forecast.LoaiDichVu</td>
+                            <td>
+                                <MudButton Variant="Variant.Filled" Color="Color.Transparent" OnClick="@(() => Update(forecast.MaDv))">Sửa</MudButton>
+                                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@(() => Delete(forecast.MaDv))">Xóa</MudButton>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="pagination">
+                <span class="pagination-button" @onclick="PreviousPage" style="cursor: @(CanGoPrevious ? "pointer" : "default");" aria-disabled="@(!CanGoPrevious)">&laquo;</span>
+                <span>Trang @CurrentPage/@TotalPages</span>
+                <span class="pagination-button" @onclick="NextPage" style="cursor: @(CanGoNext ? "pointer" : "default");" aria-disabled="@(!CanGoNext)">&raquo;</span>
+            </div>
+        </div>
+    }
+    <Delete @rendermode="InteractiveServer" xacnhan="xacnhanxoa" OnCancel="CancelDelete" OnOK="okDelete"></Delete>
+</div>
 
 @code {
     private List<Dichvu> dichvu = new List<Dichvu>();
+    private List<Dichvu> cacdichvu = new List<Dichvu>();
+    private List<Dichvu> PaginatedDichVu = new List<Dichvu>();
     private string? idToDelete;
     private bool xacnhanxoa = false;
+    private int PageSize = 5;
+    private int CurrentPage = 1;
+    private int TotalPages => (int)Math.Ceiling((double)cacdichvu.Count / PageSize);
+    private bool CanGoPrevious => CurrentPage > 1;
+    private bool CanGoNext => CurrentPage < TotalPages;
+
     protected override async Task OnInitializedAsync()
     {
         dichvu = await DichVuServices.GetDichvuAsync();
+        cacdichvu = dichvu;
+        UpdatePaginatedDichVu();
     }
 
-    private void themmoi()
-    {
-        navigationManager.NavigateTo("/Adddichvu/");
-    }
+    private void themmoi() => navigationManager.NavigateTo("/Adddichvu/");
 
-    private void Update(string id)
-    {
-        navigationManager.NavigateTo($"/Adddichvu/{id}");
-    }
+    private void Update(string id) => navigationManager.NavigateTo($"/Adddichvu/{id}");
 
     private void Delete(string id)
     {
@@ -71,20 +86,103 @@ else
         xacnhanxoa = true;
     }
 
-    private void CancelDelete()
-    {
-        xacnhanxoa = false;
-    }
+    private void CancelDelete() => xacnhanxoa = false;
 
     private async Task okDelete()
     {
-        Snackbar.Add("xóa thành công!", Severity.Success);
+        Snackbar.Add("xóa thành công!", Severity.Success, config =>
+              {
+                  config.VisibleStateDuration = 400;
+                  config.HideTransitionDuration = 100;
+                  config.ShowTransitionDuration = 500;
+              });
         await Task.Delay(1000);
         if (!string.IsNullOrEmpty(idToDelete))
         {
             await DichVuServices.DeleteDichvuAsync(idToDelete);
             xacnhanxoa = false;
             dichvu = await DichVuServices.GetDichvuAsync();
+            cacdichvu = dichvu;
+            UpdatePaginatedDichVu();
+        }
+    }
+
+    private void FilterDichVu(string searchTerm)
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm))
+            dichvu = cacdichvu;
+        else
+        {
+            dichvu = cacdichvu
+                .Where(d => d.TenDichVuBatBuoc.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+        CurrentPage = 1; // Reset to the first page after filtering
+        UpdatePaginatedDichVu();
+    }
+
+    private void UpdatePaginatedDichVu()
+    {
+        PaginatedDichVu = dichvu
+            .Skip((CurrentPage - 1) * PageSize)
+            .Take(PageSize)
+            .ToList();
+    }
+
+    private void PreviousPage()
+    {
+        if (CanGoPrevious)
+        {
+            CurrentPage--;
+            UpdatePaginatedDichVu();
+        }
+    }
+
+    private void NextPage()
+    {
+        if (CanGoNext)
+        {
+            CurrentPage++;
+            UpdatePaginatedDichVu();
         }
     }
 }
+
+
+<style>
+    .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1px;
+        margin-top: 1px;
+    }
+
+    .pagination-button {
+        font-size: 15px;
+        color: #007bff;
+        cursor: pointer;
+        user-select: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .pagination-button:hover {
+            background-color: #e9ecef;
+            color: #0056b3;
+        }
+
+        .pagination-button[aria-disabled="true"] {
+            color: #6c757d;
+            cursor: default;
+        }
+
+    .form-wrapper {
+        background-color: #E1F5FE; /* Màu nền sáng (AliceBlue) */
+        border: 1px solid #ccc; /* Đường viền xám nhạt */
+        border-radius: 8px; /* Bo tròn các góc */
+        padding: 8px; /* Khoảng cách nội dung từ các cạnh */
+        margin: 8px; /* Khoảng cách từ các phần tử khác */
+    }
+</style>

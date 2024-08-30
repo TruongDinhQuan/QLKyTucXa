@@ -36,9 +36,11 @@
                             </tr>
                         }
                         <tr>
-                            <td> <button type="button" @onclick="ThoatVaSave" class="btn btn-danger">Thoát</button> </td>
+                            <td> @* <button type="button" @onclick="ThoatVaSave" class="btn btn-danger">Thoát</button> *@
+                                <MudButton Variant="Variant.Filled" OnClick="ThoatVaSave" Color="Color.Error">Thoát</MudButton>
+                            </td>
                             <td colspan="2" class="text-end">
-                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                <MudButton Variant="Variant.Filled" OnClick="HandleValidSubmitHD" Color="Color.Primary">Lưu</MudButton>
                             </td>
                         </tr>
                     </tbody>
@@ -52,12 +54,15 @@
     [Parameter] public bool kiemtraloaihoadon { get; set; }
     [Parameter] public bool bienkiemtra { get; set; }
     [Parameter] public List<Phong> phong { get; set; }
+    [Parameter] public List<Hopdong> cachopdong { get; set; }
     [Parameter] public List<Hoadon?> cachoadon { get; set; }
     public Hoadon hoadon { get; set; } = new Hoadon();
     [Parameter] public EventCallback<Hoadon> OnSave { get; set; }
     [Parameter] public EventCallback ThoatVaSave { get; set; }
 
-    private async Task HandleValidSubmitHD() => await OnSave.InvokeAsync(hoadon);
+    private async Task HandleValidSubmitHD() {
+            await OnSave.InvokeAsync(hoadon);
+    }
 
     // Lọc danh sách phòng
     private List<Phong> GetAvailableRoomsForMonth()
@@ -69,7 +74,13 @@
         var roomsInHoadonThisMonth = cachoadon
             .Where(hd => hd?.NgayLapHd?.Month == currentMonth && hd?.NgayLapHd?.Year == currentYear)
             .Select(hd => hd?.MaPhong).ToList();
-        return phong.Where(p => p != null && !roomsInHoadonThisMonth.Contains(p.MaPhong)).ToList();
+        // Lấy danh sách phòng đã có học sinh
+        var roomsWithStudents = cachopdong
+            .Select(hdo => hdo.MaPhong)
+            .Distinct()
+            .ToList();
+       
+        return phong.Where(p => p != null && !roomsInHoadonThisMonth.Contains(p.MaPhong) && roomsWithStudents.Contains(p.MaPhong)).ToList();
     }
 
     // Danh sách phòng trống sau khi lọc

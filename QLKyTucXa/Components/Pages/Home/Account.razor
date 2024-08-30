@@ -6,7 +6,7 @@
     @if (isDropdownOpen)
     {
         <div class="dropdown-menu show">
-            <a class="dropdown-item" href="/profile">Thông tin tài khoản</a>
+            <a class="dropdown-item" href="/profile" @onclick="thongtin" @onmousedown="PreventFocusOut">Thông tin tài khoản</a>
             <a class="dropdown-item" href="/login" @onclick="Logout" @onmousedown="PreventFocusOut">Đăng xuất</a>
         </div>
     }
@@ -38,10 +38,9 @@
         isDropdownOpen = !isDropdownOpen;
     }
 
-    private void Logout()
-    {
-        navigationManager.NavigateTo("/logout", true);
-    }
+    private void Logout() => navigationManager.NavigateTo("/logout", true);
+
+    private void thongtin() => navigationManager.NavigateTo("/thongtintaikhoan", true);
 
     private void OnFocusOut()
     {

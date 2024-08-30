@@ -9,17 +9,17 @@
 @attribute [StreamRendering]
 <PageTitle>Phong</PageTitle>
 
-<h1>DANH SÁCH PHÒNG</h1>
-
-<AuthorizeView Roles="Admin, Employee"> 
+ <div style="display: flex; align-items: center; gap: 50px;">
+    <h3>Danh Sách Phòng</h3>
+    <AuthorizeView Roles="Admin, Employee"> 
     <Authorized>
         <button class="btn btn-primary" @onclick="themmoi">thêm mới</button>
         <br />
     </Authorized>
 </AuthorizeView>
+ </div>
 
 <ChucNangLoc  SelectedKhu="selectedKhu"  SelectedTang="selectedTang"  SelectedGiuong="selectedGiuong"  phongs="phong" OnSelectedKhuChanged="OnSelectedKhuChanged" OnSelectedTangChanged="OnSelectedTangChanged" OnSelectedGiuongChanged="OnSelectedGiuongChanged"/>
-<br/>
 
 @if (filteredPhong is null || filteredPhong.Count == 0)
 {
@@ -58,7 +58,6 @@ else
 <AuthorizeView Roles="User">
     <Authorized>
         <Xacnhandatphong @rendermode="InteractiveServer" capnhatmaphong="capnhatmaphong" id="@id" user="user" hopdong="hopdong" sinhvien="sinhvien" phongValidationDictionary="phongValidationDictionary" selectedPhong="selectedPhong" showBookingModal="bienhienthixacnhandatphong" ConfirmBooking="ConfirmBooking" CloseModal="CloseModal"></Xacnhandatphong>
-
     </Authorized>
 </AuthorizeView>
 
@@ -69,8 +68,9 @@ else
     private bool xacnhanxoa = false;
     private bool bienhienthixacnhandatphong = false;
     private Phong? selectedPhong;
+    private Phong? layphongmuonxoa;
     private ClaimsPrincipal? user;
-    private Hopdong hopdong = new Hopdong();
+    private Hopdong? hopdong = new Hopdong();
     private Sinhvien? sinhvien = new Sinhvien();
     string? id;
     Dictionary<string, bool> phongValidationDictionary = new Dictionary<string, bool>();
@@ -82,9 +82,15 @@ else
         user = authState.User;
         if (!user.IsInRole("Admin"))
         {
-            sinhvien = await SinhVienServices.GetByIdUserAsync(user.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToString());
-            if(sinhvien != null)
-                hopdong = await HopDongServices.GetHopDongByMssvAsync(sinhvien.Mssv);
+            var claim = user.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                sinhvien = await SinhVienServices.GetByIdUserAsync(claim.Value);
+                if (sinhvien != null)
+                {
+                    hopdong = await HopDongServices.GetHopDongByMssvAsync(sinhvien.Mssv);
+                }
+            }
             //lấy SoHopDong cần nhập nhật thông qua URL
             var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("SoHopdong", out var phongIdValue))
@@ -152,7 +158,7 @@ else
         bienhienthixacnhandatphong = false;
     }
 
-    private async Task ConfirmBooking()
+    private void ConfirmBooking()
     {
         navigationManager.NavigateTo($"/chitiethopdong?phongId={selectedPhong?.MaPhong}");
         bienhienthixacnhandatphong = false;
@@ -174,10 +180,30 @@ else
     {
         if (!string.IsNullOrEmpty(idToDelete))
         {
-            await Phong.DeletePhongAsync(idToDelete);
-            xacnhanxoa = false;
-            phong = await Phong.GetPhongAsync();
-            ApplyFilters();
+            layphongmuonxoa = await Phong.GetPhongByIdAsync(idToDelete);
+            if (layphongmuonxoa?.SoNguoiO != null && layphongmuonxoa.SoNguoiO > 0)
+            {
+                Snackbar.Add("Không thể xóa phòng đã có sinh siên ở!", Severity.Warning, config =>
+                {
+                    config.VisibleStateDuration = 400;
+                    config.HideTransitionDuration = 100;
+                    config.ShowTransitionDuration = 500;
+                });
+            }
+            else
+            {
+                Snackbar.Add("xóa thành công!", Severity.Success, config =>
+                {
+                    config.VisibleStateDuration = 400;
+                    config.HideTransitionDuration = 100;
+                    config.ShowTransitionDuration = 500;
+                });
+                await Task.Delay(1000);
+                await Phong.DeletePhongAsync(idToDelete);
+                xacnhanxoa = false;
+                phong = await Phong.GetPhongAsync();
+                ApplyFilters();
+            }
         }
     }
 }
