@@ -1,0 +1,53 @@
+{
+  "Files": [
+    {
+      "Id": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\QLKyTucXa.bundle.scp.css",
+      "PackagePath": "staticwebassets\\QLKyTucXa.bundle.scp.css"
+    },
+    {
+      "Id": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\StyleSheetGood.css",
+      "PackagePath": "staticwebassets\\StyleSheetGood.css"
+    },
+    {
+      "Id": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\image\\Screenshot 2024-05-19 210047.png",
+      "PackagePath": "staticwebassets\\image\\Screenshot 2024-05-19 210047.png"
+    },
+    {
+      "Id": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\image\\Screenshot 2024-08-05 162350.png",
+      "PackagePath": "staticwebassets\\image\\Screenshot 2024-08-05 162350.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.QLKyTucXa.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.QLKyTucXa.props",
+      "PackagePath": "build\\QLKyTucXa.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.QLKyTucXa.props",
+      "PackagePath": "buildMultiTargeting\\QLKyTucXa.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.QLKyTucXa.props",
+      "PackagePath": "buildTransitive\\QLKyTucXa.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

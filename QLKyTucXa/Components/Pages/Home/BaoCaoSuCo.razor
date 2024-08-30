@@ -1,0 +1,49 @@
+﻿@page "/baocaosuco"
+@inject IThongBaoServices ThongBaoServices
+@inject ISnackbar Snackbar
+@rendermode InteractiveServer
+<PageTitle>BaoCaoSuCo</PageTitle>
+<h3>Báo Cáo Sự Cố</h3>
+<label> - Đây là nơi mà bạn có thể báo cáo những sự cố về cơ sở vật chất của phòng ký túc xá!</label>
+<br />
+<br />
+<div class="modal-overlay">
+    <div class="modal-content">
+        <textarea @bind="noidung" placeholder="Nhập nội dung..." style="width: 100%; height: 150px; border: 2px solid #007bff;"></textarea>
+    </div>
+    <div class="modal-buttons">
+        <MudButton Variant="Variant.Filled" @onclick="xacnhan" Color="Color.Primary">Gửi</MudButton>
+        <MudSnackbarProvider />
+    </div>
+</div>
+
+@code {
+    private ThongBao thongbao { get; set; } = new ThongBao();
+    private string noidung = "";
+    private async Task xacnhan()
+    {
+        Snackbar.Add("Báo cáo sự cố đã được gửi đi!", Severity.Success);
+        thongbao.MaThongBao = Guid.NewGuid().ToString();
+        thongbao.NoiDung = "Sự Cố: "+ noidung;
+        thongbao.ThoiGianThongBao = DateTime.Now;
+        thongbao.TrangThaiThongBao = false;
+        thongbao.LoaiThongBao = "Sự cố";
+        thongbao.Iduser = "2177c075-a0b4-4df4-acf9-c539bc824ec2";
+        // Thực hiện logic lưu dữ liệu ở đây
+        await ThongBaoServices.AddThongBaoAsync(thongbao);
+        noidung = "";
+    }
+}
+
+<style>
+    .modal-content {
+        display: flex;
+        flex-direction: column; /* Đặt các phần tử theo chiều dọc */
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: flex-end; /* Đẩy nút sang bên phải */
+        margin-top: 10px; /* Khoảng cách giữa textarea và nút */
+    }
+</style>

@@ -1,0 +1,93 @@
+﻿@page "/taikhoan"
+@inject ITaiKhoanServices tk
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+<PageTitle>TaiKhoan</PageTitle>
+
+<h1>DANH SÁCH TaiKhoan</h1>
+
+<br />
+<button class="btn btn-primary" @onclick="themmoi">thêm mới</button>
+<br />
+@if (TaiKhoan is null)
+{
+    <div class="sv-item">
+        Loading danh sách. chờ xí...
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên Đăng Nhập</th>
+                <th>Mật Khẩu</th>
+                <th>Tên Đầy Đủ</th>
+                <th>Vai Trò</th>
+                <th>Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in TaiKhoan)
+            {
+                <tr>
+                    <td>@forecast.TenDangNhap</td>
+                    <td>@forecast.MatKhau</td>
+                    <td>@forecast.Email</td>
+                    <td>@forecast.VaiTro</td>
+                    <td>
+                        <button class="btn btn-secondary" @onclick="@(() => Update(forecast.Iduser))">Sửa</button>
+                        <button class="btn btn-danger" @onclick="@(() => Delete(forecast.Iduser))">Xóa</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<Delete @rendermode="InteractiveServer" xacnhan="xacnhanxoa" OnCancel="CancelDelete" OnOK="okDelete"></Delete>
+
+@code {
+    private List<Taikhoan> TaiKhoan = new List<Taikhoan>();
+    private string? idToDelete;
+    private bool xacnhanxoa = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        TaiKhoan = await tk.GettaikhoanAsync();
+    }
+
+    private void themmoi()
+    {
+        navigationManager.NavigateTo("/Addtaikhoan");
+    }
+
+    private void Update(string id)
+    {
+        navigationManager.NavigateTo($"/Addtaikhoan/{id}");
+    }
+
+    private void Delete(string id)
+    {
+        idToDelete = id;
+        xacnhanxoa = true;
+    }
+
+    private void CancelDelete()
+    {
+        xacnhanxoa = false;
+    }
+
+    private async Task okDelete()
+    {
+        if (!string.IsNullOrEmpty(idToDelete))
+        {
+            await tk.DeletetaikhoanAsync(idToDelete);
+            xacnhanxoa = false;
+            TaiKhoan = await tk.GettaikhoanAsync();
+        }
+    }
+}
+
+
+

@@ -1,0 +1,120 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">QLKyTucXa</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="sinhvien">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Sinh Viên
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="nhanvien">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Nhân Viên
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="taikhoan">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Tài Khoản
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="phong">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Phòng
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="dichvu">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Dịch Vụ
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
+        <AuthorizeView Roles="Employee">
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="dichvu">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Dịch Vụ
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="hoadonbatbuoc">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> HoaDon - Bắt Buộc
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="hoadonthongthuong">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> HoaDon - Thông Thường
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="hopdong">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Duyệt Hợp Đồng
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="phong">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Phòng
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
+        <AuthorizeView Roles="User">
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="phong">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Đặt Phòng
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="xemhopdong">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Hợp Đồng Cư Trú
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="lichsuthanhtoan">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Lịch Sử Thanh Toán
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="noiquy">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Nội quy 
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="baocaosuco">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Báo Cáo Sự Cố
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+    </nav>
+</div>
+

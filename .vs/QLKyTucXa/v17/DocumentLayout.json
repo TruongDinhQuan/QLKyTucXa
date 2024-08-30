@@ -1,0 +1,89 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "G:\\C#\\QLKyTucXa\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\hoadon\\hoadoncomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\hoadon\\hoadoncomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\dichvu\\dichvucomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\dichvu\\dichvucomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\hoadon\\taohd.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\hoadon\\taohd.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\dichvu\\thaotacdv.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\dichvu\\thaotacdv.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 365,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{25f7e850-ffa1-11d0-b63f-00a0c922e851}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TaoHD.razor",
+              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\HoaDon\\TaoHD.razor",
+              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\HoaDon\\TaoHD.razor",
+              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\HoaDon\\TaoHD.razor",
+              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\HoaDon\\TaoHD.razor",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAAACcAAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-08-30T02:16:56.192Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "HoaDonComponent.razor",
+              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\HoaDon\\HoaDonComponent.razor",
+              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\HoaDon\\HoaDonComponent.razor",
+              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\HoaDon\\HoaDonComponent.razor",
+              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\HoaDon\\HoaDonComponent.razor",
+              "ViewState": "AQIAAEAAAAAAAAAAAAAuwFMAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-08-29T16:11:42.268Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DichVuComponent.razor",
+              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DichVu\\DichVuComponent.razor",
+              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\DichVu\\DichVuComponent.razor",
+              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DichVu\\DichVuComponent.razor",
+              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\DichVu\\DichVuComponent.razor",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAAACoAAABcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-08-29T06:08:10.069Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ThaoTacDV.razor",
+              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DichVu\\ThaoTacDV.razor",
+              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\DichVu\\ThaoTacDV.razor",
+              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DichVu\\ThaoTacDV.razor",
+              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\DichVu\\ThaoTacDV.razor",
+              "ViewState": "AQIAACEAAAAAAAAAAAAAADgAAAA3AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-08-29T08:18:59.372Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
