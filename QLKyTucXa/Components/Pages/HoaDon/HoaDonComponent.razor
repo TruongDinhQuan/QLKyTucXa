@@ -1,17 +1,19 @@
-﻿    @page "/hoadonbatbuoc"
-    @inject IHoaDonServices HoaDonServices
-    @inject IDichVuServices DichVuServices
-    @inject IThongBaoServices ThongBaoServices
-    @inject INhanVienServices NhanVienServices
-    @inject IHopDongServices HopDongServices
-    @inject ISinhVienServices SinhVienServices
-    @inject IPhongServices PhongServices
-    @inject NavigationManager navigationManager
-    @inject AuthenticationStateProvider AuthenticationStateProvider
-    @inject ISnackbar Snackbar
-    @inject LuuBien luubien
-    @rendermode InteractiveServer
-    <PageTitle>HoaDonBatBuoc</PageTitle>
+﻿@page "/hoadonbatbuoc"
+@using System.Xml
+@using System.Reflection.Metadata
+@inject IHoaDonServices HoaDonServices
+@inject IDichVuServices DichVuServices
+@inject IThongBaoServices ThongBaoServices
+@inject INhanVienServices NhanVienServices
+@inject IHopDongServices HopDongServices
+@inject ISinhVienServices SinhVienServices
+@inject IPhongServices PhongServices
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ISnackbar Snackbar
+@inject LuuBien luubien
+@rendermode InteractiveServer
+<PageTitle>HoaDonBatBuoc</PageTitle>
 
 <div class="d-flex justify-content-between">
     <h3 style="margin: 0;">Danh sách hóa đơn - bắt buộc</h3>
@@ -71,24 +73,13 @@
                              }
                         </td>
                         <td>
-                        <MudTabs>
-    <MudTabPanel Text="Tác vụ 1">
-        <div>
-            <MudButton Variant="Variant.Filled" OnClick="@(() => themsp(forecast.MaHd))" Color="Color.Info">Thêm D.Vụ</MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="@(() => Update(forecast.MaHd))" Color="Color.Transparent">Sửa</MudButton>
-            <MudButton Variant="Variant.Filled" OnClick="@(() => Delete(forecast.MaHd))" Color="Color.Error">Xóa</MudButton>
-        </div>
-    </MudTabPanel>
-    <MudTabPanel Text="Tác vụ 2">
-        <div>
-            <MudButton Variant="Variant.Filled" @onclick="@(() => gui(forecast.MaPhong))" Color="Color.Tertiary">Gửi</MudButton>
-            <MudSnackbarProvider />
-            <MudButton Variant="Variant.Filled" @onclick="@(() => thanhtoan(forecast))" Color="Color.Warning">ThanhToán</MudButton>
-            <MudSnackbarProvider />
-        </div>
-    </MudTabPanel>
-</MudTabs>
-
+                            <MudButton Variant="Variant.Filled" OnClick="@(() => themsp(forecast.MaHd))" Color="Color.Info">Thêm D.Vụ</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="@(() => Update(forecast.MaHd))" Color="Color.Transparent">Sửa</MudButton>
+                             <MudButton Variant="Variant.Filled" OnClick="@(() => Delete(forecast.MaHd))" Color="Color.Error">Xóa</MudButton>
+                             <MudButton Variant="Variant.Filled" @onclick="@(() => gui(forecast.MaPhong))" Color="Color.Tertiary">Gửi</MudButton>
+                             <MudSnackbarProvider />
+                             <MudButton Variant="Variant.Filled" @onclick="@(() => thanhtoan(forecast))" Color="Color.Warning">ThanhToán</MudButton>
+                             <MudSnackbarProvider />
                         </td>
                     </tr>
                 }
@@ -244,7 +235,7 @@
         }
         else
             Snackbar.Add("Hóa đơn bắt buộc phải có phòng!", Severity.Warning, config =>{config.VisibleStateDuration = 400;config.HideTransitionDuration = 100;config.ShowTransitionDuration = 500;});
-        
+
     }
 
     private async Task luuCTHD(Chitiethoadon dt)
@@ -281,9 +272,9 @@
     {
         Snackbar.Add("Xóa thành công!", Severity.Success, config =>
         {
-           config.VisibleStateDuration = 400;
-           config.HideTransitionDuration = 100;
-           config.ShowTransitionDuration = 500;
+            config.VisibleStateDuration = 400;
+            config.HideTransitionDuration = 100;
+            config.ShowTransitionDuration = 500;
         });
         await Task.Delay(1000);
         if (!string.IsNullOrEmpty(idToDelete))
@@ -327,7 +318,7 @@
                 .Where(d => d.MaPhong != null && maPhongList.Contains(d.MaPhong))
                 .ToList();
         }
-         CurrentPage = 1; // Reset to the first page after filtering
+        CurrentPage = 1; // Reset to the first page after filtering
         UpdatePaginatedDichVu();
     }
 
@@ -339,7 +330,7 @@
             .ToList();
     }
 
-      private void PreviousPage()
+    private void PreviousPage()
     {
         if (CanGoPrevious)
         {
@@ -356,6 +347,8 @@
             UpdatePaginatedDichVu();
         }
     }
+
+
 }
 <style>
      .pagination {
