@@ -6,15 +6,17 @@
 @rendermode InteractiveServer
 @attribute [AllowAnonymous]
 
-@if (!isVerificationStep)
-{
-    <div class="row">
-        <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
+<div class="login-container">
+    <div class="login-form">
+        @if (!isVerificationStep)
+
+        {
+            <div class="text-center mb-4">
+                <img src="/image/q-h-logo.png" alt="Logo" class="logo" />
+                <h3>Đăng Ký</h3>
+            </div>
             <EditForm Model="registerModel" OnValidSubmit="HandleRegistration" OnInvalidSubmit="HandleInvalidSubmit" FormName="Dk">
                 <DataAnnotationsValidator />
-                <div class="mb-3 text-center flex-column">
-                    <h3>Đăng Ký</h3>
-                </div>
                 <div class="mb-3">
                     <label>Họ và Tên:</label>
                     <InputText @bind-Value="registerModel.TenDangNhap" class="form-control" />
@@ -35,27 +37,61 @@
                     <InputText type="password" @bind-Value="registerModel.ConfirmPassword" class="form-control" />
                     <ValidationMessage For="() => registerModel.ConfirmPassword" />
                 </div>
-                <div>
+                <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-primary">Đăng ký</button>
-                    <button type="button" class="btn btn-dark" @onclick="quaylaidiem">Quay lại</button>
+                    <button type="button" class="btn btn-secondary" @onclick="quaylaidiem">Quay lại</button>
                 </div>
             </EditForm>
-        </div>
-    </div>
-}
-else
-{
-    <div class="form-group">
-        <label>Nhập mã xác thực:</label>
-        <InputText @bind-Value="enteredCode" class="form-control" />
-        <button @onclick="VerifyCode" class="btn btn-primary">Xác thực</button>
-    </div>
+        }
 
-    @if (!string.IsNullOrEmpty(verificationMessage))
-    {
-        <p class="message">@verificationMessage</p>
+        else
+
+        {
+            <div class="form-group">
+                <label>Nhập mã xác thực:</label>
+                <InputText @bind-Value="enteredCode" class="form-control" />
+                <button @onclick="VerifyCode" class="btn btn-primary mt-2">Xác thực</button>
+            </div>
+            @if (!string.IsNullOrEmpty(verificationMessage))
+
+            {
+                <p class="message mt-2">@verificationMessage</p>
+            }
+        }
+    </div>
+</div>
+
+<style>
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-image: url('/image/a01.png');
+        background-size: cover;
+        background-position: center;
     }
-}
+
+    .login-form {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+        max-width: 100px;
+        margin-bottom: 1rem;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden
+    }
+</style>
 
 @code {
     private Taikhoan registerModel = new Taikhoan();
