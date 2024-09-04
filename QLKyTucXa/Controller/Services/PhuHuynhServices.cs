@@ -57,5 +57,15 @@ namespace QLKyTucXa.Controller.Services
                 await _qlktxContext.SaveChangesAsync();
             }
         }
+
+        public async Task DeletephuhuynhForeignKeyAsync(string foreignKey)
+        {
+            var phList = await _qlktxContext.Phuhuynhs.Where(p => p.Mssv == foreignKey).ToListAsync();
+            if (phList.Any())
+            {
+                _qlktxContext.Phuhuynhs.RemoveRange(phList);
+                await _qlktxContext.SaveChangesAsync();
+            }
+        }
     }
 }

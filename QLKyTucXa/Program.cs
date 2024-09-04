@@ -17,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -27,6 +28,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
+
+builder.Services.AddScoped<LuuDichVuTrung>();
+
 
 builder.Services.AddDbContext<DataQlktxContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("QLyKTX")),

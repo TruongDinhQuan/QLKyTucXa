@@ -2,6 +2,7 @@
 
 @inject NavigationManager navigationManager
 @inject IPhuHuynhServices Service
+@inject ISnackbar Snackbar
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 @if (!string.IsNullOrEmpty(id))
@@ -57,8 +58,8 @@ else
             </div>
             <br />
             <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="button" class="btn btn-warning" @onclick="quaylai">Quay lại</button>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="HandleValidSubmit">Lưu</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="quaylai">Quay lại</MudButton>
             </div>
         </EditForm>
     </div>
@@ -88,20 +89,24 @@ else
     {
         if (string.IsNullOrEmpty(phuhuynh.IdphuHuynh))
         {
+            Snackbar.Add("Thêm phụ huynh thành công!", Severity.Success, config => { config.VisibleStateDuration = 500; config.HideTransitionDuration = 100; config.ShowTransitionDuration = 500; });
+            await Task.Delay(1000);
             phuhuynh.IdphuHuynh = GenerateCode();
             phuhuynh.Mssv = studentId;
             await Service.AddphuHuynhAsync(phuhuynh);
         }
         else
         {
+            Snackbar.Add("Cập nhật thành công!", Severity.Success, config => { config.VisibleStateDuration = 500; config.HideTransitionDuration = 100; config.ShowTransitionDuration = 500; });
+            await Task.Delay(1000);
             await Service.UpdatePhuHuynhAsync(phuhuynh);
         }
-        navigationManager.NavigateTo("/sinhvien");
+        navigationManager.NavigateTo("/sinhvien", true);
     }
 
     private void quaylai()
     {
-        navigationManager.NavigateTo("/sinhvien");
+        navigationManager.NavigateTo("/sinhvien", true);
     }
 
     private string GenerateCode()

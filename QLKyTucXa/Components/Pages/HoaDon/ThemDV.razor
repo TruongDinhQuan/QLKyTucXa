@@ -1,37 +1,38 @@
-﻿@rendermode InteractiveServer
+﻿@inject LuuDichVuTrung luudichvutrung
+@rendermode InteractiveServer
 @if (bienmemaydi)
 {
      <div class="confirm-dialog-container">
-       <div class="confirm-dialog">
+        <div class="confirm-dialog">
             <EditForm Model="CTHD" OnValidSubmit="OnValidSubmitCTHD">
             <DataAnnotationsValidator />
-            <ValidationSummary />
-            <h4>Thông Tin Hóa Đơn</h4>
+            <h4>Thêm Dịch Vụ</h4>
                 <table class="table table-bordered">
                     <tbody>
                         <tr>
                             <td><label for="MaDv" class="form-label">Tên Dịch Vụ:</label></td>
                             <td>
                                 <InputSelect id="MaDv" class="form-control" @bind-Value="CTHD.MaDv">
-                                    <option>Chọn Sản phẩm</option>
+                                    <option value="">Chọn Sản phẩm</option>
                                     @foreach (var lap in dichvu)
                                     {
                                         if (!kiemtraloaihoadon)
                                         {
-                                            if (lap.LoaiDichVu == "DV Bắt Buộc")
+                                            if (lap.LoaiDichVu == "DV Bắt Buộc" && lap.MaDv != "dd3791cb-3070-4b3a-b3f1-64c1fbb5916a" && !luudichvutrung.SelectedDichVu.Any(item => item == lap.MaDv))
                                             {
                                                 <option value="@lap.MaDv">@lap.TenDichVuBatBuoc</option>
                                             }
                                         }
                                         else
                                         {
-                                            if (lap.LoaiDichVu == "DV thông thường")
-                                            {
+                                            if (lap.LoaiDichVu == "DV thông thường" && !luudichvutrung.SelectedDichVu.Any(item => item == lap.MaDv))
+                                                {
                                                 <option value="@lap.MaDv">@lap.TenDichVuBatBuoc</option>
                                             }
                                         }
                                     }
                                 </InputSelect>
+                                
                             </td>
                         </tr>
                         @if (!kiemtraloaihoadon)
@@ -39,13 +40,15 @@
                             <tr>
                                 <td><label for="ChiSoDau" class="form-label">Chỉ Số Đầu:</label></td>
                                 <td>
-                                    <InputNumber id="ChiSoDau" class="form-control" @bind-Value="CTHD.ChiSoDau" />
+                                    <InputNumber id="ChiSoDau" class="form-control" @bind-Value="CTHD.ChiSoDau" Min="1" Max="100000" />
+                                    <ValidationMessage For="@(() => CTHD.ChiSoDau)" />
                                 </td>
                             </tr>
                             <tr>
                                 <td><label for="ChiSoCuoi" class="form-label">Chỉ Số Cuối:</label></td>
                                 <td>
-                                    <InputNumber id="ChiSoCuoi" class="form-control" @bind-Value="CTHD.ChiSoCuoi" />
+                                    <InputNumber id="ChiSoCuoi" class="form-control" @bind-Value="CTHD.ChiSoCuoi" Min="1" Max="100000"/>
+                                    <ValidationMessage For="@(() => CTHD.ChiSoCuoi)" />
                                 </td>
                             </tr>
                         }
@@ -54,14 +57,14 @@
                             <tr>
                                 <td><label for="SoLuong" class="form-label">Số Lượng:</label></td>
                                 <td>
-                                    <InputNumber id="SoLuong" class="form-control" @bind-Value="CTHD.SoLuong" />
+                                    <InputNumber id="SoLuong" class="form-control" @bind-Value="CTHD.SoLuong" Min="1" Max="100000" />
                                 </td>
                             </tr>
                         }
                         <tr>
-                            <td> <button type="button" @onclick="ThoatVaSave" class="btn btn-danger">Thoát</button> </td>
+                            <MudButton Variant="Variant.Filled" OnClick="ThoatVaSave" Color="Color.Error">Thoát</MudButton>
                             <td colspan="2" class="text-end">
-                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                <MudButton Variant="Variant.Filled" OnClick="OnValidSubmitCTHD" Color="Color.Primary">Lưu</MudButton>
                             </td>
                         </tr>
                     </tbody>
@@ -69,6 +72,7 @@
         </EditForm>
        </div>
     </div>
+    <MudSnackbarProvider />
 }
 
 @code {
@@ -79,10 +83,19 @@
     [Parameter] public EventCallback<Chitiethoadon> OnSaveCTHD { get; set; }
     [Parameter] public EventCallback ThoatVaSave { get; set; }
 
+
     private async Task OnValidSubmitCTHD()
     {
-        await OnSaveCTHD.InvokeAsync(CTHD);
-        //ThoatVaSave.InvokeAsync();
+
+
+          //  errorMessage = string.Empty;
+            // Thêm MaDv vào danh sách các dịch vụ đã chọn
+            if (!string.IsNullOrEmpty(CTHD.MaDv))
+            {
+                luudichvutrung.SelectedDichVu.Add(CTHD.MaDv);
+            }
+            await OnSaveCTHD.InvokeAsync(CTHD);
+        StateHasChanged();
     }
 }
 
@@ -105,7 +118,7 @@
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        width: 400px;
+        width: 600px;
         max-width: 90%;
         text-align: center;
     }

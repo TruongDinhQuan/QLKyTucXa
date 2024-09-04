@@ -36,7 +36,7 @@ public partial class DataQlktxContext : DbContext
     public virtual DbSet<ThongBao> ThongBaos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-US5EJJRM\\SQLEXPRESS;Initial Catalog=DataQLKTX;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-US5EJJRM\\SQLEXPRESS;Initial Catalog=QuanLyKTX;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -145,6 +145,7 @@ public partial class DataQlktxContext : DbContext
             entity.Property(e => e.IdnhanVien)
                 .HasMaxLength(100)
                 .HasColumnName("IDNhanVien");
+            entity.Property(e => e.TinhTrang).HasMaxLength(50);
             entity.Property(e => e.ChucVu).HasMaxLength(50);
             entity.Property(e => e.DiaChi).HasMaxLength(50);
             entity.Property(e => e.HoTen).HasMaxLength(50);

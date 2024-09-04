@@ -33,6 +33,10 @@
       "PackagePath": "staticwebassets\\image\\Screenshot 2024-08-05 162350.png"
     },
     {
+      "Id": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\image\\phonghiendai.jpg",
+      "PackagePath": "staticwebassets\\image\\phonghiendai.jpg"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.QLKyTucXa.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

@@ -3,6 +3,7 @@
 @inject NavigationManager navigationManager
 @inject INhanVienServices Service
 @inject ITaiKhoanServices taikhoan
+@inject ISnackbar Snackbar
 @rendermode InteractiveServer
 @if (!string.IsNullOrEmpty(id))
 {
@@ -63,8 +64,9 @@ else
             </div>
             <br/>
             <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="button" class="btn btn-warning" @onclick="quaylai">Quay lại</button>
+                <MudButton OnClick="HandleValidSubmit" Variant="Variant.Filled" Color="Color.Primary">Lưu</MudButton>
+                <MudSnackbarProvider />
+                <MudButton OnClick="quaylai" Variant="Variant.Filled" Color="Color.Warning">Quay Lại</MudButton>
             </div>
         </EditForm>
     </div>
@@ -89,11 +91,15 @@ else
     {
         if (string.IsNullOrEmpty(nhanvien.IdnhanVien))
         {
+            Snackbar.Add("thêm sinh viên thành công!", Severity.Success, config => { config.VisibleStateDuration = 300; });
+            await Task.Delay(1000);
             nhanvien.IdnhanVien = GenerateCode();
             await Service.AddPhongAsync(nhanvien);
         }
         else
         {
+            Snackbar.Add("Cập nhật sinh viên thành công!", Severity.Success, config => { config.VisibleStateDuration = 300; });
+            await Task.Delay(1000);
             await Service.UpdatePhongAsync(nhanvien);
         }
         navigationManager.NavigateTo("/nhanvien");

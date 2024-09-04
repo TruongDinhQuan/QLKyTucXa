@@ -12,7 +12,7 @@
                             <td><label for="PhuongThucThanhToan" class="form-label">PT thanh Toán</label></td>
                             <td>
                                 <InputSelect id="PhuongThucThanhToan" class="form-control" @bind-Value="hoadon.PhuongThucThanhToan">
-                                    <option>Chọn PT</option>
+                                    <option value="">Chọn PT</option>
                                     <option value="Tiền Mặt">Tiền Mặt</option>
                                 </InputSelect>
                             </td>
@@ -23,7 +23,7 @@
                                 <td><label for="MaPhong" class="form-label">Phòng:</label></td>
                                 <td>
                                     <InputSelect id="MaPhong" class="form-control" @bind-Value="hoadon.MaPhong">
-                                        <option>Chọn Phòng</option>
+                                        <option value="">Chọn Phòng</option>
                                         @if (availableRooms != null)
                                         {
                                             @foreach (var room in availableRooms)
@@ -36,11 +36,12 @@
                             </tr>
                         }
                         <tr>
-                            <td> @* <button type="button" @onclick="ThoatVaSave" class="btn btn-danger">Thoát</button> *@
+                            <td> 
                                 <MudButton Variant="Variant.Filled" OnClick="ThoatVaSave" Color="Color.Error">Thoát</MudButton>
                             </td>
                             <td colspan="2" class="text-end">
                                 <MudButton Variant="Variant.Filled" OnClick="HandleValidSubmitHD" Color="Color.Primary">Lưu</MudButton>
+                                <MudSnackbarProvider />
                             </td>
                         </tr>
                     </tbody>

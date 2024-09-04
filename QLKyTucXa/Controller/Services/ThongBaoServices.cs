@@ -71,5 +71,23 @@ namespace QLKyTucXa.Controller.Services
             }
         }
 
+        public async Task DeletethongbaoForeignKeyAsync(string foreignKey)
+        {
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<DataQlktxContext>();
+
+                // Lấy danh sách các hợp đồng có khóa ngoại là foreignKey (Mssv)
+                var hopDongList = await context.ThongBaos.Where(hd => hd.Iduser == foreignKey).ToListAsync();
+
+                if (hopDongList.Any())
+                {
+                    // Xóa tất cả các hợp đồng trong danh sách
+                    context.ThongBaos.RemoveRange(hopDongList);
+                    await context.SaveChangesAsync();
+                }
+            }
+        }
+
     }
 }

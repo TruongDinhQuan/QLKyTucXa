@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "QoLOrqzrSJJIIjBpwR5GgXU6YZVyqw7IcCC5CDCzlMQ=",
+  "Hash": "yYfla7bBtZ45AtI2rUz/ufIuSNgHUOh5lVfX5j9D+pc=",
   "Source": "QLKyTucXa",
   "BasePath": "_content/QLKyTucXa",
   "Mode": "Default",
@@ -167,6 +167,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.png"
+    },
+    {
+      "Identity": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\image\\phonghiendai.jpg",
+      "SourceId": "QLKyTucXa",
+      "SourceType": "Discovered",
+      "ContentRoot": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\",
+      "BasePath": "_content/QLKyTucXa",
+      "RelativePath": "image/phonghiendai.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\image\\phonghiendai.jpg"
     },
     {
       "Identity": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\wwwroot\\image\\Screenshot 2024-05-19 210047.png",

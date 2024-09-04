@@ -11,5 +11,6 @@ namespace QLKyTucXa.Controller.Interfaces
         Task UpdatePhongAsync(Hopdong phong);
         Task<Hopdong?> GetHopDongByMssvAsync(string id);
         Task<List<Hopdong>> GetHopDongByTrangThaiAsync();
+        Task DeleteHopDongForeignKeyAsync(string foreignKey);
     }
 }

@@ -1,8 +1,6 @@
 ﻿@inherits LayoutComponentBase
-
 <MudThemeProvider></MudThemeProvider>
 <MudPopoverProvider></MudPopoverProvider>
-<MudSnackbarProvider></MudSnackbarProvider>
 <div class="page">
      <AuthorizeView>
         <Authorized> 
@@ -25,9 +23,9 @@
                     <QLKyTucXa.Components.Pages.Home.Account @rendermode="InteractiveServer"></QLKyTucXa.Components.Pages.Home.Account>
                 </Authorized>
             </AuthorizeView>
-        </div> 
-
-        <article class="content px-4">
+        </div>
+        <MudSnackbarProvider />
+        <article class="content px-4"  >
             @Body
         </article>
     </main>

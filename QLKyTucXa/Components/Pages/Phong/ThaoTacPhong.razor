@@ -51,13 +51,12 @@ else
             <br />
             <div class="d-flex justify-content-between">
                 <MudButton OnClick="HandleValidSubmit" Variant="Variant.Filled" Color="Color.Primary">Lưu</MudButton>
-                <MudSnackbarProvider />
-                <button type="button" class="btn btn-warning" @onclick="quaylai">Quay lại</button>
+                <MudButton OnClick="quaylai" Variant="Variant.Filled" Color="Color.Warning">Quay lại</MudButton>
             </div>
         </EditForm>
     </div>
 </div>
-
+<MudSnackbarProvider />
 @code {
     [Parameter]
     public string? id { get; set; }
@@ -135,11 +134,11 @@ else
                 await Service.UpdatePhongAsync(phong);
             }
         }
-        navigationManager.NavigateTo("/phong");
+        navigationManager.NavigateTo("/phong", true);
     }
 
     private void quaylai()
     {
-        navigationManager.NavigateTo("/phong");
+        navigationManager.NavigateTo("/phong", true);
     }
 }

@@ -26,6 +26,7 @@ else
                 <label for="TenDichVuBatBuoc" class="col-form-label col-sm-2">Tên Dịch Vụ:</label>
                 <div class="col-sm-10">
                     <InputText id="TenDichVuBatBuoc" class="form-control" @bind-Value="dichvu.TenDichVuBatBuoc" />
+
                 </div>
             </div>
             <br />
@@ -68,6 +69,7 @@ else
     public string? id { get; set; }
 
     public Dichvu dichvu { get; set; } = new Dichvu();
+    public Dichvu dichvu1 { get; set; } = new Dichvu();
 
     protected override async Task OnInitializedAsync()
     {
@@ -79,6 +81,20 @@ else
 
     private async Task HandleValidSubmit()
     {
+        if (dichvu.DonGia.HasValue)
+        {
+            if (dichvu.DonGia <= 0 || dichvu.DonGia > 100000000)
+            {
+                Snackbar.Add("Đơn Giá phải lớn hơn 0 và nhỏ hơn hoặc bằng 100.000.000!", Severity.Warning, config =>
+                {
+                    config.VisibleStateDuration = 400;
+                    config.HideTransitionDuration = 100;
+                    config.ShowTransitionDuration = 500;
+                });
+                return;
+            }
+        }
+
         if (string.IsNullOrEmpty(dichvu.MaDv))
         {
             if ((string.IsNullOrEmpty(dichvu.TenDichVuBatBuoc) || dichvu.DonGia == null || string.IsNullOrEmpty(dichvu.Dvt) || string.IsNullOrEmpty(dichvu.LoaiDichVu)))
@@ -91,7 +107,7 @@ else
                 });
                 return;
             }
-            else 
+            else
             {
                 Snackbar.Add("Thêm dịch vụ thành công!", Severity.Success, config =>
                 {
@@ -110,9 +126,9 @@ else
             {
                 Snackbar.Add("Bạn cần nhập đầy đủ thông tin!", Severity.Warning, config =>
                 {
-                        config.VisibleStateDuration = 400;
-                        config.HideTransitionDuration = 100;
-                        config.ShowTransitionDuration = 500;
+                    config.VisibleStateDuration = 400;
+                    config.HideTransitionDuration = 100;
+                    config.ShowTransitionDuration = 500;
                 });
                 return;
             }
@@ -128,12 +144,12 @@ else
                 await DichVuServices.UpdateDichvuAsync(dichvu);
             }
         }
-        navigationManager.NavigateTo("/dichvu");
+        navigationManager.NavigateTo("/dichvu", true); // True will force the page to reload
     }
 
 
-    private void quaylai()
+    private async Task quaylai()
     {
-        navigationManager.NavigateTo("/dichvu");
+        navigationManager.NavigateTo("/dichvu", true);
     }
 }

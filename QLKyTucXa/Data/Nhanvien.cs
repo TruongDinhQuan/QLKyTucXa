@@ -15,6 +15,8 @@ public partial class Nhanvien
 
     public string? ChucVu { get; set; }
 
+    public string? TinhTrang { get; set; }
+
     public string? Iduser { get; set; }
 
     public virtual ICollection<Hoadon> Hoadons { get; set; } = new List<Hoadon>();

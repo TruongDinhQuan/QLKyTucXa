@@ -1,17 +1,18 @@
 ﻿@page "/dichvu"
 @inject IDichVuServices DichVuServices
+@inject IHoaDonServices HoaDonServices
 @inject NavigationManager navigationManager
 @inject ISnackbar Snackbar
 @rendermode InteractiveServer
 <PageTitle>DichVu</PageTitle>
 
 <div>
-    <div class="d-flex justify-content-between">
-        <h3 style="margin: 0;">Danh Sách Dịch Vụ</h3>
+    <div class="header-container">
+        <h4 style="margin: 0;">Danh Sách Dịch Vụ</h4>
+        <ThanhTimKiem OnSearchChanged="FilterDichVu" />
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="themmoi">Tạo Mới</MudButton>
     </div>
-    <ThanhTimKiem OnSearchChanged="FilterDichVu" />
-
+    <br/>
     @if (dichvu is null)
     {
         <div class="sv-item">
@@ -24,22 +25,22 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Tên Dịch Vụ</th>
-                        <th>Đơn Giá</th>
-                        <th>Đơn Vị Tính</th>
-                        <th>Loại Dịch Vụ</th>
-                        <th>Thao Tác</th>
+                        <th style="text-align: center;">Tên Dịch Vụ</th>
+                        <th style="text-align: center;">Đơn Giá</th>
+                        <th style="text-align: center;">Đơn Vị Tính</th>
+                        <th style="text-align: center;">Loại Dịch Vụ</th>
+                        <th style="text-align: center;">Thao Tác</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var forecast in PaginatedDichVu)
                     {
                         <tr>
-                            <td>@forecast.TenDichVuBatBuoc</td>
-                            <td>@forecast.DonGia</td>
-                            <td>@forecast.Dvt</td>
-                            <td>@forecast.LoaiDichVu</td>
-                            <td>
+                            <td style="text-align: center;">@forecast.TenDichVuBatBuoc</td>
+                            <td style="text-align: center;">@forecast.DonGia</td>
+                            <td style="text-align: center;">@forecast.Dvt</td>
+                            <td style="text-align: center;">@forecast.LoaiDichVu</td>
+                            <td style="text-align: center;">
                                 <MudButton Variant="Variant.Filled" Color="Color.Transparent" OnClick="@(() => Update(forecast.MaDv))">Sửa</MudButton>
                                 <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@(() => Delete(forecast.MaDv))">Xóa</MudButton>
                             </td>
@@ -61,6 +62,8 @@
     private List<Dichvu> dichvu = new List<Dichvu>();
     private List<Dichvu> cacdichvu = new List<Dichvu>();
     private List<Dichvu> PaginatedDichVu = new List<Dichvu>();
+    private List<Chitiethoadon> CTHD = new List<Chitiethoadon>();
+    private List<Hoadon> Hoadons = new List<Hoadon>();
     private string? idToDelete;
     private bool xacnhanxoa = false;
     private int PageSize = 5;
@@ -71,6 +74,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        CTHD = await HoaDonServices.GetCTHDAsync();
+        Hoadons = await HoaDonServices.GetHoaDonAsync();
         dichvu = await DichVuServices.GetDichvuAsync();
         cacdichvu = dichvu;
         UpdatePaginatedDichVu();
@@ -90,25 +95,33 @@
 
     private async Task okDelete()
     {
-        Snackbar.Add("xóa thành công!", Severity.Success, config =>
-              {
-                  config.VisibleStateDuration = 400;
-                  config.HideTransitionDuration = 100;
-                  config.ShowTransitionDuration = 500;
-              });
-        await Task.Delay(1000);
         if (!string.IsNullOrEmpty(idToDelete))
         {
-            await DichVuServices.DeleteDichvuAsync(idToDelete);
-            xacnhanxoa = false;
-            dichvu = await DichVuServices.GetDichvuAsync();
-            cacdichvu = dichvu;
-            UpdatePaginatedDichVu();
+            var dichvudangthanhtoan = from dv in dichvu
+                                      join cthd in CTHD on dv.MaDv equals cthd.MaDv
+                                      join hd in Hoadons on cthd.MaHd equals hd.MaHd
+                                      where hd.TrangThai == "Đang thanh toán" && cthd.MaDv == idToDelete
+                                      select dv;
+            if (!dichvudangthanhtoan.Any())
+            {
+                Snackbar.Add("xóa thành công!", Severity.Success, config => { config.VisibleStateDuration = 500; config.HideTransitionDuration = 100; config.ShowTransitionDuration = 500; });
+                await Task.Delay(1000);
+                await DichVuServices.DeleteDichvuAsync(idToDelete);
+                xacnhanxoa = false;
+                dichvu = await DichVuServices.GetDichvuAsync();
+                cacdichvu = dichvu;
+                UpdatePaginatedDichVu();
+            }
+            else
+            {
+                Snackbar.Add("Dịch vụ đang có trang hóa đơn chưa thanh toán!", Severity.Warning, config => { config.VisibleStateDuration = 400; config.HideTransitionDuration = 100; config.ShowTransitionDuration = 500; });
+            }
         }
     }
 
     private void FilterDichVu(string searchTerm)
     {
+        searchTerm = searchTerm?.Trim();
         if (string.IsNullOrWhiteSpace(searchTerm))
             dichvu = cacdichvu;
         else
@@ -150,6 +163,22 @@
 
 
 <style>
+    .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 100%;
+        margin: auto;
+    }
+
+    .search-bar {
+        flex-grow: 1;
+        max-width: 600px;
+        margin: 0 20px;
+        display: flex;
+        align-items: center;
+    }
+
     .pagination {
         display: flex;
         align-items: center;

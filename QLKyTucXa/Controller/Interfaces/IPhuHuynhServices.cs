@@ -10,5 +10,6 @@ namespace QLKyTucXa.Controller.Interfaces
         Task<List<Phuhuynh?>> GetPhuHuynhByStudentIdAsync(string? id);
         Task<List<Phuhuynh>> GetPhuhuynhsAsync();
         Task UpdatePhuHuynhAsync(Phuhuynh ph);
+        Task DeletephuhuynhForeignKeyAsync(string foreignKey);
     }
 }

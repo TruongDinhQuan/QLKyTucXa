@@ -3,20 +3,16 @@
   "WorkspaceRootPath": "G:\\C#\\QLKyTucXa\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\hoadon\\hoadoncomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\hoadon\\hoadoncomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\phong\\phongcomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\phong\\phongcomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\dichvu\\dichvucomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\dichvu\\dichvucomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\taikhoan\\taikhoancomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\taikhoan\\taikhoancomponent.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\hoadon\\taohd.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\hoadon\\taohd.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\dichvu\\thaotacdv.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\dichvu\\thaotacdv.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|g:\\c#\\qlkytucxa\\qlkytucxa\\components\\pages\\taikhoan\\thaotactk.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2AA6A8D8-9413-418C-AECE-53F7C9940C8D}|QLKyTucXa\\QLKyTucXa.csproj|solutionrelative:qlkytucxa\\components\\pages\\taikhoan\\thaotactk.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 365,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,52 +30,40 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "TaoHD.razor",
-              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\HoaDon\\TaoHD.razor",
-              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\HoaDon\\TaoHD.razor",
-              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\HoaDon\\TaoHD.razor",
-              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\HoaDon\\TaoHD.razor",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAAACcAAAAXAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-30T02:16:56.192Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "HoaDonComponent.razor",
-              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\HoaDon\\HoaDonComponent.razor",
-              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\HoaDon\\HoaDonComponent.razor",
-              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\HoaDon\\HoaDonComponent.razor",
-              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\HoaDon\\HoaDonComponent.razor",
-              "ViewState": "AQIAAEAAAAAAAAAAAAAuwFMAAAAZAAAA",
+              "Title": "PhongComponent.razor",
+              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\Phong\\PhongComponent.razor",
+              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\Phong\\PhongComponent.razor",
+              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\Phong\\PhongComponent.razor",
+              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\Phong\\PhongComponent.razor",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAACIAAABGAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-29T16:11:42.268Z",
+              "WhenOpened": "2024-09-03T15:59:08.585Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DichVuComponent.razor",
-              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DichVu\\DichVuComponent.razor",
-              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\DichVu\\DichVuComponent.razor",
-              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DichVu\\DichVuComponent.razor",
-              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\DichVu\\DichVuComponent.razor",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAAACoAAABcAAAA",
+              "DocumentIndex": 2,
+              "Title": "ThaoTacTK.razor",
+              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\TaiKhoan\\ThaoTacTK.razor",
+              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\TaiKhoan\\ThaoTacTK.razor",
+              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\TaiKhoan\\ThaoTacTK.razor",
+              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\TaiKhoan\\ThaoTacTK.razor",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAB4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-29T06:08:10.069Z"
+              "WhenOpened": "2024-09-03T15:48:24.822Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ThaoTacDV.razor",
-              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DichVu\\ThaoTacDV.razor",
-              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\DichVu\\ThaoTacDV.razor",
-              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\DichVu\\ThaoTacDV.razor",
-              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\DichVu\\ThaoTacDV.razor",
-              "ViewState": "AQIAACEAAAAAAAAAAAAAADgAAAA3AAAA",
+              "DocumentIndex": 1,
+              "Title": "TaiKhoanComponent.razor",
+              "DocumentMoniker": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\TaiKhoan\\TaiKhoanComponent.razor",
+              "RelativeDocumentMoniker": "QLKyTucXa\\Components\\Pages\\TaiKhoan\\TaiKhoanComponent.razor",
+              "ToolTip": "G:\\C#\\QLKyTucXa\\QLKyTucXa\\Components\\Pages\\TaiKhoan\\TaiKhoanComponent.razor",
+              "RelativeToolTip": "QLKyTucXa\\Components\\Pages\\TaiKhoan\\TaiKhoanComponent.razor",
+              "ViewState": "AQIAAFoAAAAAAAAAAAAAAIIAAAA7AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-29T08:18:59.372Z"
+              "WhenOpened": "2024-09-03T15:47:04.063Z"
             }
           ]
         }

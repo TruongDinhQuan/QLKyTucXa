@@ -8,5 +8,6 @@ namespace QLKyTucXa.Controller.Interfaces
             Task DanhDauThongBaoAsync(string maThongBao);
             Task AddThongBaoAsync(ThongBao TB);
             Task GuiThongBaoAsync(List<string> idUsers, string noiDung);
+            Task DeletethongbaoForeignKeyAsync(string foreignKey);
         }
 }

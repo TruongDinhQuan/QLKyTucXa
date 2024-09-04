@@ -1,9 +1,10 @@
 ﻿@inject IPhuHuynhServices ph
+@inject ISnackbar Snackbar
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 <PageTitle>Phụ Huynh</PageTitle>
-    <button class="btn btn-primary" @onclick="themmoi">thêm mới</button>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="themmoi">Tạo Mới</MudButton>
     <br />
     @if (phuhuynh == null || !phuhuynh.Any())
     {
@@ -32,8 +33,8 @@
                         <td>@forecast.Sdt</td>
                         <td>@forecast.QuanHe</td>
                         <td>
-                            <button class="btn btn-secondary" @onclick="@(() => Update(forecast.IdphuHuynh))">Sửa</button>
-                            <button class="btn btn-danger" @onclick="@(() => Delete(forecast.IdphuHuynh))">Xóa</button>
+                        <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="@(() => Update(forecast.IdphuHuynh))">Sửa</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="@(() => Delete(forecast.IdphuHuynh))">Xóa</MudButton>
                         </td>
                     </tr>
                 }
@@ -82,6 +83,8 @@
     {
         if (!string.IsNullOrEmpty(idToDelete))
         {
+            Snackbar.Add("xóa thành công!", Severity.Success, config => { config.VisibleStateDuration = 500; config.HideTransitionDuration = 100; config.ShowTransitionDuration = 500; });
+            await Task.Delay(1000);
             await ph.DeletePhuHuynhAsync(idToDelete);
             xacnhanxoa = false;
             phuhuynh = await ph.GetPhuhuynhsAsync();

@@ -59,5 +59,16 @@ namespace QLKyTucXa.Controller.Services
                                     .ToListAsync();
             return result;
         }
+
+        //xóa hợp đồng bằng id sinh vien
+        public async Task DeleteHopDongForeignKeyAsync(string foreignKey)
+        {
+            var phList = await _qlktxContext.Hopdongs.Where(p => p.Mssv == foreignKey).ToListAsync();
+            if (phList.Any())
+            {
+                _qlktxContext.Hopdongs.RemoveRange(phList);
+                await _qlktxContext.SaveChangesAsync();
+            }
+        }
     }
 }

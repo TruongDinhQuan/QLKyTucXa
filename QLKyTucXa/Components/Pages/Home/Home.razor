@@ -219,17 +219,18 @@
 </AuthorizeView>
 
 
-<AuthorizeView>
+<AuthorizeView Roles="Admin, Employee">
     <Authorized>
-
+        <ThongKe cacdichvu="cacdichvu" cachoadon="hoadondathanhtoan" cthd="cacCTHD" tongphonghienco="cacphong" cachopdong="cachopdong" cacphong="cacphong"></ThongKe>
     </Authorized>
 </AuthorizeView>
 
 @code {
+    //user
     private ClaimsPrincipal? user;
     private List<Hopdong> cachopdong = new List<Hopdong>();
-    private List<Sinhvien?> cacsinhvien = new List<Sinhvien?>();
-    private List<Nhanvien?> cacnhanvien = new List<Nhanvien?>();
+    private List<Sinhvien> cacsinhvien = new List<Sinhvien?>();
+    private List<Nhanvien> cacnhanvien = new List<Nhanvien?>();
     private List<Phong> cacphong = new List<Phong>();
     private List<Hoadon> cachoadon = new List<Hoadon>();
     private List<Chitiethoadon> cacCTHD = new List<Chitiethoadon>();
@@ -243,22 +244,31 @@
     bool userExists;
     double tongtien = 0;
     private bool xacnhanxoa = false;
+    //admin, employee
+    private List<Hoadon> hoadondathanhtoan = new List<Hoadon>();
+
 
     protected override async Task OnInitializedAsync()
     {
         // Lấy thông tin người dùng hiện tại từ AuthenticationStateProvider
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         user = authState.User;
-        if (!user.IsInRole("Admin"))
+        cacdichvu = await DichVuServices.GetDichvuAsync();
+        cacphong = await PhongServices.GetPhongAsync();
+        cacsinhvien = await SinhVienServices.laydssinhvien();
+        cachopdong = await HopDongServices.GetPhongAsync();
+        cacnhanvien = await NhanVienServices.GetPhongAsync();
+        hoadondathanhtoan = await HoaDonServices.GetHoaDonAsync();
+        cacCTHD = await HoaDonServices.GetCTHDAsync();
+
+        if (!user.IsInRole("Admin") && !user.IsInRole("Employee"))
         {
             //kiểm tra sinh viên đã có thông tin hay chưa
-            cacsinhvien = await SinhVienServices.laydssinhvien();
             userExists = cacsinhvien.Any(i => i.Iduser == user.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToString());
             //kiểm tra xem sinh vien đã đăng ký phòng hay chưa
             sinhvien = await SinhVienServices.GetByIdUserAsync(user.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToString());
             if (sinhvien != null)
             {
-                cachopdong = await HopDongServices.GetPhongAsync();
                 foreach (var t in cachopdong)
                 {
                     if (t.Mssv == sinhvien.Mssv && !string.IsNullOrEmpty(sinhvien.Mssv))
@@ -275,11 +285,7 @@
             phong = await PhongServices.GetPhongByIdAsync(luubien.IdPhong);
             hopdong = await HopDongServices.GetPhongByIdAsync(idToDelete);
 
-            cacCTHD = await HoaDonServices.GetCTHDAsync();
-            cacdichvu = await DichVuServices.GetDichvuAsync();
             cachoadon = await HoaDonServices.GetHoaDonByTrangThaiAsync();
-            cacphong = await PhongServices.GetPhongAsync();
-            cacnhanvien = await NhanVienServices.GetPhongAsync();
             if (user.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToString() != null)
             {
                 dungdehienthiCHTD = GetChiTietHoaDon(user.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToString());
@@ -293,22 +299,27 @@
 
                 tongtien = dungdehienthiCHTD.Sum(item =>
                 {
-                                foreach (var dv in cacdichvu)
-                                {
-                                    if (dv.MaDv == item.MaDv)
-                                    {
-                                        if (dv.MaDv != "dd3791cb-3070-4b3a-b3f1-64c1fbb5916a")
-                                            return (item.ChiSoCuoi - item.ChiSoDau) * dv.DonGia ?? 0;
-                                        else
-                                            return dv.DonGia * phong?.SoNguoiO ?? 0;
-                                    }
-                                }
-                                return 0; 
+                    foreach (var dv in cacdichvu)
+                    {
+                        if (dv.MaDv == item.MaDv)
+                        {
+                            if (dv.MaDv != "dd3791cb-3070-4b3a-b3f1-64c1fbb5916a")
+                                return (item.ChiSoCuoi - item.ChiSoDau) * dv.DonGia ?? 0;
+                            else
+                                return dv.DonGia * phong?.SoNguoiO ?? 0;
+                        }
+                    }
+                    return 0; 
                 });
             }
         }
+        else
+        {
+            // hoadondathanhtoan = await HoaDonServices.GetHoaDonByDaThanhToanAsync();
+        }
     }
 
+    //user
     public List<Chitiethoadon> GetChiTietHoaDon(string userId)
     {
         var result = from cthd in cacCTHD    join dv in cacdichvu on cthd.MaDv equals dv.MaDv
@@ -336,5 +347,22 @@
             xacnhanxoa = false;
             Navigation.NavigateTo("/", true);
         }
+    }
+
+    //admin, employee
+    private async Task truyvantonghoadon()
+    {
+        foreach (var i in hoadondathanhtoan)
+        {
+            cacCTHD = await HoaDonServices.GetChiTietHoaDonByMaHDAsync(i.MaHd);
+        }
+        var result = (from hoadon in hoadondathanhtoan
+                      join chitiet in cacCTHD on hoadon.MaHd equals chitiet.MaHd
+                      join dichvu in cacdichvu on chitiet.MaDv equals dichvu.MaDv
+                      where dichvu.LoaiDichVu == "DV Bắt Buộc" && hoadon.TrangThai == "Đã thanh toán" && hoadon.MaPhong != null
+                      group hoadon by hoadon.MaHd into g
+                      select g.Key).ToList();
+        // Loại bỏ các hóa đơn trùng lặp dựa trên MaHd
+      //tongsohoadonbatbuoc = result.Count;
     }
 }

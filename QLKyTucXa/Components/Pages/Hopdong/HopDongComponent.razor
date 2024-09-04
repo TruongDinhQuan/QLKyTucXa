@@ -9,30 +9,39 @@
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 <PageTitle>DanhSachHopdong</PageTitle>
-@if (cachopdong == null || !cachopdong.Any())
+
+<div class="header-container">
+    <h4>Danh sách hợp đồng cần duyệt</h4>
+    <ThanhTimKiem OnSearchChanged="FilterDichVu" />
+</div>
+
+<br/>
+@if (!trangthaitimkiem && !cachopdong.Any())
 {
-    <h3>Không có yêu cầu xét duyệt đặt phòng!</h3>
+    <h4 style="text-align: center;">Không có yêu cầu xét duyệt đặt phòng!</h4>
 }
 else
 {
+      <div class="form-wrapper">
     <table class="table">
         <thead>
             <tr>
-                <th>Mã Số Sinh Viên</th>
-                <th>Ngày Lập</th>
-                <th>Trạng Thái</th>
-                <th>Thao Tác</th>
+                    <th style="text-align: center;">Mã Số Sinh Viên</th>
+                    <th style="text-align: center;">Ngày Lập</th>
+                    <th style="text-align: center;">Trạng Thái</th>
+                    <th style="text-align: center;"> Chi Tiết Hợp Đồng</th>
+                    <th style="text-align: center;">Thao Tác</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in cachopdong)
+                @foreach (var forecast in hopdongphantrang)
             {
                 <tr>
-                    <td>@forecast.Mssv</td>
-                    <td>@forecast.NgayLap</td>
-                    <td>@forecast.TrangThai</td>
-                    <td>
-                        <button class="btn btn-secondary" @onclick="@(() => chitiet(forecast.SoHopDong))">Chitiet</button>
+                        <td style="text-align: center;">@forecast.Mssv</td>
+                        <td style="text-align: center;">@forecast.NgayLap</td>
+                        <td style="text-align: center;">@forecast.TrangThai</td>
+                        <td style="text-align: center;">  <MudButton Variant="Variant.Filled" OnClick="@(() => chitiet(forecast.SoHopDong))" Color="Color.Default">Chitiet</MudButton> </td>
+                        <td style="text-align: center;">
                         <MudButton Variant="Variant.Filled" @onclick="@(() => Duyet(forecast.SoHopDong))" Color="Color.Primary">Duyệt</MudButton>
                         <MudSnackbarProvider />
                     </td>
@@ -40,19 +49,35 @@ else
             }
         </tbody>
     </table>
+        <div class="pagination">
+            <span class="pagination-button" @onclick="PreviousPage" style="cursor: @(CanGoPrevious ? "pointer" : "default");" aria-disabled="@(!CanGoPrevious)">&laquo;</span>
+            <span>Trang @CurrentPage/@TotalPages</span>
+            <span class="pagination-button" @onclick="NextPage" style="cursor: @(CanGoNext ? "pointer" : "default");" aria-disabled="@(!CanGoNext)">&raquo;</span>
+        </div>
+    </div>
 }
 
 @code {
     private List<Hopdong> cachopdong = new List<Hopdong>();
+    private List<Hopdong> hopdongphantrang = new List<Hopdong>();
+    private List<Hopdong> hopdongtimkiem = new List<Hopdong>();
     private List<Sinhvien> cacsinhvien = new List<Sinhvien>();
     private Hopdong hopdong = new Hopdong();
     private Phong phong = new Phong();
-    //private Sinhvien sinhvien;
+    private bool trangthaitimkiem = false;
+
+    private int PageSize = 5;
+    private int CurrentPage = 1;
+    private int TotalPages => (int)Math.Ceiling((double)cachopdong.Count / PageSize);
+    private bool CanGoPrevious => CurrentPage > 1;
+    private bool CanGoNext => CurrentPage < TotalPages;
 
     protected override async Task OnInitializedAsync()
     {
         cachopdong = await HopDongServices.GetHopDongByTrangThaiAsync();
         cacsinhvien = await SinhVienServices.laydssinhvien();
+        hopdongtimkiem = cachopdong;
+        UpdatePaginatedDichVu();
     }
 
     private void chitiet(string id)
@@ -62,8 +87,8 @@ else
 
     private async Task Duyet(string? id)
     {
-        // Hiển thị Snackbar
-        Snackbar.Add("Hợp đồng đã được duyệt!", Severity.Success);
+        Snackbar.Add("Hợp đồng đã được phê duyệt!", Severity.Success, config => { config.VisibleStateDuration = 500; config.HideTransitionDuration = 100; config.ShowTransitionDuration = 500; });
+        await Task.Delay(1000);
 
         // Đợi một thời gian để Snackbar hiển thị
         await Task.Delay(1000);
@@ -82,6 +107,7 @@ else
             await ThongBaoServices.AddThongBaoAsync(thongBao);
 
             hopdong = await HopDongServices.GetPhongByIdAsync(id);
+            UpdatePaginatedDichVu();
         }
 
         if (hopdong != null)
@@ -103,8 +129,103 @@ else
     private string? GetIduser(string? sohopdong)
     {
         return cachopdong.Where(h => h.SoHopDong == sohopdong)
-                              .Join(cacsinhvien, s => s.Mssv, d => d.Mssv, (s, d) => { return d.Iduser;})
+                              .Join(cacsinhvien, s => s.Mssv, d => d.Mssv, (s, d) =>  d.Iduser)
                               .FirstOrDefault();
+    }
+
+    private void FilterDichVu(string searchTerm)
+    {
+        searchTerm = searchTerm?.Trim();
+        trangthaitimkiem = true;
+        if (string.IsNullOrWhiteSpace(searchTerm))
+            cachopdong = hopdongtimkiem;
+        else
+        {
+            cachopdong = hopdongtimkiem
+                .Where(d => d.Mssv.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+        CurrentPage = 1; // Reset to the first page after filtering
+        UpdatePaginatedDichVu();
+    }
+
+    private void UpdatePaginatedDichVu()
+    {
+        hopdongphantrang = cachopdong
+            .Skip((CurrentPage - 1) * PageSize)
+            .Take(PageSize)
+            .ToList();
+    }
+
+    private void PreviousPage()
+    {
+        if (CanGoPrevious)
+        {
+            CurrentPage--;
+            UpdatePaginatedDichVu();
+        }
+    }
+
+    private void NextPage()
+    {
+        if (CanGoNext)
+        {
+            CurrentPage++;
+            UpdatePaginatedDichVu();
+        }
     }
 }
 
+<style>
+    .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1px;
+        margin-top: 1px;
+    }
+
+    .pagination-button {
+        font-size: 15px;
+        color: #007bff;
+        cursor: pointer;
+        user-select: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .pagination-button:hover {
+            background-color: #e9ecef;
+            color: #0056b3;
+        }
+
+        .pagination-button[aria-disabled="true"] {
+            color: #6c757d;
+            cursor: default;
+        }
+
+    .form-wrapper {
+        background-color: #E1F5FE; /* Màu nền sáng (AliceBlue) */
+        border: 1px solid #ccc; /* Đường viền xám nhạt */
+        border-radius: 8px; /* Bo tròn các góc */
+        padding: 8px; /* Khoảng cách nội dung từ các cạnh */
+        margin: 8px; /* Khoảng cách từ các phần tử khác */
+    }
+
+    .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 100%;
+        margin: auto;
+    }
+
+    .search-bar {
+        flex-grow: 1;
+        max-width: 600px;
+        margin: 0 20px;
+        display: flex;
+        align-items: center;
+    }
+</style>

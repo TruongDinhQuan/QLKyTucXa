@@ -2,7 +2,7 @@
 
 @inject NavigationManager navigationManager
 @inject ITaiKhoanServices Service
-
+@inject ISnackbar Snackbar
 @rendermode InteractiveServer
 @if (!string.IsNullOrEmpty(id))
 {
@@ -55,8 +55,9 @@ else
             </div>
             <br/>
             <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="button" class="btn btn-warning" @onclick="quaylai">Quay lại</button>
+                <MudButton OnClick="HandleValidSubmit" Variant="Variant.Filled" Color="Color.Primary">Lưu</MudButton>
+                <MudSnackbarProvider />
+                <MudButton OnClick="quaylai" Variant="Variant.Filled" Color="Color.Warning">Quay Lại</MudButton>
             </div>
         </EditForm>
     </div>
@@ -80,11 +81,15 @@ else
     {
         if (string.IsNullOrEmpty(taikhoan.Iduser))
         {
+            Snackbar.Add("thêm tài khoản thành công!", Severity.Success, config => { config.VisibleStateDuration = 300; });
+            await Task.Delay(1000);
             taikhoan.Iduser = GenerateCode();
             await Service.AddtaikhoanAsync(taikhoan);
         }
         else
         {
+            Snackbar.Add("cập nhập tài khoản thành công!", Severity.Success, config => { config.VisibleStateDuration = 300; });
+            await Task.Delay(1000);
             await Service.UpdatetaikhoanAsync(taikhoan);
         }
         navigationManager.NavigateTo("/taikhoan");
