@@ -1,0 +1,335 @@
+﻿@page "/phong"
+@inject IPhongServices Phong
+@inject ISinhVienServices SinhVienServices
+@inject IHopDongServices HopDongServices
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager navigationManager
+@inject ISnackbar Snackbar
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+<PageTitle>Phong</PageTitle>
+
+<div style="display: flex; align-items: center; gap: 50px;">
+    <h3>Danh Sách Phòng</h3>
+    <AuthorizeView Roles="Admin"> 
+        <Authorized>
+            <MudButton Variant="Variant.Filled" OnClick="themmoi" Color="Color.Primary">TẠO MỚI</MudButton>
+        </Authorized>
+    </AuthorizeView>
+ </div>
+<br />
+<ChucNangLoc  SelectedKhu="selectedKhu"  SelectedTang="selectedTang"  SelectedGiuong="selectedGiuong"  phongs="phong" OnSelectedKhuChanged="OnSelectedKhuChanged" OnSelectedTangChanged="OnSelectedTangChanged" OnSelectedGiuongChanged="OnSelectedGiuongChanged"/>
+
+@if (!filteredPhong.Any())
+{
+    <h1 style="text-align: center;">Không tìm thấy phòng phù hợp</h1>
+}
+else
+{
+    <div class="container">
+            <span class="circle blue"></span> Hiển thị phòng đã đầy
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="circle green"></span> Hiển thị phòng còn chỗ
+    </div>
+
+    <MudCarousel Class="mud-width-full" Style="height:300px; width: 950px" TData="object">
+        @foreach (var group in filteredPhong.Select((item, index) => new { item, index })
+       .GroupBy(x => x.index / 4)
+       .Select(g => g.Select(x => x.item).ToList()))
+        {
+            <MudCarouselItem Transition="transition">
+                <div class="d-flex flex-wrap justify-content-center align-items-center" style="height:100%">
+                    @foreach (var forecast in group)
+                    {
+                        var isValid = phongValidationDictionary.TryGetValue(forecast.MaPhong, out bool valid) ? valid : false;
+                        var cardColor = isValid ? "#BCAAA4" : "#A5D6A7";
+                        <article class="card">
+                            <div class="temporary_text">
+                                <img src="/image/phonghiendai.jpg" class="image-zoom" style="width: 100%; height: auto;" />
+                            </div>
+                            <div class="card_content" style="background-color: @cardColor;">
+                                <span class="card_title">@forecast.TenPhong</span>
+                                <span class="card_subtitle">
+                                    <strong>Tầng:</strong> @forecast.Tang<br />
+                                    <strong>Khu:</strong> @forecast.Khu<br />
+                                    <strong>Số Người Ở:</strong> @forecast.SoNguoiO
+                                </span>
+                                <p class="card_description">
+                                    <!-- You can add more description here if needed -->
+                                </p>
+                                <AuthorizeView Roles="Admin">
+                                    <Authorized>
+                                        <div class="d-flex justify-content-between mt-4">
+                                            <button class="btn btn-outline-secondary btn-sm" @onclick="@(() => Update(forecast.MaPhong))">Sửa</button>
+                                            <button class="btn btn-outline-danger btn-sm" @onclick="@(() => Delete(forecast.MaPhong))">Xóa</button>
+                                        </div>
+                                    </Authorized>
+                                </AuthorizeView>
+                            </div>
+                        </article>
+                    }
+                </div>
+            </MudCarouselItem>
+        }
+    </MudCarousel>
+}
+
+<Delete @rendermode="InteractiveServer" xacnhan="xacnhanxoa" OnCancel="CancelDelete" OnOK="okDelete"></Delete>
+<AuthorizeView Roles="User">
+    <Authorized>
+        <Xacnhandatphong @rendermode="InteractiveServer" capnhatmaphong="capnhatmaphong" id="@id" user="user" hopdong="hopdong" sinhvien="sinhvien" phongValidationDictionary="phongValidationDictionary" selectedPhong="selectedPhong" showBookingModal="bienhienthixacnhandatphong" ConfirmBooking="ConfirmBooking" CloseModal="CloseModal"></Xacnhandatphong>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private List<Phong> phong = new List<Phong>();
+    private List<Phong> filteredPhong = new List<Phong>();
+    private string? selectedKhu, selectedTang, selectedGiuong, idToDelete;
+    private bool xacnhanxoa = false;
+    private bool bienhienthixacnhandatphong = false;
+    private Phong? selectedPhong;
+    private Phong? layphongmuonxoa;
+    private ClaimsPrincipal? user;
+    private Hopdong? hopdong = new Hopdong();
+    private Sinhvien? sinhvien = new Sinhvien();
+    string? id;
+    private Transition transition = Transition.Slide;
+    Dictionary<string, bool> phongValidationDictionary = new Dictionary<string, bool>();
+
+    protected override async Task OnInitializedAsync() 
+    {
+        // Lấy thông tin người dùng hiện tại từ AuthenticationStateProvider
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;
+        if (!user.IsInRole("Admin"))
+        {
+            var claim = user.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                sinhvien = await SinhVienServices.GetByIdUserAsync(claim.Value);
+                if (sinhvien != null)
+                {
+                    hopdong = await HopDongServices.GetHopDongByMssvAsync(sinhvien.Mssv);
+                }
+            }
+            //lấy SoHopDong cần nhập nhật thông qua URL
+            var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+            if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("SoHopdong", out var phongIdValue))
+                id = phongIdValue;
+            else
+                id = null; // Đặt lại id nếu không có query parameter
+        }
+        phong = await Phong.GetPhongAsync();
+
+        foreach (var p in phong)
+        {
+            bool isValid = await Phong.IsSoGiuongEqualSoNguoiOAsync(p.MaPhong);
+            phongValidationDictionary[p.MaPhong] = isValid;
+        }
+        filteredPhong = phong; // Khởi tạo danh sách lọc bằng toàn bộ danh sách
+    }
+
+    private void ApplyFilters()
+    {
+        filteredPhong = phong.Where(p =>
+            (string.IsNullOrEmpty(selectedKhu) || p.Khu == selectedKhu) &&
+            (string.IsNullOrEmpty(selectedTang) || p.Tang == selectedTang) &&
+            (string.IsNullOrEmpty(selectedGiuong) || p.SoGiuong == int.Parse(selectedGiuong))
+        ).ToList();
+    }
+
+    private void OnSelectedKhuChanged(string? khu)
+    {
+        selectedKhu = khu;
+        ApplyFilters();
+    }
+
+    private void OnSelectedTangChanged(string? tang)
+    {
+        selectedTang = tang;
+        ApplyFilters();
+    }
+
+    private void OnSelectedGiuongChanged(string? giuong)
+    {
+        selectedGiuong = giuong;
+        ApplyFilters();
+    }
+
+    private void hienthibangxacnhan(Phong phong)
+    {
+        selectedPhong = phong;
+        bienhienthixacnhandatphong = true;
+    }
+
+    private void CloseModal()
+    {
+        bienhienthixacnhandatphong = false;
+        selectedPhong = null;
+    }
+
+    private async Task capnhatmaphong()
+    {
+        Snackbar.Add("Cập nhật mã phòng thành công!", Severity.Success);
+        await Task.Delay(1500);
+        hopdong.MaPhong =  selectedPhong?.MaPhong;
+        await HopDongServices.UpdatePhongAsync(hopdong);
+        id = null;
+        navigationManager.NavigateTo($"/");
+        bienhienthixacnhandatphong = false;
+    }
+
+    private void ConfirmBooking()
+    {
+        navigationManager.NavigateTo($"/chitiethopdong?phongId={selectedPhong?.MaPhong}");
+        bienhienthixacnhandatphong = false;
+    }
+
+    private void themmoi() => navigationManager.NavigateTo("/Addphong");
+
+    private void Update(string id) => navigationManager.NavigateTo($"/Addphong/{id}");
+
+    private void Delete(string id)
+    {
+        idToDelete = id;
+        xacnhanxoa = true;
+    }
+
+    private void CancelDelete() => xacnhanxoa = false;
+
+    private async Task okDelete()
+    {
+        if (!string.IsNullOrEmpty(idToDelete))
+        {
+            layphongmuonxoa = await Phong.GetPhongByIdAsync(idToDelete);
+            if (layphongmuonxoa?.SoNguoiO != null && layphongmuonxoa.SoNguoiO > 0)
+            {
+                Snackbar.Add("Không thể xóa phòng đã có sinh siên ở!", Severity.Warning, config =>
+                {
+                    config.VisibleStateDuration = 400;
+                    config.HideTransitionDuration = 100;
+                    config.ShowTransitionDuration = 500;
+                });
+            }
+            else
+            {
+                Snackbar.Add("xóa thành công!", Severity.Success, config =>
+                {
+                    config.VisibleStateDuration = 400;
+                    config.HideTransitionDuration = 100;
+                    config.ShowTransitionDuration = 500;
+                });
+                await Task.Delay(1000);
+                await Phong.DeletePhongAsync(idToDelete);
+                xacnhanxoa = false;
+                phong = await Phong.GetPhongAsync();
+                ApplyFilters();
+            }
+        }
+    }
+}
+<style>
+    .card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2px; /* Khoảng cách giữa các dòng */
+    }
+
+    .custom-card {
+        margin: 200px; /* Khoảng cách giữa các thẻ card */
+    }
+
+    .card {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        color: #2e2d31;
+        background: #131313;
+        overflow: hidden;
+        border-radius: 20px;
+        margin: 10px;
+    }
+
+    .temporary_text {
+        font-weight: bold;
+        font-size: 24px;
+        padding: 6px 12px;
+        color: #f8f8f8;
+    }
+
+    .card_title {
+        font-weight: bold;
+    }
+
+    .card_content {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        padding: 20px;
+        background: #f2f2f2;
+        border-top-left-radius: 20px;
+        transform: translateY(150px);
+        transition: transform .25s;
+    }
+
+        .card_content::before {
+            content: '';
+            position: absolute;
+            top: -47px;
+            right: -45px;
+            width: 100px;
+            height: 100px;
+            transform: rotate(-175deg);
+            border-radius: 50%;
+            box-shadow: inset 48px 48px #f2f2f2;
+        }
+
+    .card_title {
+        color: #131313;
+        line-height: 15px;
+    }
+
+    .card_subtitle {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    .card_description {
+        font-size: 14px;
+        opacity: 0;
+        transition: opacity .5s;
+    }
+
+    .card:hover .card_content {
+        transform: translateY(0);
+    }
+
+    .card:hover .card_description {
+        opacity: 1;
+        transition-delay: .25s;
+    }
+
+
+    .image-zoom {
+        width: 200px; /* Đặt kích thước của hình ảnh để khớp với SVG */
+        height: 200px; /* Đặt kích thước của hình ảnh để khớp với SVG */
+        object-fit: cover; /* Đảm bảo hình ảnh không bị biến dạng */
+    }
+
+    .circle {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .blue {
+        background-color: #BCAAA4; /* Màu nâu nhạt */
+    }
+
+    .green {
+        background-color: #A5D6A7; /* Màu xanh lá cây nhạt */
+    }
+</style>

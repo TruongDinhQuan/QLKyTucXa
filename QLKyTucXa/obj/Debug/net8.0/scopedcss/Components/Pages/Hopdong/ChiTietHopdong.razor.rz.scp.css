@@ -1,0 +1,43 @@
+
+body[b-qsl7aefjmf] {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.header[b-qsl7aefjmf], .footer[b-qsl7aefjmf] {
+    text-align: center;
+    font-weight: bold;
+}
+
+.content[b-qsl7aefjmf] {
+    margin-top: 20px;
+}
+
+    .content p[b-qsl7aefjmf] {
+        margin: 5px 0;
+    }
+
+    .content .section[b-qsl7aefjmf] {
+        margin-top: 20px;
+    }
+
+.signatures[b-qsl7aefjmf] {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+    .signatures div[b-qsl7aefjmf] {
+        text-align: center;
+    }
+
+.checkbox-container[b-qsl7aefjmf] {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa checkbox và label */
+    margin-bottom: 10px; /* Khoảng cách giữa checkbox và button */
+}
+
+.btn-primary[b-qsl7aefjmf] {
+    margin-left: 10px; /* Khoảng cách giữa checkbox-container và button */
+}
